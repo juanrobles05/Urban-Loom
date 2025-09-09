@@ -6,5 +6,5 @@ from storefront import views
 
 urlpatterns = [
     path("set-language/", set_language, name="set_language"),
-    path("", views.home, name="home"),
+    path('', views.HomeView.as_view(), name="home"),
 ]
