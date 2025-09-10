@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Mis direcciones de envío</h2>
+<ul>
+    {% for address in addresses %}
+    <li>
+        {{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}
+        <a href="{% url 'edit_shipping_address' address.id %}">Editar</a>
+        <a href="{% url 'delete_shipping_address' address.id %}">Eliminar</a>
+    </li>
+    {% empty %}
+    <li>No tienes direcciones guardadas.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_shipping_address' %}">Agregar nueva dirección</a>
+{% endblock %}

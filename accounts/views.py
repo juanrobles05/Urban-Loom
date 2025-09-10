@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, LoginForm, ProfileForm, UserForm
+from .forms import UserRegistrationForm, LoginForm, ProfileForm, UserForm, ShippingAddressForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from .models import ShippingAddress
 
 
 def register_user(request):
@@ -66,3 +67,41 @@ def edit_profile(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'accounts/profile.html', {'form': form})
+
+@login_required
+def add_shipping_address(request):
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return redirect('list_shipping_addresses')
+    else:
+        form = ShippingAddressForm()
+    return render(request, 'accounts/add_address.html', {'form': form})
+
+@login_required
+def list_shipping_addresses(request):
+    addresses = request.user.shipping_addresses.all()
+    return render(request, 'accounts/list_addresses.html', {'addresses': addresses})
+
+@login_required
+def edit_shipping_address(request, address_id):
+    address = ShippingAddress.objects.get(id=address_id, user=request.user)
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('list_shipping_addresses')
+    else:
+        form = ShippingAddressForm(instance=address)
+    return render(request, 'accounts/edit_address.html', {'form': form})
+
+@login_required
+def delete_shipping_address(request, address_id):
+    address = ShippingAddress.objects.get(id=address_id, user=request.user)
+    if request.method == 'POST':
+        address.delete()
+        return redirect('list_shipping_addresses')
+    return render(request, 'accounts/delete_address.html', {'address': address})

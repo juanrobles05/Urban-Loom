@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Eliminar dirección de envío</h2>
+<p>¿Estás seguro que deseas eliminar esta dirección?</p>
+<p>{{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Eliminar</button>
+</form>
+<a href="{% url 'list_shipping_addresses' %}">Cancelar</a>
+{% endblock %}
