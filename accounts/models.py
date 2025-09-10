@@ -21,12 +21,10 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
-    shipping_address = models.CharField(max_length=255, blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -52,8 +50,17 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"Perfil de {self.user.email}"
 
-
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+class ShippingAddress(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='shipping_addresses')
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state_or_province = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.street}, {self.city}, {self.state_or_province}, {self.postal_code}"

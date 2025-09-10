@@ -15,4 +15,18 @@
 
     <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
 </form>
+
+<h3>Direcciones de envío</h3>
+<ul>
+    {% for address in user.shipping_addresses.all %}
+    <li>
+        {{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}
+        <a href="{% url 'edit_shipping_address' address.id %}">Editar</a>
+        <a href="{% url 'delete_shipping_address' address.id %}">Eliminar</a>
+    </li>
+    {% empty %}
+    <li>No tienes direcciones guardadas.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_shipping_address' %}">Agregar nueva dirección</a>
 {% endblock %}
