@@ -21,3 +21,42 @@ La propuesta genera múltiples beneficios:
 - **Para los administradores:** mayor control del negocio, optimización de procesos de venta y fidelización de clientes mediante una plataforma centralizada.
 
 En conclusión, Urban Loom no solo busca ser una tienda de moda en línea, sino también una plataforma innovadora que combine comercio electrónico, experiencia de usuario y comunidad en torno al estilo.
+
+## Estructura de Apps
+
+A continuación se describe el propósito de cada app principal del proyecto:
+
+### 1. accounts
+**Gestión de usuarios (clientes y administradores), autenticación, perfiles y direcciones.**
+- Modelos: User, Customer, Admin, ShippingAddress
+- Formularios: registro, login, edición de perfil, cambio de contraseña
+- Vistas: registro, login, logout, perfil, gestión de direcciones
+- Templates: login, registro, perfil, gestión de direcciones
+
+### 2. catalog
+**Gestión del catálogo de productos y categorías.**
+- Modelos: Product, Category
+- Vistas: listado de productos, detalle de producto, filtros por categoría, búsqueda
+- Templates: listado de productos, detalle de producto, filtros
+
+### 3. orders
+**Gestión de pedidos y carrito de compras.**
+- Modelos: Order, ShoppingCart
+- Vistas: carrito de compras, confirmación de pedido, historial de compras, cancelación de pedido
+- Templates: carrito, confirmación, historial de pedidos
+
+### 4. recommendations
+**Recomendaciones personalizadas y listas de deseos.**
+- Modelos: Recommendation, lista de deseos
+- Vistas: mostrar recomendaciones, gestionar lista de deseos
+- Templates: recomendaciones, lista de deseos
+
+### 5. storefront
+**Interfaz principal de la tienda y páginas públicas.**
+- Vistas: home, navegación, páginas informativas, comunidad
+- Templates: home, comunidad, contacto, navegación
+
+### 6. core
+**Funcionalidades compartidas, utilidades, configuración global.**
+- Utilidades: procesadores de contexto, funciones comunes (ej. internacionalización)
+- Configuración global
