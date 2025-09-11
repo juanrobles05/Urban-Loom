@@ -3,30 +3,126 @@
 {% block title %}Mi Perfil{% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">Mi perfil</h2>
+<div class="min-h-screen bg-black text-white">
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-6">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
+                            {% if user.profile.profile_picture %}
+                                <img src="{{ user.profile.profile_picture.url }}" alt="Avatar" class="w-full h-full object-cover" />
+                            {% else %}
+                                <span class="flex items-center justify-center h-full text-2xl font-bold">{{ user.name|slice:":2"|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <h2 class="font-semibold text-lg">{{ user.name }}</h2>
+                        <p class="text-gray-400 text-sm">{{ user.email }}</p>
+                        <p class="text-gray-500 text-xs">Member since {{ user.date_joined|date:"F Y" }}</p>
+                    </div>
+                    <nav class="space-y-2">
+                        <a href="#" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-user mr-2"></i>Profile</a>
+                        <a href="#orders" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-box mr-2"></i>Orders</a>
+                        <a href="#wishlist" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-heart mr-2"></i>Wishlist</a>
+                        <a href="#settings" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-cog mr-2"></i>Settings</a>
+                        <a href="{% url 'logout' %}" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-red-500"><i class="fa fa-sign-out-alt mr-2"></i>Logout</a>
+                    </nav>
+                </div>
+            </div>
 
-<form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow max-w-lg">
-    {% csrf_token %}
-    <h3 class="text-lg font-semibold mb-2">Información de usuario</h3>
-    {{ user_form.as_p }}
+            <!-- Main Content with Tabs -->
+            <div class="lg:col-span-3">
+                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-0 mb-8">
+                    <!-- Tabs -->
+                    <div class="flex border-b border-gray-800">
+                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('profile')" id="tab-profile">Profile</button>
+                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('orders')" id="tab-orders">Orders</button>
+                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('wishlist')" id="tab-wishlist">Wishlist</button>
+                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('settings')" id="tab-settings">Settings</button>
+                    </div>
+                    <!-- Tab Contents -->
+                    <div class="p-8">
+                        <!-- Profile Tab -->
+                        <div id="tab-content-profile" class="tab-content space-y-8">
+                            <!-- Personal Info Card -->
+                            <div class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-semibold text-lg">Personal Information</h3>
+                                    <a href="{% url 'edit_profile' %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <div class="mb-2 text-sm text-gray-400">First Name</div>
+                                        <div class="font-medium text-base">{{ user.first_name }}</div>
+                                    </div>
+                                    <div>
+                                        <div class="mb-2 text-sm text-gray-400">Last Name</div>
+                                        <div class="font-medium text-base">{{ user.last_name }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <div class="mb-2 text-sm text-gray-400">Email</div>
+                                        <div class="font-medium text-base">{{ user.email }}</div>
+                                    </div>
+                                    <div>
+                                        <div class="mb-2 text-sm text-gray-400">Phone</div>
+                                        <div class="font-medium text-base">{{ user.phone_number }}</div>
+                                    </div>
+                                </div>
+                            </div>
 
-    <h3 class="text-lg font-semibold mb-2 mt-4">Perfil</h3>
-    {{ profile_form.as_p }}
-
-    <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Guardar cambios</button>
-</form>
-
-<h3>Direcciones de envío</h3>
-<ul>
-    {% for address in user.shipping_addresses.all %}
-    <li>
-        {{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}
-        <a href="{% url 'edit_shipping_address' address.id %}">Editar</a>
-        <a href="{% url 'delete_shipping_address' address.id %}">Eliminar</a>
-    </li>
-    {% empty %}
-    <li>No tienes direcciones guardadas.</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'add_shipping_address' %}">Agregar nueva dirección</a>
+                            <!-- Shipping Address Card -->
+                            <ul class="space-y-4">
+                                {% for address in user.shipping_addresses.all %}
+                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <h3 class="font-semibold text-lg">Shipping Address</h3>
+                                            <a href="{% url 'edit_shipping_address' address.id %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-base mb-1">{{ address.street }}</div>
+                                            <div class="text-gray-300 mb-1">{{ address.city }}, {{ address.state_or_province }} {{ address.postal_code }}</div>
+                                            <div class="text-gray-400">{{ address.country }}</div>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
+                                        <h3 class="font-semibold text-lg mb-2">Shipping Address</h3>
+                                        <div class="text-gray-400">No shipping addresses saved.</div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% load static %}
+                        <script src="{% static 'js/profile.js' %}"></script>
+                        <div id="tab-content-orders" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold mb-6">Orders</h2>
+                            <div class="bg-gray-800 rounded-xl p-6">
+                                <p class="text-gray-400">Your recent orders will appear here.</p>
+                                <!-- TODO: Render orders list -->
+                            </div>
+                        </div>
+                        <!-- Wishlist Tab -->
+                        <div id="tab-content-wishlist" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold mb-6">Wishlist</h2>
+                            <div class="bg-gray-800 rounded-xl p-6">
+                                <p class="text-gray-400">Your wishlist items will appear here.</p>
+                                <!-- TODO: Render wishlist items -->
+                            </div>
+                        </div>
+                        <!-- Settings Tab -->
+                        <div id="tab-content-settings" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold mb-6">Settings</h2>
+                            <div class="bg-gray-800 rounded-xl p-6">
+                                <p class="text-gray-400">Account settings and preferences.</p>
+                                <!-- TODO: Render settings form -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
