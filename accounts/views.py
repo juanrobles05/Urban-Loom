@@ -6,15 +6,25 @@ from .models import ShippingAddress
 
 
 def register_user(request):
+    success_message = None
+    error_message = None
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('login')
+            success_message = "Account created successfully! You can now sign in."
+            print(success_message)
+            form = UserRegistrationForm()  # Limpiar el formulario
+        else:
+            if not form.errors:
+                error_message = "There was a problem creating your account. Please try again."
     else:
         form = UserRegistrationForm()
-    return render(request, 'accounts/register.html', {'form': form})
+    return render(request, 'accounts/register.html', {
+        'form': form,
+        'success_message': success_message,
+        'error_message': error_message,
+    })
 
 def login_user(request):
     if request.method == 'POST':
