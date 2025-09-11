@@ -1,8 +1,177 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-bold">Bienvenido a Urban Loom</h2>
-<p>Esta es la página de inicio.</p>
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
+	<div class="absolute inset-0 bg-gradient-to-br from-black via-gray-800 to-black opacity-60"></div>
+	<div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+		<div class="space-y-8">
+			<div class="space-y-6">
+				<span class="inline-block bg-white text-black border border-white px-4 py-2 rounded-full font-semibold">New Collection Available</span>
+				<h1 class="text-7xl md:text-8xl font-bold tracking-tighter bg-gradient-to-r from-white via-gray-600 to-black text-transparent bg-clip-text">URBAN<br>LOOM</h1>
+				<p class="text-xl text-gray-300 leading-relaxed max-w-lg">Descubre streetwear premium que define tu estilo. Prendas auténticas para el estilo de vida urbano moderno.</p>
+			</div>
+			<div class="flex flex-col sm:flex-row gap-4">
+				<a href="">
+					<button class="bg-white hover:bg-gray-100 text-black px-8 py-6 text-lg rounded-full font-semibold flex items-center gap-2 shadow-lg transition">Shop Collection <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></button>
+				</a>
+				<button class="border border-white px-8 py-6 text-lg rounded-full font-semibold bg-transparent text-white hover:bg-gray-900 transition">Watch Lookbook</button>
+			</div>
+			<div class="flex items-center space-x-2 max-w-md bg-black-900/70 border border-gray-500 rounded-full p-2 shadow">
+				<span class="pl-4 text-white-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2"/></svg></span>
+				<input type="text" placeholder="Search products..." class="pl-2 bg-transparent border-none text-white placeholder:text-white-300 rounded-full w-full focus:outline-none" />
+				<button class="bg-white-600 hover:bg-gray-700 text-white rounded-full px-4 py-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2"/></svg></button>
+			</div>
+		</div>
+		<div class="relative">
+			<div class="absolute inset-0 bg-gradient-to-r from-blue-200/20 to-blue-400/20 rounded-3xl blur-3xl"></div>
+			<img src="{% static 'img/Logo.png' %}" alt="Urban streetwear model" class="relative w-full h-auto rounded-3xl shadow-2xl" />
+		</div>
+	</div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-gray-900">
+	<div class="container mx-auto px-4">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			<div class="text-center space-y-4">
+				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9V7a4 4 0 014-4h10a4 4 0 014 4v2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="9" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+				</div>
+				<h3 class="text-xl font-semibold text-white">Free Shipping</h3>
+				<p class="text-gray-300">Envío gratis en compras superiores a $100</p>
+			</div>
+			<div class="text-center space-y-4">
+				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2"/></svg>
+				</div>
+				<h3 class="text-xl font-semibold text-white">Authentic Guarantee</h3>
+				<p class="text-gray-300">100% prendas auténticas</p>
+			</div>
+			<div class="text-center space-y-4">
+				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><bolt /><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+				</div>
+				<h3 class="text-xl font-semibold text-white">Limited Drops</h3>
+				<p class="text-gray-300">Lanzamientos exclusivos cada semana</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Collections Section -->
+<section class="py-20 bg-black">
+	<div class="container mx-auto px-4">
+		<div class="text-center mb-16">
+			<h2 class="text-5xl font-bold mb-6 text-white">Explora Colecciones</h2>
+			<p class="text-gray-300 text-xl max-w-2xl mx-auto">Colecciones seleccionadas que representan la esencia de la cultura urbana</p>
+		</div>
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
+				<div class="aspect-[4/5] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Shadow Series" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+					<div class="absolute bottom-6 left-6 text-white">
+						<h3 class="text-2xl font-bold mb-2 text-white">Shadow Series</h3>
+						<p class="text-gray-300">24 piezas</p>
+					</div>
+				</div>
+			</div>
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
+				<div class="aspect-[4/5] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Street Essentials" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+					<div class="absolute bottom-6 left-6 text-white">
+						<h3 class="text-2xl font-bold mb-2 text-white">Street Essentials</h3>
+						<p class="text-gray-300">18 piezas</p>
+					</div>
+				</div>
+			</div>
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
+				<div class="aspect-[4/5] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Limited Drops" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+					<div class="absolute bottom-6 left-6 text-white">
+						<h3 class="text-2xl font-bold mb-2 text-white">Limited Drops</h3>
+						<p class="text-gray-300">12 piezas</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-20 bg-black">
+	<div class="container mx-auto px-4">
+		<div class="text-center mb-16">
+			<h2 class="text-5xl font-bold mb-6 text-white">Featured Drops</h2>
+			<p class="text-gray-300 text-xl">Prendas seleccionadas de nuestra última colección</p>
+		</div>
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 rounded-lg shadow-lg">
+				<div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Shadow Hoodie" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<span class="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full font-semibold">Limited Edition</span>
+				</div>
+				<div class="p-6 space-y-4">
+					<h3 class="font-bold text-xl mb-2 text-white">Shadow Hoodie</h3>
+					<div class="flex items-center space-x-2 mb-3">
+						<span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><polygon points="12,2 15,8.5 22,9.3 17,14.1 18.2,21 12,17.8 5.8,21 7,14.1 2,9.3 9,8.5"/></svg><span class="ml-1 text-sm font-medium">4.9</span></span>
+						<span class="text-sm text-gray-500">(234 reviews)</span>
+					</div>
+					<div class="flex items-center space-x-2">
+						<span class="text-2xl font-bold text-white">$129.99</span>
+						<span class="text-lg text-gray-400 line-through">$159.99</span>
+					</div>
+					<button class="w-full bg-gray-800 hover:bg-gray-700 text-white rounded-full py-2 font-semibold">Add to Cart</button>
+				</div>
+			</div>
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 rounded-lg shadow-lg">
+				<div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Phantom Cargo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<span class="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full font-semibold">Best Seller</span>
+				</div>
+				<div class="p-6 space-y-4">
+					<h3 class="font-bold text-xl mb-2 text-white">Phantom Cargo</h3>
+					<div class="flex items-center space-x-2 mb-3">
+						<span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><polygon points="12,2 15,8.5 22,9.3 17,14.1 18.2,21 12,17.8 5.8,21 7,14.1 2,9.3 9,8.5"/></svg><span class="ml-1 text-sm font-medium">4.8</span></span>
+						<span class="text-sm text-gray-500">(189 reviews)</span>
+					</div>
+					<div class="flex items-center space-x-2">
+						<span class="text-2xl font-bold text-white">$99.99</span>
+						<span class="text-lg text-gray-400 line-through">$119.99</span>
+					</div>
+					<button class="w-full bg-gray-800 hover:bg-gray-700 text-white rounded-full py-2 font-semibold">Add to Cart</button>
+				</div>
+			</div>
+			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 rounded-lg shadow-lg">
+				<div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+					<img src="{% static 'img/Logo.png' %}" alt="Urban Bomber" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<span class="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full font-semibold">New Drop</span>
+				</div>
+				<div class="p-6 space-y-4">
+					<h3 class="font-bold text-xl mb-2 text-white">Urban Bomber</h3>
+					<div class="flex items-center space-x-2 mb-3">
+						<span class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><polygon points="12,2 15,8.5 22,9.3 17,14.1 18.2,21 12,17.8 5.8,21 7,14.1 2,9.3 9,8.5"/></svg><span class="ml-1 text-sm font-medium">4.9</span></span>
+						<span class="text-sm text-gray-500">(156 reviews)</span>
+					</div>
+					<div class="flex items-center space-x-2">
+						<span class="text-2xl font-bold text-white">$179.99</span>
+					</div>
+					<button class="w-full bg-gray-800 hover:bg-gray-700 text-white rounded-full py-2 font-semibold">Add to Cart</button>
+				</div>
+			</div>
+		</div>
+		<div class="text-center mt-16">
+			<a href="">
+				<button class="px-8 py-6 text-lg border border-gray-700 rounded-full bg-transparent text-white hover:bg-gray-900 transition font-semibold flex items-center gap-2">View All Products <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></button>
+			</a>
+		</div>
+	</div>
+</section>
 {% endblock %}
