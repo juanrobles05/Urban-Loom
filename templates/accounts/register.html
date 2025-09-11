@@ -1,5 +1,124 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar</button>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Registro de Usuario{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4">
+    <div class="w-full max-w-md space-y-8">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-white via-gray-600 to-black text-transparent bg-clip-text mb-2">Join Urban Loom</h1>
+            <p class="text-gray-400">Create your account and start your street style journey</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-center mb-2">Create Account</h2>
+            <p class="text-center text-gray-400 mb-6">Fill in your details to get started</p>
+                            {% if success_message %}
+                                <div class="mb-4 text-green-500 text-sm text-center bg-black/60 rounded-lg p-2 border border-green-700">
+                                    {{ success_message }}
+                                </div>
+                            {% endif %}
+                            <form method="post" class="space-y-4">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                            <div class="mb-4 text-red-500 text-sm text-center bg-black/60 rounded-lg p-2 border border-red-900">
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="space-y-2">
+                            <label for="id_email" class="block text-sm font-medium text-white">Email</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4V4zm8 8l8-8H4l8 8z"/></svg>
+                                </span>
+                                <input type="email" name="email" id="id_email" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your email" required>
+                            </div>
+                            {% if form.email.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_first_name" class="block text-sm font-medium text-white">First Name</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 1 0-8 0c0 2.21 1.79 4 4 4s4-1.79 4-4z"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
+                                </span>
+                                <input type="text" name="first_name" id="id_first_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your first name" required>
+                            </div>
+                            {% if form.first_name.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.first_name.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_last_name" class="block text-sm font-medium text-white">Last Name</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 1 0-8 0c0 2.21 1.79 4 4 4s4-1.79 4-4z"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
+                                </span>
+                                <input type="text" name="last_name" id="id_last_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your last name" required>
+                            </div>
+                            {% if form.last_name.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.last_name.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_date_of_birth" class="block text-sm font-medium text-white">Date of Birth</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 12h4v4"/></svg>
+                                </span>
+                                <input type="date" name="date_of_birth" id="id_date_of_birth" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
+                            </div>
+                            {% if form.date_of_birth.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.date_of_birth.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_phone_number" class="block text-sm font-medium text-white">Phone Number</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1C7.61 21 3 16.39 3 11a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.35.27 2.67.76 3.88a1 1 0 0 1-.21 1.11l-2.2 2.2z"/></svg>
+                                </span>
+                                <input type="text" name="phone_number" id="id_phone_number" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your phone number" required>
+                            </div>
+                            {% if form.phone_number.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.phone_number.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_password1" class="block text-sm font-medium text-white">Password</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 10V8a6 6 0 1 1 12 0v2"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg>
+                                </span>
+                                <input type="password" name="password1" id="id_password1" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Create a password" required>
+                            </div>
+                            {% if form.password1.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.password1.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_password2" class="block text-sm font-medium text-white">Confirm Password</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 10V8a6 6 0 1 1 12 0v2"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg>
+                                </span>
+                                <input type="password" name="password2" id="id_password2" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Confirm your password" required>
+                            </div>
+                            {% if form.password2.errors %}
+                                <div class="text-red-500 text-xs mt-1">{% for error in form.password2.errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" name="terms" id="id_terms" class="accent-gray-700">
+                            <label for="id_terms" class="text-sm text-gray-300">I agree to the <a href="/terms" class="text-white underline">Terms of Service</a> and <a href="/privacy" class="text-white underline">Privacy Policy</a></label>
+                        </div>
+                        <button type="submit" class="w-full bg-white hover:bg-gray-100 text-black font-semibold py-3 rounded-lg transition">Create Account</button>
+                    </form>
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-400">Already have an account? <a href="{% url 'login' %}" class="text-white underline">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
