@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Collection, Product
+from django.db.models import Q
+from .models import Collection, Product, Category
 
 def collections_view(request):
     """View for displaying all collections page"""
@@ -41,3 +42,73 @@ def product_detail_view(request, product_id):
     }
 
     return render(request, 'catalog/product_detail.html', context)
+
+
+def shop_view(request):
+    """View for displaying all products with search and filters"""
+    products = Product.objects.filter(is_active=True)
+    categories = Category.objects.all()
+    collections = Collection.objects.all()
+    
+    # Search functionality
+    search_query = request.GET.get('search', '')
+    if search_query:
+        products = products.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(collection__name__icontains=search_query) |
+            Q(category__name__icontains=search_query)
+        )
+    
+    # Filter by category
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        products = products.filter(category__id=category_filter)
+    
+    # Filter by collection
+    collection_filter = request.GET.get('collection', '')
+    if collection_filter:
+        products = products.filter(collection__id=collection_filter)
+    
+    # Filter by price range
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
+    
+    # Filter by stock availability
+    stock_filter = request.GET.get('stock', '')
+    if stock_filter == 'in_stock':
+        products = products.filter(stock__gt=0)
+    elif stock_filter == 'out_of_stock':
+        products = products.filter(stock=0)
+    
+    # Sort functionality
+    sort_by = request.GET.get('sort', 'name')
+    if sort_by == 'price_low':
+        products = products.order_by('price')
+    elif sort_by == 'price_high':
+        products = products.order_by('-price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')
+    elif sort_by == 'oldest':
+        products = products.order_by('created_at')
+    else:
+        products = products.order_by('name')
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'collections': collections,
+        'search_query': search_query,
+        'category_filter': category_filter,
+        'collection_filter': collection_filter,
+        'min_price': min_price,
+        'max_price': max_price,
+        'stock_filter': stock_filter,
+        'sort_by': sort_by,
+    }
+
+    return render(request, 'shop/shop.html', context)
