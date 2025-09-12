@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ collection.name }} - {{ collection.season }} - Urban Loom{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black text-white">
+    <!-- Collection Header -->
+    <section class="py-20 bg-gray-900 px-4">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Collection Image -->
+                    <div class="order-2 md:order-1">
+                        {% if collection.image %}
+                            <img src="{{ collection.image.url }}" alt="{{ collection.name }}" class="w-full h-80 object-cover rounded-lg shadow-2xl">
+                        {% else %}
+                            <div class="w-full h-80 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center rounded-lg shadow-2xl">
+                                <img src="{% static 'img/Logo.png' %}"
+                                     alt="Urban Loom Logo"
+                                     class="w-24 h-24 object-contain opacity-60">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Collection Information -->
+                    <div class="order-1 md:order-2 text-center md:text-left">
+                        <!-- Collection Title Section -->
+                        <div class="mb-12">
+                            <span class="text-gray-400 text-sm font-bold tracking-wide uppercase">{{ collection.season }}</span>
+                            <h1 class="text-4xl md:text-6xl font-bold mt-4 mb-6">{{ collection.name }}</h1>
+                            <p class="text-lg text-gray-300 leading-relaxed">{{ collection.description }}</p>
+                        </div>
+
+                        <!-- Collection Stats -->
+                        <div class="flex justify-center md:justify-start items-center gap-8 mb-8">
+                            <div class="text-center md:text-left">
+                                <span class="text-3xl font-bold block">{{ collection.pieces }}</span>
+                                <p class="text-gray-400 text-sm font-medium tracking-wide">TOTAL PIECES</p>
+                            </div>
+                            <div class="w-px h-12 bg-gray-600"></div>
+                            <div class="text-center md:text-left">
+                                <span class="text-3xl font-bold block">{{ collection.season }}</span>
+                                <p class="text-gray-400 text-sm font-medium tracking-wide">SEASON</p>
+                            </div>
+                        </div>
+
+                        <!-- Status and Back Button -->
+                        <div class="flex flex-col items-center md:items-start gap-4">
+                            <span class="{{ collection.get_status_color|default:'bg-gray-500' }} text-white px-6 py-2 text-sm font-bold rounded-full uppercase tracking-wide">
+                                {{ collection.status }}
+                            </span>
+                            <a href="{% url 'catalog:collections' %}" class="bg-white text-black px-8 py-3 font-bold hover:bg-gray-200 transition-colors duration-300 rounded">
+                                ← BACK TO COLLECTIONS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">COLLECTION PIECES</h2>
+            {% if products %}
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    {% for product in products %}
+                    <div class="group cursor-pointer">
+                        <div class="relative overflow-hidden rounded-lg mb-4">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                            {% else %}
+                                <div class="w-full h-80 bg-gray-800 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                                    <span class="text-gray-500">{{ product.name }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white text-lg font-bold">VIEW PRODUCT</span>
+                            </div>
+                            {% if product.stock < 5 and product.stock > 0 %}
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-yellow-500 text-black px-3 py-1 text-xs font-bold rounded">LOW STOCK</span>
+                            </div>
+                            {% elif product.stock == 0 %}
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-red-500 text-white px-3 py-1 text-xs font-bold rounded">SOLD OUT</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">{{ product.name }}</h3>
+                        <p class="text-gray-300 text-sm mb-2">{{ product.description|truncatewords:10 }}</p>
+                        <p class="text-white font-bold">${{ product.price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-16">
+                    <p class="text-gray-400 text-xl">No products available in this collection yet.</p>
+                    <p class="text-gray-500 text-sm mt-2">Check back soon for new additions.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
