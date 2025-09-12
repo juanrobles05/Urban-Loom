@@ -21,12 +21,21 @@
                 <a href="{% url 'catalog:shop' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">Shop</a>
                 <a href="{% url 'catalog:collections' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">Collections</a>
                 <a href="" class="text-sm font-medium hover:text-white transition-colors text-white">Sale</a>
-                <a href="" class="text-sm font-medium hover:text-gray-300 transition-colors">About</a>
+                <a href="{% url 'core:about' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">About</a>
             </nav>
 
             <!-- Actions -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-4">
                 {% if user.is_authenticated %}
+                    <!-- Carrito de Compras -->
+                    <a href="{% url 'orders:cart' %}" class="relative hover:text-gray-300 transition-colors" title="Carrito">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 13m0 0l2.5 5M9 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM20.5 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/>
+                        </svg>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </a>
+                    <a href="{% url 'orders:order_history' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">Mis Órdenes</a>
                     <a href="{% url 'profile' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">Perfil</a>
                     <a href="{% url 'logout' %}" class="text-sm font-medium hover:text-gray-300 transition-colors">Salir</a>
                 {% else %}
@@ -72,6 +81,29 @@
         </div>
     </div>
 </footer>
+
+<!-- Script para actualizar contador del carrito -->
+<script>
+function updateCartCount() {
+    {% if user.is_authenticated %}
+    fetch('/orders/cart-count/')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.getElementById('cart-count');
+            if (data.count > 0) {
+                cartCount.textContent = data.count;
+                cartCount.classList.remove('hidden');
+            } else {
+                cartCount.classList.add('hidden');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    {% endif %}
+}
+
+// Actualizar contador al cargar la página
+document.addEventListener('DOMContentLoaded', updateCartCount);
+</script>
 
 </body>
 </html>

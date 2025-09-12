@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Urban Loom{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black text-white">
+    <!-- Hero Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-black">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    ABOUT URBAN LOOM
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
+                    {{ company_info.mission }}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <!-- Story Content -->
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-8">OUR STORY</h2>
+                        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                            <p>
+                                Fundada en {{ company_info.founded }}, Urban Loom nació de la pasión por el streetwear auténtico y la cultura urbana. 
+                                Comenzamos como un pequeño colectivo de diseñadores que querían crear algo diferente, algo que realmente representara 
+                                las calles y la comunidad que las habita.
+                            </p>
+                            <p>
+                                Desde nuestros humildes inicios hasta convertirnos en una marca reconocida globalmente, hemos mantenido nuestro 
+                                compromiso con la calidad, la autenticidad y la innovación. Cada pieza cuenta una historia, cada diseño 
+                                refleja la energía y el espíritu de la cultura urbana moderna.
+                            </p>
+                            <p>
+                                Hoy, Urban Loom no es solo una marca de ropa, es una comunidad que celebra la individualidad, la creatividad 
+                                y la conexión humana a través de la moda streetwear.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Story Image -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 h-96 flex items-center justify-center">
+                            <img src="{% static 'img/Logo.svg' %}" alt="Urban Loom Logo" class="w-48 h-48 opacity-80">
+                        </div>
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-white rounded-full opacity-10"></div>
+                        <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-gray-600 rounded-full opacity-20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Mission -->
+                    <div class="bg-black rounded-2xl p-8">
+                        <h3 class="text-3xl font-bold mb-6 text-center">NUESTRA MISIÓN</h3>
+                        <p class="text-gray-300 text-lg leading-relaxed text-center">
+                            {{ company_info.mission }}
+                        </p>
+                    </div>
+
+                    <!-- Vision -->
+                    <div class="bg-white text-black rounded-2xl p-8">
+                        <h3 class="text-3xl font-bold mb-6 text-center">NUESTRA VISIÓN</h3>
+                        <p class="text-gray-700 text-lg leading-relaxed text-center">
+                            {{ company_info.vision }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-16">NUESTROS VALORES</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for value in company_info.values %}
+                    <div class="bg-gray-900 rounded-xl p-6 hover:bg-gray-800 transition-colors duration-300">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-black font-bold text-lg">{{ forloop.counter }}</span>
+                        </div>
+                        <p class="text-lg font-semibold">{{ value }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white">ÚNETE A LA FAMILIA URBAN LOOM</h2>
+                <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                    Explora nuestras colecciones y descubre por qué miles de personas han elegido Urban Loom 
+                    como su marca de streetwear favorita.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'catalog:collections' %}" 
+                       class="bg-white text-black font-bold py-4 px-8 rounded-lg hover:bg-gray-200 transition-colors">
+                        VER COLECCIONES
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" 
+                       class="border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white hover:text-black transition-colors">
+                        CREAR CUENTA
+                    </a>
+                    {% else %}
+                    <a href="{% url 'orders:order_history' %}" 
+                       class="border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white hover:text-black transition-colors">
+                        MIS ÓRDENES
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

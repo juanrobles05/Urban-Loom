@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Historial de Órdenes - Urban Loom{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black text-white">
+    <!-- Header -->
+    <section class="py-12 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">MIS ÓRDENES</h1>
+                <p class="text-center text-gray-300">Historial completo de tus compras en Urban Loom</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Órdenes -->
+    <section class="py-12">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                {% if orders %}
+                    <div class="space-y-6">
+                        {% for order in orders %}
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2">Orden #{{ order.id }}</h3>
+                                    <p class="text-gray-400 text-sm">{{ order.created_at|date:"d/m/Y H:i" }}</p>
+                                </div>
+                                <div class="flex items-center gap-4 mt-4 md:mt-0">
+                                    <span class="px-3 py-1 rounded text-sm font-bold 
+                                        {% if order.status == 'pending' %}bg-yellow-500 text-black
+                                        {% elif order.status == 'paid' %}bg-green-500 text-white
+                                        {% elif order.status == 'shipped' %}bg-blue-500 text-white
+                                        {% elif order.status == 'completed' %}bg-green-600 text-white
+                                        {% elif order.status == 'cancelled' %}bg-red-500 text-white
+                                        {% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                    <span class="text-lg font-bold">
+                                        ${{ order.items.all|yesno:"0," }}{% for item in order.items.all %}{% if forloop.first %}{{ item.get_total }}{% else %}{{ item.get_total|add:order.items.all.0.get_total }}{% endif %}{% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Items de la Orden -->
+                            <div class="space-y-3">
+                                {% for item in order.items.all %}
+                                <div class="flex items-center gap-4 py-3 border-t border-gray-700 first:border-t-0">
+                                    {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" 
+                                             class="w-16 h-16 object-cover rounded-lg">
+                                    {% else %}
+                                        <div class="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center">
+                                            <span class="text-gray-500 text-xs">Sin img</span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="flex-grow">
+                                        <h4 class="font-semibold">{{ item.product.name }}</h4>
+                                        <p class="text-gray-400 text-sm">Cantidad: {{ item.quantity }} × ${{ item.price }}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-bold">${{ item.get_total }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Dirección de Envío -->
+                            {% if order.shipping_address %}
+                            <div class="mt-4 pt-4 border-t border-gray-700">
+                                <h4 class="font-semibold mb-2">Dirección de Envío:</h4>
+                                <p class="text-gray-400 text-sm">
+                                    {{ order.shipping_address.street }}, 
+                                    {{ order.shipping_address.city }}, 
+                                    {{ order.shipping_address.state_or_province }}, 
+                                    {{ order.shipping_address.postal_code }}
+                                </p>
+                            </div>
+                            {% endif %}
+
+                            <!-- Total de la Orden -->
+                            <div class="mt-4 pt-4 border-t border-gray-700 flex justify-between items-center">
+                                <div class="text-sm text-gray-400">
+                                    {{ order.items.count }} producto{{ order.items.count|pluralize }} • 
+                                    Total: <span class="text-white font-bold">
+                                        ${% widthratio order.items.all.0.get_total 1 order.items.count %}
+                                    </span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="{% url 'orders:order_confirmation' order.id %}" 
+                                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors">
+                                        Ver Detalles
+                                    </a>
+                                    {% if order.status == 'paid' or order.status == 'shipped' %}
+                                    <button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition-colors">
+                                        Rastrear Pedido
+                                    </button>
+                                    {% endif %}
+                                    {% if order.status == 'pending' or order.status == 'paid' %}
+                                    <form method="post" action="{% url 'orders:cancel_order' order.id %}" 
+                                          onsubmit="return confirm('¿Estás seguro de que quieres cancelar esta orden? Esta acción no se puede deshacer.')" 
+                                          class="inline">
+                                        {% csrf_token %}
+                                        <button type="submit" 
+                                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition-colors">
+                                            Cancelar Orden
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Paginación (si es necesaria en el futuro) -->
+                    <div class="mt-12 text-center">
+                        <p class="text-gray-400">Mostrando todas tus órdenes</p>
+                    </div>
+                {% else %}
+                    <!-- Sin Órdenes -->
+                    <div class="text-center py-16">
+                        <div class="max-w-md mx-auto">
+                            <div class="mb-8">
+                                <svg class="mx-auto h-24 w-24 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">No tienes órdenes aún</h2>
+                            <p class="text-gray-400 mb-8">Cuando realices tu primera compra, aparecerá aquí.</p>
+                            <a href="{% url 'catalog:collections' %}" 
+                               class="inline-block bg-white text-black font-bold px-8 py-3 rounded hover:bg-gray-200 transition-colors">
+                                EXPLORAR COLECCIONES
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
