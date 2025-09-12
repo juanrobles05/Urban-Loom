@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('storefront.urls')),
     path('accounts/', include('accounts.urls')),
     path('catalog/', include('catalog.urls')),
+    path('recommendations/', include('recommendations.urls')),
 ]
 
 if settings.DEBUG:
