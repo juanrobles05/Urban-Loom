@@ -35,13 +35,19 @@ class LoginForm(AuthenticationForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "phone_number", "date_of_birth"]
+        fields = ["first_name", "last_name", "email", "phone_number", "date_of_birth"]
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={"type": "date"}),
+        }
 
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ["bio", "profile_picture"]
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
+        }
 
 class ShippingAddressForm(forms.ModelForm):
     class Meta:

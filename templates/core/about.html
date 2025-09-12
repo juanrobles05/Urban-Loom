@@ -5,11 +5,17 @@
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
-    <!-- Hero Section -->
-    <section class="py-20 bg-gradient-to-br from-gray-900 to-black">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+    <!-- Hero Section with Background Pattern -->
+    <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grid&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;><path d=&quot;M 8 0 L 0 0 0 8&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;0.3&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grid)&quot;/></svg>');"></div>
+        <div class="relative container mx-auto px-6 py-24">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="mb-8">
+                    <span class="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold tracking-wider uppercase text-gray-300 border border-white/20">
+                        Nuestra Historia
+                    </span>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
                     ABOUT URBAN LOOM
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">

@@ -4,125 +4,476 @@
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
+    <!-- Hero Section with Background Pattern -->
+    <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grid&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;><path d=&quot;M 8 0 L 0 0 0 8&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;0.3&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grid)&quot;/></svg>');"></div>
+        <div class="relative container mx-auto px-6 py-20">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                    MI PERFIL
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+                    Gestiona tu información personal y configuración de cuenta.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <div class="container mx-auto px-4 py-8">
-        <div class="grid lg:grid-cols-4 gap-8">
-            <!-- Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-6">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
+        <div class="max-w-4xl mx-auto">
+            <!-- Profile Information Card -->
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-24 h-24 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
                             {% if user.profile.profile_picture %}
                                 <img src="{{ user.profile.profile_picture.url }}" alt="Avatar" class="w-full h-full object-cover" />
                             {% else %}
-                                <span class="flex items-center justify-center h-full text-2xl font-bold">{{ user.name|slice:":2"|upper }}</span>
+                                <span class="flex items-center justify-center h-full text-3xl font-bold">{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}</span>
                             {% endif %}
                         </div>
-                        <h2 class="font-semibold text-lg">{{ user.name }}</h2>
-                        <p class="text-gray-400 text-sm">{{ user.email }}</p>
-                        <p class="text-gray-500 text-xs">Member since {{ user.date_joined|date:"F Y" }}</p>
+                        <div>
+                            <h2 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h2>
+                            <p class="text-gray-400">{{ user.email }}</p>
+                            <p class="text-gray-500 text-sm">Member since {{ user.date_joined|date:"F Y" }}</p>
+                        </div>
                     </div>
-                    <nav class="space-y-2">
-                        <a href="#" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-user mr-2"></i>Profile</a>
-                        <a href="#orders" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-box mr-2"></i>Orders</a>
-                        <a href="#wishlist" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-heart mr-2"></i>Wishlist</a>
-                        <a href="#settings" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-cog mr-2"></i>Settings</a>
-                        <a href="{% url 'logout' %}" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-red-500"><i class="fa fa-sign-out-alt mr-2"></i>Logout</a>
-                    </nav>
+                    <a href="{% url 'logout' %}" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
+                        Cerrar Sesión
+                    </a>
                 </div>
-            </div>
-
-            <!-- Main Content with Tabs -->
-            <div class="lg:col-span-3">
-                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-0 mb-8">
-                    <!-- Tabs -->
-                    <div class="flex border-b border-gray-800">
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('profile')" id="tab-profile">Profile</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('orders')" id="tab-orders">Orders</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('wishlist')" id="tab-wishlist">Wishlist</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('settings')" id="tab-settings">Settings</button>
-                    </div>
-                    <!-- Tab Contents -->
-                    <div class="p-8">
-                        <!-- Profile Tab -->
-                        <div id="tab-content-profile" class="tab-content space-y-8">
-                            <!-- Personal Info Card -->
-                            <div class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                <div class="flex justify-between items-start mb-4">
-                                    <h3 class="font-semibold text-lg">Personal Information</h3>
-                                    <a href="{% url 'edit_profile' %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">First Name</div>
-                                        <div class="font-medium text-base">{{ user.first_name }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Last Name</div>
-                                        <div class="font-medium text-base">{{ user.last_name }}</div>
-                                    </div>
-                                </div>
-                                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Email</div>
-                                        <div class="font-medium text-base">{{ user.email }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Phone</div>
-                                        <div class="font-medium text-base">{{ user.phone_number }}</div>
-                                    </div>
-                                </div>
+                <!-- Edit Profile Form -->
+                <form method="post" enctype="multipart/form-data" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Personal Information Section -->
+                    <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
+                        <h3 class="text-xl font-bold mb-6">Información Personal</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nombre</label>
+                                {% if user_form.first_name %}
+                                    {{ user_form.first_name }}
+                                {% else %}
+                                    <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {% endif %}
                             </div>
-
-                            <!-- Shipping Address Card -->
-                            <ul class="space-y-4">
-                                {% for address in user.shipping_addresses.all %}
-                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                        <div class="flex justify-between items-start mb-4">
-                                            <h3 class="font-semibold text-lg">Shipping Address</h3>
-                                            <a href="{% url 'edit_shipping_address' address.id %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
-                                        </div>
-                                        <div>
-                                            <div class="font-semibold text-base mb-1">{{ address.street }}</div>
-                                            <div class="text-gray-300 mb-1">{{ address.city }}, {{ address.state_or_province }} {{ address.postal_code }}</div>
-                                            <div class="text-gray-400">{{ address.country }}</div>
-                                        </div>
-                                    </li>
-                                {% empty %}
-                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                        <h3 class="font-semibold text-lg mb-2">Shipping Address</h3>
-                                        <div class="text-gray-400">No shipping addresses saved.</div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% load static %}
-                        <script src="{% static 'js/profile.js' %}"></script>
-                        <div id="tab-content-orders" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Orders</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Your recent orders will appear here.</p>
-                                <!-- TODO: Render orders list -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Apellido</label>
+                                {% if user_form.last_name %}
+                                    {{ user_form.last_name }}
+                                {% else %}
+                                    <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {% endif %}
                             </div>
-                        </div>
-                        <!-- Wishlist Tab -->
-                        <div id="tab-content-wishlist" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Wishlist</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Your wishlist items will appear here.</p>
-                                <!-- TODO: Render wishlist items -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                                {% if user_form.email %}
+                                    {{ user_form.email }}
+                                {% else %}
+                                    <input type="email" name="email" value="{{ user.email }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {% endif %}
                             </div>
-                        </div>
-                        <!-- Settings Tab -->
-                        <div id="tab-content-settings" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Settings</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Account settings and preferences.</p>
-                                <!-- TODO: Render settings form -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Teléfono</label>
+                                {% if user_form.phone_number %}
+                                    {{ user_form.phone_number }}
+                                {% else %}
+                                    <input type="tel" name="phone_number" value="{{ user.phone_number|default:'' }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <!-- Additional Profile Information -->
+                    {% if profile_form %}
+                    <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
+                        <h3 class="text-xl font-bold mb-6">Información Adicional</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
+                                {{ profile_form.date_of_birth }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Foto de Perfil</label>
+                                {{ profile_form.profile_picture }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Shipping Addresses Section -->
+                    <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Direcciones de Envío</h3>
+                            <button type="button" onclick="openAddressModal()" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
+                                Agregar Dirección
+                            </button>
+                        </div>
+                        
+                        <div id="addresses-container">
+                            {% for address in user.shipping_addresses.all %}
+                                <div class="address-item border border-gray-700 rounded-lg p-4 mb-4 last:mb-0" data-address-id="{{ address.id }}">
+                                    <div class="address-display">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="font-semibold">{{ address.street }}</div>
+                                                <div class="text-gray-300">{{ address.city }}, {{ address.state_or_province }} {{ address.postal_code }}</div>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button type="button" onclick="editAddress({{ address.id }})" class="px-3 py-1 bg-gray-600 hover:bg-gray-500 rounded text-sm transition-colors">
+                                                    Editar
+                                                </button>
+                                                <button type="button" onclick="deleteAddress({{ address.id }})" class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors">
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Inline Edit Form (Hidden by default) -->
+                                    <div class="address-edit-form hidden">
+                                        <form class="edit-address-form" data-address-id="{{ address.id }}">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
+                                                    <input type="text" name="street" value="{{ address.street }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Ciudad</label>
+                                                    <input type="text" name="city" value="{{ address.city }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Estado/Provincia</label>
+                                                    <input type="text" name="state_or_province" value="{{ address.state_or_province }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Código Postal</label>
+                                                    <input type="text" name="postal_code" value="{{ address.postal_code }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                                </div>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm transition-colors">
+                                                    Guardar
+                                                </button>
+                                                <button type="button" onclick="cancelEdit({{ address.id }})" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">
+                                                    Cancelar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div id="no-addresses" class="text-gray-400 text-center py-8">
+                                    No tienes direcciones de envío guardadas.
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal para agregar nueva dirección -->
+<div id="address-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Agregar Nueva Dirección</h3>
+            <form id="add-address-form">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
+                        <input type="text" name="street" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Ciudad</label>
+                        <input type="text" name="city" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Estado/Provincia</label>
+                        <input type="text" name="state_or_province" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Código Postal</label>
+                        <input type="text" name="postal_code" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                    </div>
+                </div>
+                <div class="flex space-x-2 mt-6">
+                    <button type="submit" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
+                        Agregar
+                    </button>
+                    <button type="button" onclick="closeAddressModal()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Funciones para manejar direcciones
+function openAddressModal() {
+    const modal = document.getElementById('address-modal');
+    modal.classList.remove('hidden');
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAddressModal() {
+    const modal = document.getElementById('address-modal');
+    modal.classList.add('hidden');
+    document.getElementById('add-address-form').reset();
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+}
+
+function editAddress(addressId) {
+    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
+    const display = addressItem.querySelector('.address-display');
+    const editForm = addressItem.querySelector('.address-edit-form');
+    
+    display.classList.add('hidden');
+    editForm.classList.remove('hidden');
+}
+
+function cancelEdit(addressId) {
+    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
+    const display = addressItem.querySelector('.address-display');
+    const editForm = addressItem.querySelector('.address-edit-form');
+    
+    display.classList.remove('hidden');
+    editForm.classList.add('hidden');
+}
+
+async function addAddress(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    console.log('addAddress function called');
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Add CSRF token to form data
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+    
+    console.log('FormData contents:');
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+    
+    try {
+        console.log('Sending request to /addresses/add/');
+        const response = await fetch('/addresses/add/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: formData
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Response result:', result);
+            
+            if (result.success) {
+                closeAddressModal();
+                // Reload the page to show the new address
+                location.reload();
+            } else {
+                alert('Error al agregar la dirección: ' + JSON.stringify(result.errors));
+            }
+        } else {
+            console.log('Response not ok:', response.status, response.statusText);
+            alert('Error al agregar la dirección');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al agregar la dirección');
+    }
+    
+    return false;
+}
+
+async function saveAddress(event, addressId) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    console.log('saveAddress function called for address:', addressId);
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Add CSRF token to form data
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+    
+    console.log('FormData contents:');
+    for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+    }
+    
+    try {
+        console.log(`Sending request to /addresses/${addressId}/edit/`);
+        const response = await fetch(`/addresses/${addressId}/edit/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: formData
+        });
+        
+        console.log('Response status:', response.status);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Response result:', result);
+            
+            if (result.success) {
+                // Reload the page to show the updated address
+                location.reload();
+            } else {
+                alert('Error al actualizar la dirección: ' + JSON.stringify(result.errors));
+            }
+        } else {
+            console.log('Response not ok:', response.status, response.statusText);
+            alert('Error al actualizar la dirección');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al actualizar la dirección');
+    }
+    
+    return false;
+}
+
+async function deleteAddress(addressId) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta dirección?')) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        try {
+            const response = await fetch(`/addresses/${addressId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `csrfmiddlewaretoken=${csrfToken}`
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    // Remove the address from DOM
+                    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
+                    addressItem.remove();
+                    
+                    // Show "no addresses" message if no addresses left
+                    const container = document.getElementById('addresses-container');
+                    if (container.children.length === 0) {
+                        container.innerHTML = '<div id="no-addresses" class="text-gray-400 text-center py-8">No tienes direcciones de envío guardadas.</div>';
+                    }
+                } else {
+                    alert('Error al eliminar la dirección: ' + result.message);
+                }
+            } else {
+                alert('Error al eliminar la dirección');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al eliminar la dirección');
+        }
+    }
+}
+
+// Initialize modal event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('address-modal');
+    if (modal) {
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeAddressModal();
+            }
+        });
+        
+        // Prevent modal from closing when clicking inside
+        const modalContent = modal.querySelector('.bg-gray-900');
+        if (modalContent) {
+            modalContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+    }
+    
+    // Add event listener to form to prevent default submission
+    const addForm = document.getElementById('add-address-form');
+    if (addForm) {
+        addForm.addEventListener('submit', addAddress);
+    }
+    
+    // Add event listeners to all edit forms
+    const editForms = document.querySelectorAll('.edit-address-form');
+    editForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const addressId = form.getAttribute('data-address-id');
+            saveAddress(event, addressId);
+        });
+    });
+});
+</script>
+
+<style>
+/* Style for form inputs to match the design */
+input, select, textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none !important;
+    border-color: white !important;
+}
+
+input[type="file"] {
+    background-color: #374151 !important;
+    padding: 8px !important;
+}
+
+/* Modal styles */
+.address-edit-form input, .address-edit-form select, .address-edit-form textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+}
+
+#address-modal input, #address-modal select, #address-modal textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+}
+</style>
+
 {% endblock %}
