@@ -5,21 +5,6 @@
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
-    <!-- Breadcrumb Navigation -->
-    <nav class="bg-gray-900 px-4 py-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center space-x-2 text-sm">
-                <a href="{% url 'catalog:collections' %}" class="text-gray-400 hover:text-white transition-colors">Collections</a>
-                <span class="text-gray-600">/</span>
-                {% if product.collection %}
-                    <a href="{% url 'catalog:collection_detail' product.collection.id %}" class="text-gray-400 hover:text-white transition-colors">{{ product.collection.name }}</a>
-                    <span class="text-gray-600">/</span>
-                {% endif %}
-                <span class="text-white">{{ product.name }}</span>
-            </div>
-        </div>
-    </nav>
-
     <!-- Product Detail Section -->
     <section class="py-12 px-4">
         <div class="max-w-7xl mx-auto">
@@ -62,7 +47,7 @@
                     <!-- Price and Stock -->
                     <div class="border-t border-gray-800 pt-8">
                         <div class="flex items-center justify-between mb-6">
-                            <span class="text-4xl lg:text-5xl font-bold">${{ product.price }}</span>
+                            <span class="text-4xl lg:text-5xl font-bold">${{ product.price|floatformat:0 }} COP</span>
                             {% if product.stock > 0 %}
                                 <div class="flex items-center space-x-2">
                                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -149,27 +134,6 @@
                                 <p class="text-white">{{ product.created_at|date:"F j, Y" }}</p>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Back to Collection Button -->
-                    <div class="pt-8">
-                        {% if product.collection %}
-                            <a href="{% url 'catalog:collection_detail' product.collection.id %}" 
-                               class="inline-flex items-center text-gray-400 hover:text-white transition-colors group">
-                                <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                                Back to {{ product.collection.name }}
-                            </a>
-                        {% else %}
-                            <a href="{% url 'catalog:collections' %}" 
-                               class="inline-flex items-center text-gray-400 hover:text-white transition-colors group">
-                                <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                                Back to Collections
-                            </a>
-                        {% endif %}
                     </div>
                 </div>
             </div>
