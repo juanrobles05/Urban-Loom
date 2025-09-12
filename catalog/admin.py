@@ -8,8 +8,8 @@ class CollectionAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     list_editable = ('status', 'is_current')
     ordering = ('-created_at',)
-    fields = ('name', 'season', 'description', 'image', 'pieces', 'status', 'is_current')
-    readonly_fields = ('created_at',)
+    fields = ('name', 'season', 'description', 'image', 'status', 'is_current')
+    readonly_fields = ('created_at', 'pieces')
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

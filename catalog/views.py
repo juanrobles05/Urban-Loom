@@ -30,3 +30,14 @@ def collection_detail_view(request, collection_id):
     }
 
     return render(request, 'catalog/collection_detail.html', context)
+
+
+def product_detail_view(request, product_id):
+    """View to display individual product details"""
+    product = get_object_or_404(Product, id=product_id)
+
+    context = {
+        'product': product,
+    }
+
+    return render(request, 'catalog/product_detail.html', context)

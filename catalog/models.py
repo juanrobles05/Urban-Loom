@@ -13,7 +13,6 @@ class Collection(models.Model):
     season = models.CharField(max_length=10, help_text="e.g., FW24, SS24")
     description = models.TextField()
     image = models.ImageField(upload_to="collections/", blank=True, null=True)
-    pieces = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='AVAILABLE')
     is_current = models.BooleanField(default=False, help_text="Mark as current featured collection")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,6 +33,11 @@ class Collection(models.Model):
         }
         return status_colors.get(self.status, 'bg-gray-500')
 
+    @property
+    def pieces(self):
+        """Compute pieces automatically from related products (count of products)."""
+        return self.products.count()
+
 
 class Category(models.Model):
     STATUS_CHOICES = [
@@ -46,11 +50,15 @@ class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     image = models.ImageField(upload_to="categories/", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    pieces = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')
 
     def __str__(self):
         return self.name
+
+    @property
+    def pieces(self):
+        """Compute pieces automatically from related products (count of products)."""
+        return self.products.count()
 
 
 class Product(models.Model):
