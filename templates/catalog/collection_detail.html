@@ -67,7 +67,7 @@
             {% if products %}
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {% for product in products %}
-                    <div class="group cursor-pointer">
+                    <a href="{% url 'catalog:product_detail' product.id %}" class="group block cursor-pointer">
                         <div class="relative overflow-hidden rounded-lg mb-4">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
@@ -92,7 +92,7 @@
                         <h3 class="text-lg font-bold mb-2">{{ product.name }}</h3>
                         <p class="text-gray-300 text-sm mb-2">{{ product.description|truncatewords:10 }}</p>
                         <p class="text-white font-bold">${{ product.price }}</p>
-                    </div>
+                    </a>
                     {% endfor %}
                 </div>
             {% else %}

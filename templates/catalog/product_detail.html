@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Urban Loom{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-black text-white">
+    <!-- Breadcrumb Navigation -->
+    <nav class="bg-gray-900 px-4 py-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center space-x-2 text-sm">
+                <a href="{% url 'catalog:collections' %}" class="text-gray-400 hover:text-white transition-colors">Collections</a>
+                <span class="text-gray-600">/</span>
+                {% if product.collection %}
+                    <a href="{% url 'catalog:collection_detail' product.collection.id %}" class="text-gray-400 hover:text-white transition-colors">{{ product.collection.name }}</a>
+                    <span class="text-gray-600">/</span>
+                {% endif %}
+                <span class="text-white">{{ product.name }}</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail Section -->
+    <section class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Image -->
+                <div class="space-y-4">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-96 lg:h-[600px] object-cover"/>
+                            <!-- Image overlay for better visual -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        {% else %}
+                            <div class="w-full h-96 lg:h-[600px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center rounded-2xl">
+                                <div class="text-center">
+                                    <img src="{% static 'img/Logo.png' %}" alt="Urban Loom" class="w-24 h-24 mx-auto mb-4 opacity-50"/>
+                                    <span class="text-gray-500 text-lg">{{ product.name }}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="space-y-8">
+                    <!-- Product Header -->
+                    <div>
+                        {% if product.collection %}
+                            <p class="text-gray-400 text-sm font-bold tracking-wider uppercase mb-2">
+                                <a href="{% url 'catalog:collection_detail' product.collection.id %}" class="hover:text-white transition-colors border-b border-gray-600 hover:border-white">
+                                    {{ product.collection.name }} - {{ product.collection.season }}
+                                </a>
+                            </p>
+                        {% endif %}
+                        <h1 class="text-3xl lg:text-5xl font-bold mb-4 leading-tight">{{ product.name }}</h1>
+                        {% if product.description %}
+                            <p class="text-gray-300 text-lg leading-relaxed">{{ product.description|linebreaks }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Price and Stock -->
+                    <div class="border-t border-gray-800 pt-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-4xl lg:text-5xl font-bold">${{ product.price }}</span>
+                            {% if product.stock > 0 %}
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-green-400 font-medium">{{ product.stock }} in stock</span>
+                                </div>
+                            {% else %}
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <span class="text-red-400 font-medium">Out of stock</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Stock Status Badge -->
+                        {% if product.stock > 0 and product.stock <= 5 %}
+                            <div class="inline-flex items-center px-4 py-2 bg-yellow-900/50 border border-yellow-600 rounded-full mb-6">
+                                <svg class="w-4 h-4 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-yellow-400 text-sm font-medium">Only {{ product.stock }} left!</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add to Cart Section -->
+                    {% if product.is_active and product.stock > 0 %}
+                        <div class="border-t border-gray-800 pt-8">
+                            <form method="post" action="#" class="space-y-6">
+                                {% csrf_token %}
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-1">
+                                        <label for="quantity" class="block text-sm font-medium text-gray-300 mb-2">Quantity</label>
+                                        <div class="relative">
+                                            <input type="number" 
+                                                   id="quantity" 
+                                                   name="quantity" 
+                                                   min="1" 
+                                                   max="{{ product.stock }}" 
+                                                   value="1" 
+                                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent"/>
+                                        </div>
+                                    </div>
+                                    <div class="flex-2">
+                                        <label class="block text-sm font-medium text-gray-300 mb-2">&nbsp;</label>
+                                        <button type="submit" 
+                                                class="w-full bg-white text-black px-8 py-3 font-bold rounded-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
+                                            ADD TO CART
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% elif not product.is_active %}
+                        <div class="border-t border-gray-800 pt-8">
+                            <div class="bg-gray-900 border border-gray-700 rounded-lg p-6 text-center">
+                                <svg class="w-12 h-12 text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
+                                </svg>
+                                <p class="text-gray-400 text-lg font-medium">This product is currently unavailable</p>
+                                <p class="text-gray-500 text-sm mt-2">Check back later or explore our other collections</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="border-t border-gray-800 pt-8">
+                            <div class="bg-red-900/20 border border-red-800 rounded-lg p-6 text-center">
+                                <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <p class="text-red-400 text-lg font-medium">Sold Out</p>
+                                <p class="text-gray-400 text-sm mt-2">This item is currently out of stock</p>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Product Metadata -->
+                    <div class="border-t border-gray-800 pt-8 space-y-4">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500 font-medium">Category</span>
+                                <p class="text-white">{% if product.category %}{{ product.category.name }}{% else %}Uncategorized{% endif %}</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 font-medium">Added</span>
+                                <p class="text-white">{{ product.created_at|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back to Collection Button -->
+                    <div class="pt-8">
+                        {% if product.collection %}
+                            <a href="{% url 'catalog:collection_detail' product.collection.id %}" 
+                               class="inline-flex items-center text-gray-400 hover:text-white transition-colors group">
+                                <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Back to {{ product.collection.name }}
+                            </a>
+                        {% else %}
+                            <a href="{% url 'catalog:collections' %}" 
+                               class="inline-flex items-center text-gray-400 hover:text-white transition-colors group">
+                                <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Back to Collections
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

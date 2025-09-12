@@ -91,19 +91,21 @@
                 <div class="group bg-gray-900 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
                     <a href="{% url 'catalog:collection_detail' collection.id %}" class="block">
                         <!-- Image Container -->
-                        <div class="relative overflow-hidden h-80 group">
+                        <div class="relative overflow-hidden rounded-lg mb-4 h-80 group">
                             {% if collection.image %}
                                 <img src="{{ collection.image.url }}"
                                      alt="{{ collection.name }}"
-                                     class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-                                     loading="lazy">
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             {% else %}
-                                <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
                                     <img src="{% static 'img/Logo.png' %}"
                                          alt="Urban Loom Logo"
                                          class="w-24 h-24 object-contain opacity-60">
                                 </div>
                             {% endif %}
+                            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white text-lg font-bold">VIEW COLLECTION</span>
+                            </div>
 
                             <!-- Status Badge -->
                             {% if collection.status %}
