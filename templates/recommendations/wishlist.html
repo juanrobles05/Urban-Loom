@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen py-20">
+  <div class="container mx-auto px-4">
+    {% if wishlist_items %}
+      <div class="mb-12">
+        <h1 class="text-5xl font-bold mb-4 gradient-text">Mi Wishlist</h1>
+        <p class="text-muted-foreground text-lg">
+          {{ wishlist_items|length }} {% if wishlist_items|length == 1 %}item{% else %}items{% endif %} guardado(s) para después
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {% for item in wishlist_items %}
+          <div class="group cursor-pointer border bg-card hover:bg-card/80 transition-all duration-500 rounded-lg shadow hover-lift">
+            <div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+              <img src="{% static 'img/Logo.png' %}" alt="{{ item.product.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              {% if item.product.badge %}
+                <span class="absolute top-4 left-4 bg-primary text-primary-foreground px-2 py-1 rounded">{{ item.product.badge }}</span>
+              {% endif %}
+              <button class="absolute top-4 right-4 bg-background/80 hover:bg-background text-foreground rounded-full p-2">🗑️</button>
+            </div>
+            <div class="p-6 space-y-4">
+              <h3 class="font-bold text-xl mb-2 text-card-foreground">{{ item.product.name }}</h3>
+              <div class="flex items-center space-x-2 mb-3">
+                <span class="text-yellow-400">★</span>
+                <span class="ml-1 text-sm font-medium">{{ item.product.rating|default:"-" }}</span>
+                <span class="text-sm text-muted-foreground">({{ item.product.reviews|default:"0" }} reviews)</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold text-primary">${{ item.product.price }}</span>
+                {% if item.product.original_price %}
+                  <span class="text-lg text-muted-foreground line-through">${{ item.product.original_price }}</span>
+                {% endif %}
+              </div>
+              <div class="flex space-x-2">
+                <button class="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded px-4 py-2">🛒 Añadir al carrito</button>
+                <button class="border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground rounded px-4 py-2">❤️</button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-16">
+        <a href="/catalog/" class="px-8 py-6 text-lg border-primary/30 hover:bg-primary/10 bg-transparent border rounded">Seguir comprando</a>
+      </div>
+    {% else %}
+      <div class="text-center space-y-8">
+        <div class="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mx-auto">❤️</div>
+        <div class="space-y-4">
+          <h1 class="text-4xl font-bold">Tu Wishlist está vacía</h1>
+          <p class="text-muted-foreground text-lg max-w-md mx-auto">Comienza a agregar productos que te gusten y lleva el control de tus favoritos.</p>
+        </div>
+        <a href="/catalog/" class="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded">Comenzar a comprar</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
