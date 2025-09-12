@@ -1,128 +1,335 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Mi Perfil{% endblock %}
+{% block title %}Mi Perfil - Urban Loom{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid lg:grid-cols-4 gap-8">
-            <!-- Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-6">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
-                            {% if user.profile.profile_picture %}
-                                <img src="{{ user.profile.profile_picture.url }}" alt="Avatar" class="w-full h-full object-cover" />
-                            {% else %}
-                                <span class="flex items-center justify-center h-full text-2xl font-bold">{{ user.name|slice:":2"|upper }}</span>
-                            {% endif %}
-                        </div>
-                        <h2 class="font-semibold text-lg">{{ user.name }}</h2>
-                        <p class="text-gray-400 text-sm">{{ user.email }}</p>
-                        <p class="text-gray-500 text-xs">Member since {{ user.date_joined|date:"F Y" }}</p>
-                    </div>
-                    <nav class="space-y-2">
-                        <a href="#" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-user mr-2"></i>Profile</a>
-                        <a href="#orders" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-box mr-2"></i>Orders</a>
-                        <a href="#wishlist" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-heart mr-2"></i>Wishlist</a>
-                        <a href="#settings" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800"><i class="fa fa-cog mr-2"></i>Settings</a>
-                        <a href="{% url 'logout' %}" class="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-red-500"><i class="fa fa-sign-out-alt mr-2"></i>Logout</a>
-                    </nav>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grid&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;><path d=&quot;M 8 0 L 0 0 0 8&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;0.3&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grid)&quot;/></svg>');"></div>
+        <div class="relative container mx-auto px-6 py-24">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="mb-8">
+                    <span class="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold tracking-wider uppercase text-gray-300 border border-white/20">
+                        Account Settings
+                    </span>
                 </div>
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                    MI PERFIL
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
+                    Gestiona tu información personal y configuración de cuenta
+                </p>
             </div>
+        </div>
+    </section>
 
-            <!-- Main Content with Tabs -->
-            <div class="lg:col-span-3">
-                <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-0 mb-8">
-                    <!-- Tabs -->
-                    <div class="flex border-b border-gray-800">
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('profile')" id="tab-profile">Profile</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('orders')" id="tab-orders">Orders</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('wishlist')" id="tab-wishlist">Wishlist</button>
-                        <button class="tab-link px-6 py-4 text-lg font-semibold focus:outline-none hover:bg-gray-800 transition" onclick="showTab('settings')" id="tab-settings">Settings</button>
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-6xl mx-auto">
+            <!-- Messages -->
+            {% if messages %}
+                <div class="mb-8">
+                    {% for message in messages %}
+                        <div class="bg-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}blue{% endif %}-900/20 border border-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}blue{% endif %}-500/30 rounded-lg p-4 mb-4">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 {% if message.tags == 'success' %}text-green-400{% elif message.tags == 'error' %}text-red-400{% else %}text-blue-400{% endif %} mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    {% if message.tags == 'success' %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    {% elif message.tags == 'error' %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    {% else %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    {% endif %}
+                                </svg>
+                                <span class="{% if message.tags == 'success' %}text-green-300{% elif message.tags == 'error' %}text-red-300{% else %}text-blue-300{% endif %}">{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Profile Card -->
+                <div class="lg:col-span-1">
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8 sticky top-6">
+                        <div class="text-center mb-8">
+                            <!-- Profile Picture with improved icon -->
+                            <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-gray-700 bg-gradient-to-br from-gray-700 to-gray-800">
+                                {% if user.profile.profile_picture %}
+                                    <img src="{{ user.profile.profile_picture.url }}" alt="Avatar" class="w-full h-full object-cover" />
+                                {% else %}
+                                    <!-- Person icon instead of initials -->
+                                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <h2 class="font-bold text-2xl mb-2">{{ user.first_name }} {{ user.last_name }}</h2>
+                            <p class="text-gray-400 text-sm mb-1">{{ user.email }}</p>
+                            <p class="text-gray-500 text-xs">Miembro desde {{ user.date_joined|date:"F Y" }}</p>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="space-y-3">
+                            <a href="{% url 'orders:order_history' %}" class="flex items-center justify-center w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Mis Órdenes
+                            </a>
+                            <a href="{% url 'catalog:collections' %}" class="flex items-center justify-center w-full px-4 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                                Explorar Tienda
+                            </a>
+                            <a href="{% url 'logout' %}" class="flex items-center justify-center w-full px-4 py-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Cerrar Sesión
+                            </a>
+                        </div>
                     </div>
-                    <!-- Tab Contents -->
-                    <div class="p-8">
-                        <!-- Profile Tab -->
-                        <div id="tab-content-profile" class="tab-content space-y-8">
-                            <!-- Personal Info Card -->
-                            <div class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                <div class="flex justify-between items-start mb-4">
-                                    <h3 class="font-semibold text-lg">Personal Information</h3>
-                                    <a href="{% url 'edit_profile' %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
-                                </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Personal Information Card -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-2xl font-bold text-white">Información Personal</h3>
+                            <button onclick="toggleEditMode()" id="editBtn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-semibold">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                Editar
+                            </button>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" id="profileForm">
+                            {% csrf_token %}
+                            
+                            <!-- Display Mode -->
+                            <div id="displayMode" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">First Name</div>
-                                        <div class="font-medium text-base">{{ user.first_name }}</div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Nombre</label>
+                                        <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white">
+                                            {{ user.first_name|default:"No especificado" }}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Last Name</div>
-                                        <div class="font-medium text-base">{{ user.last_name }}</div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Apellido</label>
+                                        <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white">
+                                            {{ user.last_name|default:"No especificado" }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Email</div>
-                                        <div class="font-medium text-base">{{ user.email }}</div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Email</label>
+                                        <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white">
+                                            {{ user.email }}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div class="mb-2 text-sm text-gray-400">Phone</div>
-                                        <div class="font-medium text-base">{{ user.phone_number }}</div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Teléfono</label>
+                                        <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white">
+                                            {{ user.phone_number|default:"No especificado" }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm text-gray-400 font-medium">Fecha de Nacimiento</label>
+                                    <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white">
+                                        {{ user.date_of_birth|default:"No especificado" }}
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm text-gray-400 font-medium">Biografía</label>
+                                    <div class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white min-h-[80px]">
+                                        {{ user.profile.bio|default:"No hay biografía disponible" }}
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Shipping Address Card -->
-                            <ul class="space-y-4">
+                            <!-- Edit Mode -->
+                            <div id="editMode" class="space-y-6 hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Nombre</label>
+                                        {{ user_form.first_name }}
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Apellido</label>
+                                        {{ user_form.last_name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Teléfono</label>
+                                        {{ user_form.phone_number }}
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400 font-medium">Fecha de Nacimiento</label>
+                                        {{ user_form.date_of_birth }}
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm text-gray-400 font-medium">Biografía</label>
+                                    {{ profile_form.bio }}
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm text-gray-400 font-medium">Foto de Perfil</label>
+                                    {{ profile_form.profile_picture }}
+                                </div>
+
+                                <div class="flex space-x-4 pt-4">
+                                    <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors font-semibold">
+                                        Guardar Cambios
+                                    </button>
+                                    <button type="button" onclick="toggleEditMode()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors font-semibold">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Shipping Addresses Card -->
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-2xl font-bold text-white">Direcciones de Envío</h3>
+                            <a href="{% url 'add_shipping_address' %}" class="px-6 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors font-semibold">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Agregar Dirección
+                            </a>
+                        </div>
+
+                        {% if user.shipping_addresses.all %}
+                            <div class="space-y-4">
                                 {% for address in user.shipping_addresses.all %}
-                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                        <div class="flex justify-between items-start mb-4">
-                                            <h3 class="font-semibold text-lg">Shipping Address</h3>
-                                            <a href="{% url 'edit_shipping_address' address.id %}" class="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 text-sm"><i class="fa fa-pen"></i> Edit</a>
+                                <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:bg-gray-750 transition-colors">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <div class="flex items-center mb-3">
+                                                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                                <h4 class="font-semibold text-lg text-white">Dirección Principal</h4>
+                                            </div>
+                                            <div class="text-gray-300 space-y-1">
+                                                <p class="font-medium">{{ address.street }}</p>
+                                                <p>{{ address.city }}, {{ address.state_or_province }}</p>
+                                                <p>{{ address.postal_code }}</p>
+                                                <p>{{ address.country|default:"Colombia" }}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div class="font-semibold text-base mb-1">{{ address.street }}</div>
-                                            <div class="text-gray-300 mb-1">{{ address.city }}, {{ address.state_or_province }} {{ address.postal_code }}</div>
-                                            <div class="text-gray-400">{{ address.country }}</div>
+                                        <div class="flex space-x-2">
+                                            <a href="{% url 'edit_shipping_address' address.id %}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-sm">
+                                                Editar
+                                            </a>
+                                            <a href="{% url 'delete_shipping_address' address.id %}" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors text-sm">
+                                                Eliminar
+                                            </a>
                                         </div>
-                                    </li>
-                                {% empty %}
-                                    <li class="border border-gray-800 rounded-xl bg-gray-900 p-6 flex flex-col relative">
-                                        <h3 class="font-semibold text-lg mb-2">Shipping Address</h3>
-                                        <div class="text-gray-400">No shipping addresses saved.</div>
-                                    </li>
+                                    </div>
+                                </div>
                                 {% endfor %}
-                            </ul>
-                        {% load static %}
-                        <script src="{% static 'js/profile.js' %}"></script>
-                        <div id="tab-content-orders" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Orders</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Your recent orders will appear here.</p>
-                                <!-- TODO: Render orders list -->
                             </div>
-                        </div>
-                        <!-- Wishlist Tab -->
-                        <div id="tab-content-wishlist" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Wishlist</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Your wishlist items will appear here.</p>
-                                <!-- TODO: Render wishlist items -->
+                        {% else %}
+                            <div class="text-center py-12">
+                                <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <h4 class="text-xl font-semibold text-gray-400 mb-2">No hay direcciones guardadas</h4>
+                                <p class="text-gray-500 mb-6">Agrega una dirección de envío para facilitar tus compras</p>
+                                <a href="{% url 'add_shipping_address' %}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-semibold">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    Agregar Primera Dirección
+                                </a>
                             </div>
-                        </div>
-                        <!-- Settings Tab -->
-                        <div id="tab-content-settings" class="tab-content hidden">
-                            <h2 class="text-2xl font-bold mb-6">Settings</h2>
-                            <div class="bg-gray-800 rounded-xl p-6">
-                                <p class="text-gray-400">Account settings and preferences.</p>
-                                <!-- TODO: Render settings form -->
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Custom Styles -->
+<style>
+    #editMode input, #editMode textarea, #editMode select {
+        background-color: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        color: white;
+        width: 100%;
+    }
+    
+    #editMode input:focus, #editMode textarea:focus, #editMode select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    #editMode textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    #editMode input[type="file"] {
+        background-color: transparent;
+        border: 2px dashed #374151;
+        padding: 1rem;
+    }
+</style>
+
+<!-- JavaScript for Edit Mode -->
+<script>
+function toggleEditMode() {
+    const displayMode = document.getElementById('displayMode');
+    const editMode = document.getElementById('editMode');
+    const editBtn = document.getElementById('editBtn');
+    
+    if (displayMode.classList.contains('hidden')) {
+        // Switch to display mode
+        displayMode.classList.remove('hidden');
+        editMode.classList.add('hidden');
+        editBtn.innerHTML = `
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            Editar
+        `;
+    } else {
+        // Switch to edit mode
+        displayMode.classList.add('hidden');
+        editMode.classList.remove('hidden');
+        editBtn.innerHTML = `
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cancelar
+        `;
+    }
+}
+</script>
 {% endblock %}

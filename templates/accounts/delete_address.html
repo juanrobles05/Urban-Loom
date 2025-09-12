@@ -1,11 +1,87 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Dirección - Urban Loom{% endblock %}
+
 {% block content %}
-<h2>Eliminar dirección de envío</h2>
-<p>¿Estás seguro que deseas eliminar esta dirección?</p>
-<p>{{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Eliminar</button>
-</form>
-<a href="{% url 'list_shipping_addresses' %}">Cancelar</a>
+<div class="min-h-screen bg-black text-white">
+    <!-- Hero Section -->
+    <section class="py-12 bg-gradient-to-br from-gray-900 to-black">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+                    ELIMINAR DIRECCIÓN
+                </h1>
+                <p class="text-xl text-gray-300">Confirma la eliminación de tu dirección de envío</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
+                <!-- Warning Icon -->
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">¿Estás seguro?</h2>
+                    <p class="text-gray-400">Esta acción no se puede deshacer</p>
+                </div>
+
+                <!-- Address Info -->
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8">
+                    <div class="flex items-start">
+                        <svg class="w-6 h-6 text-red-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="font-semibold text-lg text-white mb-2">Dirección a eliminar:</h3>
+                            <div class="text-gray-300 space-y-1">
+                                <p class="font-medium">{{ address.street }}</p>
+                                <p>{{ address.city }}, {{ address.state_or_province }}</p>
+                                <p>{{ address.postal_code }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-8">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <div class="text-sm text-red-300">
+                            <p class="font-medium mb-1">¡Atención!</p>
+                            <p>Una vez eliminada, no podrás usar esta dirección para futuros pedidos y tendrás que agregarla nuevamente si la necesitas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-4">
+                    <form method="post" class="flex-1">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors font-semibold">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Sí, Eliminar Dirección
+                        </button>
+                    </form>
+                    <a href="{% url 'profile' %}" class="flex-1 text-center px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors font-semibold">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

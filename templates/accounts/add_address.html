@@ -1,10 +1,116 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Agregar Dirección - Urban Loom{% endblock %}
+
 {% block content %}
-<h2>Agregar dirección de envío</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-</form>
-<a href="{% url 'list_shipping_addresses' %}">Volver a direcciones</a>
+<div class="min-h-screen bg-black text-white">
+    <!-- Hero Section -->
+    <section class="py-12 bg-gradient-to-br from-gray-900 to-black">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    AGREGAR DIRECCIÓN
+                </h1>
+                <p class="text-xl text-gray-300">Añade una nueva dirección de envío a tu cuenta</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-2">
+                        <label for="{{ form.street.id_for_label }}" class="text-sm text-gray-400 font-medium">Dirección Completa</label>
+                        <input type="text" 
+                               name="{{ form.street.name }}" 
+                               id="{{ form.street.id_for_label }}"
+                               value="{{ form.street.value|default:'' }}"
+                               class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Ej: Calle 123 #45-67, Apto 8B"
+                               required>
+                        {% if form.street.errors %}
+                            <div class="text-red-400 text-sm">{{ form.street.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="{{ form.city.id_for_label }}" class="text-sm text-gray-400 font-medium">Ciudad</label>
+                            <input type="text" 
+                                   name="{{ form.city.name }}" 
+                                   id="{{ form.city.id_for_label }}"
+                                   value="{{ form.city.value|default:'' }}"
+                                   class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Ej: Medellín"
+                                   required>
+                            {% if form.city.errors %}
+                                <div class="text-red-400 text-sm">{{ form.city.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label for="{{ form.state_or_province.id_for_label }}" class="text-sm text-gray-400 font-medium">Departamento</label>
+                            <input type="text" 
+                                   name="{{ form.state_or_province.name }}" 
+                                   id="{{ form.state_or_province.id_for_label }}"
+                                   value="{{ form.state_or_province.value|default:'' }}"
+                                   class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Ej: Antioquia"
+                                   required>
+                            {% if form.state_or_province.errors %}
+                                <div class="text-red-400 text-sm">{{ form.state_or_province.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="{{ form.postal_code.id_for_label }}" class="text-sm text-gray-400 font-medium">Código Postal</label>
+                        <input type="text" 
+                               name="{{ form.postal_code.name }}" 
+                               id="{{ form.postal_code.id_for_label }}"
+                               value="{{ form.postal_code.value|default:'' }}"
+                               class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Ej: 050001"
+                               required>
+                        {% if form.postal_code.errors %}
+                            <div class="text-red-400 text-sm">{{ form.postal_code.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Info Box -->
+                    <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="text-sm text-blue-300">
+                                <p class="font-medium mb-1">Información importante:</p>
+                                <p>Esta dirección será utilizada para el envío de tus pedidos. Asegúrate de que todos los datos sean correctos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 pt-6">
+                        <button type="submit" class="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors font-semibold">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Agregar Dirección
+                        </button>
+                        <a href="{% url 'profile' %}" class="flex-1 text-center px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors font-semibold">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

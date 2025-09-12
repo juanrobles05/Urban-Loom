@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm, ProfileForm, UserForm, ShippingAddressForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import ShippingAddress
 
 
@@ -53,7 +54,10 @@ def profile_view(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request, 'Tu perfil ha sido actualizado exitosamente.')
             return redirect('profile')  # redirige al mismo perfil
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
     else:
         user_form = UserForm(instance=user)
         profile_form = ProfileForm(instance=profile)
@@ -86,7 +90,8 @@ def add_shipping_address(request):
             address = form.save(commit=False)
             address.user = request.user
             address.save()
-            return redirect('list_shipping_addresses')
+            messages.success(request, 'Dirección agregada exitosamente.')
+            return redirect('profile')
     else:
         form = ShippingAddressForm()
     return render(request, 'accounts/add_address.html', {'form': form})
@@ -103,7 +108,8 @@ def edit_shipping_address(request, address_id):
         form = ShippingAddressForm(request.POST, instance=address)
         if form.is_valid():
             form.save()
-            return redirect('list_shipping_addresses')
+            messages.success(request, 'Dirección actualizada exitosamente.')
+            return redirect('profile')
     else:
         form = ShippingAddressForm(instance=address)
     return render(request, 'accounts/edit_address.html', {'form': form})
@@ -113,5 +119,6 @@ def delete_shipping_address(request, address_id):
     address = ShippingAddress.objects.get(id=address_id, user=request.user)
     if request.method == 'POST':
         address.delete()
-        return redirect('list_shipping_addresses')
+        messages.success(request, 'Dirección eliminada exitosamente.')
+        return redirect('profile')
     return render(request, 'accounts/delete_address.html', {'address': address})
