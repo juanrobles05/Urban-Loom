@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-20">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <span class="inline-block h-8 w-8 text-primary">📈</span>
+        <h2 class="text-5xl font-bold gradient-text">Recommended for You</h2>
+      </div>
+      <p class="text-muted-foreground text-xl max-w-2xl mx-auto">
+        Curated picks based on your style preferences and browsing history
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for product in recommendations %}
+        <div class="group cursor-pointer border bg-card hover:bg-card/80 transition-all duration-500 rounded-lg shadow hover-lift">
+          <div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+            <img src="{% static 'img/Logo.png' %}" alt="{{ product.product.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            {% if product.product.badge %}
+              <span class="absolute top-4 left-4 bg-primary text-primary-foreground px-2 py-1 rounded">{{ product.product.badge }}</span>
+            {% endif %}
+            <button class="absolute top-4 right-4 bg-background/80 hover:bg-background text-foreground rounded-full p-2">❤️</button>
+          </div>
+          <div class="p-4 space-y-3">
+            <div class="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+              {{ product.reason }}
+            </div>
+            <div>
+              <h3 class="font-bold text-lg mb-2 text-card-foreground">{{ product.product.name }}</h3>
+              <div class="flex items-center space-x-2 mb-2">
+                <span class="text-yellow-400">★</span>
+                <span class="ml-1 text-xs font-medium">{{ product.product.rating|default:"-" }}</span>
+                <span class="text-xs text-muted-foreground">({{ product.product.reviews|default:"0" }})</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xl font-bold text-primary">${{ product.product.price }}</span>
+                {% if product.product.original_price %}
+                  <span class="text-sm text-muted-foreground line-through">${{ product.product.original_price }}</span>
+                {% endif %}
+              </div>
+            </div>
+            <button class="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded px-4 py-2">Add to Cart</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-12">
+      <a href="#" class="px-8 py-4 text-lg border-primary/30 hover:bg-primary/10 bg-transparent border rounded inline-flex items-center justify-center">
+        View More Recommendations
+        <span class="ml-2">➡️</span>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
