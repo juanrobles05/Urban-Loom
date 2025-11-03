@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
@@ -39,9 +40,9 @@
                 <span class="text-xs text-muted-foreground">({{ product.product.reviews|default:"0" }})</span>
               </div>
               <div class="flex items-center space-x-2">
-                <span class="text-xl font-bold text-primary">${{ product.product.price }}</span>
+                <span class="text-xl font-bold text-primary">{{ product.product.price|format_cop }}</span>
                 {% if product.product.original_price %}
-                  <span class="text-sm text-muted-foreground line-through">${{ product.product.original_price }}</span>
+                  <span class="text-sm text-muted-foreground line-through">{{ product.product.original_price|format_cop }}</span>
                 {% endif %}
               </div>
             </div>

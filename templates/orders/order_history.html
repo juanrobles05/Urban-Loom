@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}Historial de Órdenes - Urban Loom{% endblock %}
 
@@ -43,7 +44,7 @@
                                         {{ order.get_status_display }}
                                     </span>
                                     <span class="text-lg font-bold">
-                                        ${{ order.items.all|yesno:"0," }}{% for item in order.items.all %}{% if forloop.first %}{{ item.get_total }}{% else %}{{ item.get_total|add:order.items.all.0.get_total }}{% endif %}{% endfor %}
+                                        {{ order.get_total_price|format_cop }}
                                     </span>
                                 </div>
                             </div>
@@ -62,10 +63,10 @@
                                     {% endif %}
                                     <div class="flex-1">
                                         <h4 class="font-semibold">{{ item.product.name }}</h4>
-                                        <p class="text-gray-400 text-sm">Cantidad: {{ item.quantity }} × ${{ item.price }}</p>
+                                        <p class="text-gray-400 text-sm">Cantidad: {{ item.quantity }} × {{ item.price|format_cop_short }}</p>
                                     </div>
                                     <div class="text-right">
-                                        <p class="font-bold">${{ item.get_total }}</p>
+                                        <p class="font-bold">{{ item.get_total|format_cop }}</p>
                                     </div>
                                 </div>
                                 {% endfor %}
@@ -88,9 +89,7 @@
                             <div class="mt-4 pt-4 border-t border-gray-700 flex justify-between items-center">
                                 <div class="text-sm text-gray-400">
                                     {{ order.items.count }} producto{{ order.items.count|pluralize }} • 
-                                    Total: <span class="text-white font-bold">
-                                        ${% widthratio order.items.all.0.get_total 1 order.items.count %}
-                                    </span>
+                                    Total: <span class="text-white font-bold">{{ order.get_total_price|format_cop }}</span>
                                 </div>
                                 <div class="flex gap-2">
                                     <a href="{% url 'orders:order_confirmation' order.id %}" 

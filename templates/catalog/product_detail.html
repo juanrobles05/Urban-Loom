@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}{{ product.name }} - Urban Loom{% endblock %}
 
@@ -49,7 +50,7 @@
                     <!-- Price and Stock -->
                     <div class="border-t border-gray-800 pt-8">
                         <div class="flex items-center justify-between mb-6">
-                            <span class="text-4xl lg:text-5xl font-bold">${{ product.price|floatformat:0 }} COP</span>
+                            <span class="text-4xl lg:text-5xl font-bold">{{ product.price|format_cop }}</span>
                             {% if product.stock > 0 %}
                                 <div class="flex items-center space-x-2">
                                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>

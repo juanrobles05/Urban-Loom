@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import ShippingAddress
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 import json
 
 
@@ -50,25 +51,25 @@ def profile_view(request):
 
     # Obtener o crear el perfil del usuario
     try:
-        profile = user.userprofile
+        profile = user.profile
     except:
-        try:
-            profile = user.profile
-        except:
-            profile = None
+        from .models import UserProfile
+        profile = UserProfile.objects.create(user=user)
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=profile) if profile else None
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
 
-        if user_form.is_valid() and (profile_form is None or profile_form.is_valid()):
+        if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
-            if profile_form:
-                profile_form.save()
-            return redirect('profile')  # redirige al mismo perfil
+            profile_form.save()
+            messages.success(request, '¡Perfil actualizado exitosamente!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
     else:
         user_form = UserForm(instance=user)
-        profile_form = ProfileForm(instance=profile) if profile else None
+        profile_form = ProfileForm(instance=profile)
 
     context = {
         'user_form': user_form,

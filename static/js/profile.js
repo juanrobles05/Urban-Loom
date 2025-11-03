@@ -69,8 +69,8 @@ async function addAddress(event) {
     }
 
     try {
-        console.log('Sending request to /addresses/add/');
-        const response = await fetch('/addresses/add/', {
+        console.log('Sending request to /accounts/addresses/add/');
+        const response = await fetch('/accounts/addresses/add/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -115,9 +115,16 @@ async function saveAddress(event, addressId) {
     const form = event.target;
     const formData = new FormData(form);
 
-    // Add CSRF token to form data
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    formData.append('csrfmiddlewaretoken', csrfToken);
+    // Get CSRF token from the main form or meta tag
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (!csrfToken) {
+        csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (csrfToken) {
+            formData.append('csrfmiddlewaretoken', csrfToken.content);
+        }
+    } else {
+        formData.append('csrfmiddlewaretoken', csrfToken.value);
+    }
 
     console.log('FormData contents:');
     for (let [key, value] of formData.entries()) {
@@ -125,11 +132,11 @@ async function saveAddress(event, addressId) {
     }
 
     try {
-        console.log(`Sending request to /addresses/${addressId}/edit/`);
-        const response = await fetch(`/addresses/${addressId}/edit/`, {
+        console.log(`Sending request to /accounts/addresses/${addressId}/edit/`);
+        const response = await fetch(`/accounts/addresses/${addressId}/edit/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': csrfToken,
+                'X-CSRFToken': csrfToken ? (csrfToken.value || csrfToken.content) : '',
                 'Accept': 'application/json',
             },
             body: formData
@@ -162,17 +169,19 @@ async function saveAddress(event, addressId) {
 // Delete Address Handler
 async function deleteAddress(addressId) {
     if (confirm('¿Estás seguro de que quieres eliminar esta dirección?')) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Get CSRF token
+        let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        const csrfValue = csrfToken ? csrfToken.value : '';
 
         try {
-            const response = await fetch(`/addresses/${addressId}/delete/`, {
+            const response = await fetch(`/accounts/addresses/${addressId}/delete/`, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'X-CSRFToken': csrfValue,
                     'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `csrfmiddlewaretoken=${csrfToken}`
+                body: `csrfmiddlewaretoken=${csrfValue}`
             });
 
             if (response.ok) {

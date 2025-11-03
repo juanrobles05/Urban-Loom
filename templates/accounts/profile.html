@@ -28,6 +28,17 @@
         <div class="max-w-4xl mx-auto">
             <!-- Profile Information Card -->
             <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                <!-- Success/Error Messages -->
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for message in messages %}
+                            <div class="px-4 py-3 rounded-lg mb-3 {% if message.tags == 'success' %}bg-green-900 border border-green-600 text-green-200{% elif message.tags == 'error' %}bg-red-900 border border-red-600 text-red-200{% else %}bg-blue-900 border border-blue-600 text-blue-200{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex items-center space-x-6">
                         <div class="w-24 h-24 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
@@ -57,35 +68,35 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Nombre</label>
-                                {% if user_form.first_name %}
-                                    {{ user_form.first_name }}
-                                {% else %}
-                                    <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.first_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Apellido</label>
-                                {% if user_form.last_name %}
-                                    {{ user_form.last_name }}
-                                {% else %}
-                                    <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.last_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                                {% if user_form.email %}
-                                    {{ user_form.email }}
-                                {% else %}
-                                    <input type="email" name="email" value="{{ user.email }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.email }}
+                                {% if user_form.email.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.email.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Teléfono</label>
-                                {% if user_form.phone_number %}
-                                    {{ user_form.phone_number }}
-                                {% else %}
-                                    <input type="tel" name="phone_number" value="{{ user.phone_number|default:'' }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.phone_number }}
+                                {% if user_form.phone_number.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.phone_number.errors.0 }}</p>
                                 {% endif %}
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
+                                <input type="text" value="{% if user.date_of_birth %}{{ user.date_of_birth|date:'d/m/Y' }}{% else %}No especificada{% endif %}" readonly class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed">
                             </div>
                         </div>
                     </div>
@@ -94,21 +105,38 @@
                     {% if profile_form %}
                     <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
                         <h3 class="text-xl font-bold mb-6">Información Adicional</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
-                                {{ profile_form.date_of_birth }}
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Biografía</label>
+                                {{ profile_form.bio }}
+                                {% if profile_form.bio.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ profile_form.bio.errors.0 }}</p>
+                                {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Foto de Perfil</label>
                                 {{ profile_form.profile_picture }}
+                                {% if profile_form.profile_picture.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ profile_form.profile_picture.errors.0 }}</p>
+                                {% endif %}
+                                {% if user.profile.profile_picture %}
+                                    <p class="text-gray-400 text-sm mt-2">Archivo actual: {{ user.profile.profile_picture.name }}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    <!-- Shipping Addresses Section -->
-                    <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
+                    <!-- Submit Button for Profile -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
+                            Guardar Cambios de Perfil
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Shipping Addresses Section (Outside Profile Form) -->
+                <div class="border border-gray-800 rounded-xl bg-gray-800 p-6 mt-6">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-xl font-bold">Direcciones de Envío</h3>
                             <button type="button" id="open-address-modal-btn" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
@@ -139,6 +167,7 @@
                                     <!-- Inline Edit Form (Hidden by default) -->
                                     <div class="address-edit-form hidden">
                                         <form class="edit-address-form" data-address-id="{{ address.id }}">
+                                            {% csrf_token %}
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                                 <div>
                                                     <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
@@ -175,14 +204,6 @@
                             {% endfor %}
                         </div>
                     </div>
-
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
-                            Guardar Cambios
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

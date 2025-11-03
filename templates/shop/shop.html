@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}Shop - Urban Loom{% endblock %}
 
@@ -246,7 +247,7 @@
                                             <div class="flex justify-between items-start">
                                                 <h3 class="text-lg font-bold text-white group-hover:text-gray-200 transition-colors line-clamp-2 flex-1 mr-3">{{ product.name }}</h3>
                                                 <div class="text-right">
-                                                    <span class="text-2xl font-bold price-gradient">${{ product.price|floatformat:0 }} COP</span>
+                                                    <span class="text-2xl font-bold price-gradient">{{ product.price|format_cop }}</span>
                                                 </div>
                                             </div>
 

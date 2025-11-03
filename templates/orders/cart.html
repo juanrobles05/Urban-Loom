@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}Carrito de Compras - Urban Loom{% endblock %}
 
@@ -46,10 +47,10 @@
                                         </div>
 
                                         <!-- Información del Producto -->
-                                        <div class="flex-1">
+                                        <div class="grow">
                                             <h3 class="text-lg font-bold mb-2">{{ item.product.name }}</h3>
                                             <p class="text-gray-300 text-sm mb-2">{{ item.product.description|truncatewords:15 }}</p>
-                                            <p class="text-white font-bold">${{ item.product.price }}</p>
+                                            <p class="text-white font-bold">{{ item.product.price|format_cop }}</p>
                                             {% if item.product.stock < 5 and item.product.stock > 0 %}
                                                 <p class="text-yellow-500 text-sm mt-1">Solo quedan {{ item.product.stock }} unidades</p>
                                             {% endif %}
@@ -59,7 +60,7 @@
                                         <div class="shrink-0">
                                             <form method="post" action="{% url 'orders:update_cart_item' item.id %}" class="flex items-center gap-3">
                                                 {% csrf_token %}
-                                                <input type="number" name="quantity" value="{{ item.quantity }}" 
+                                                <input type="number" name="quantity" value="{{ item.quantity }}"
                                                        min="1" max="{{ item.product.stock }}"
                                                        class="w-16 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-center text-white">
                                                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-colors">
@@ -70,7 +71,7 @@
 
                                         <!-- Subtotal y Remover -->
                                         <div class="shrink-0 text-right">
-                                            <p class="text-white font-bold text-lg mb-2">${{ item.get_total }}</p>
+                                            <p class="text-white font-bold text-lg mb-2">{{ item.get_total|format_cop }}</p>
                                             <form method="post" action="{% url 'orders:remove_from_cart' item.id %}">
                                                 {% csrf_token %}
                                                 <button type="submit" class="text-red-400 hover:text-red-300 text-sm transition-colors">
@@ -88,11 +89,11 @@
                         <div class="lg:col-span-1">
                             <div class="bg-gray-900 rounded-lg p-6 sticky top-6">
                                 <h2 class="text-2xl font-bold mb-6">RESUMEN DEL PEDIDO</h2>
-                                
+
                                 <div class="space-y-3 mb-6">
                                     <div class="flex justify-between">
                                         <span class="text-gray-300">Subtotal ({{ total_items }} item{{ total_items|pluralize }})</span>
-                                        <span class="text-white font-bold">${{ total_price }}</span>
+                                        <span class="text-white font-bold">{{ total_price|format_cop }}</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-300">Envío</span>
@@ -101,7 +102,7 @@
                                     <hr class="border-gray-700">
                                     <div class="flex justify-between text-lg">
                                         <span class="font-bold">Total</span>
-                                        <span class="font-bold">${{ total_price }}</span>
+                                        <span class="font-bold">{{ total_price|format_cop }}</span>
                                     </div>
                                 </div>
 
