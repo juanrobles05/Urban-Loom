@@ -1,5 +1,13 @@
 /* Collections Page Styles */
 
+/* Page title gradient */
+.collections-title-gradient {
+    background: linear-gradient(to right, white, #E5E7EB, white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* Hero section */
 .collections-hero {
     position: relative;

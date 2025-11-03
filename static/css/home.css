@@ -1,5 +1,28 @@
 /* Home/Storefront Styles */
 
+/* Hero title gradient */
+.hero-title-gradient {
+    background: linear-gradient(to right, white, #4B5563, black);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hero background overlay */
+.hero-bg-overlay {
+    background: linear-gradient(to bottom right, black, #1f2937, black);
+}
+
+/* Blue glow effect */
+.blue-glow {
+    background: linear-gradient(to right, rgba(191, 219, 254, 0.2), rgba(96, 165, 250, 0.2));
+}
+
+/* Collection card overlay */
+.collection-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
 /* Hero section */
 .hero-section {
     position: relative;

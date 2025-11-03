@@ -1,5 +1,13 @@
 /* Wishlist & Recommendations Styles */
 
+/* Gradient text for titles */
+.gradient-text {
+    background: linear-gradient(to right, white, #9CA3AF);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* Wishlist header */
 .wishlist-header {
     margin-bottom: 3rem;

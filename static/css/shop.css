@@ -1,5 +1,21 @@
 /* Shop Page Styles */
 
+/* Page title gradient */
+.shop-title-gradient {
+    background: linear-gradient(to right, white, #E5E7EB, white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Price gradient */
+.price-gradient {
+    background: linear-gradient(to right, white, #D1D5DB);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* Hero Section */
 .shop-hero {
     position: relative;

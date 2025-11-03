@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}Home{% endblock %}
@@ -10,12 +11,12 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
-	<div class="absolute inset-0 bg-gradient-to-br from-black via-gray-800 to-black opacity-60"></div>
+	<div class="absolute inset-0 hero-bg-overlay opacity-60"></div>
 	<div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center relative z-10">
 		<div class="space-y-8">
 			<div class="space-y-6">
 				<span class="inline-block bg-white text-black border border-white px-4 py-2 rounded-full font-semibold">New Collection Available</span>
-				<h1 class="text-7xl md:text-8xl font-bold tracking-tighter bg-gradient-to-r from-white via-gray-600 to-black text-transparent bg-clip-text">URBAN<br>LOOM</h1>
+				<h1 class="text-7xl md:text-8xl font-bold tracking-tighter hero-title-gradient">URBAN<br>LOOM</h1>
 				<p class="text-xl text-gray-300 leading-relaxed max-w-lg">Descubre streetwear premium que define tu estilo. Prendas auténticas para el estilo de vida urbano moderno.</p>
 			</div>
 			<div class="flex flex-col sm:flex-row gap-4">
@@ -28,7 +29,7 @@
 			</div>
 		</div>
 		<div class="relative">
-			<div class="absolute inset-0 bg-gradient-to-r from-blue-200/20 to-blue-400/20 rounded-3xl blur-3xl"></div>
+			<div class="absolute inset-0 blue-glow rounded-3xl blur-3xl"></div>
 			<img src="{% static 'img/hero-image.jpg' %}" alt="Urban streetwear model" class="relative w-full h-auto rounded-3xl shadow-2xl" />
 		</div>
 	</div>
@@ -73,13 +74,13 @@
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 			{% for collection in latest_collections %}
 			<a href="{% url 'catalog:collection_detail' collection.id %}" class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
-				<div class="aspect-[4/5] overflow-hidden rounded-t-lg relative">
+				<div class="aspect-4/5 overflow-hidden rounded-t-lg relative">
 					{% if collection.image %}
 						<img src="{{ collection.image.url }}" alt="{{ collection.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 					{% else %}
 						<img src="{% static 'img/Logo.png' %}" alt="{{ collection.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 					{% endif %}
-					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+					<div class="absolute inset-0 collection-overlay"></div>
 					<div class="absolute bottom-6 left-6 text-white">
 						<h3 class="text-2xl font-bold mb-2 text-white">{{ collection.name }}</h3>
 						<p class="text-gray-300">{{ collection.pieces }} piezas</p>
@@ -88,9 +89,9 @@
 			</a>
 			{% empty %}
 			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
-				<div class="aspect-[4/5] overflow-hidden rounded-t-lg relative">
+				<div class="aspect-4/5 overflow-hidden rounded-t-lg relative">
 					<img src="{% static 'img/Logo.png' %}" alt="Coming Soon" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+					<div class="absolute inset-0 collection-overlay"></div>
 					<div class="absolute bottom-6 left-6 text-white">
 						<h3 class="text-2xl font-bold mb-2 text-white">Coming Soon</h3>
 						<p class="text-gray-300">Nueva colección</p>

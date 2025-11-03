@@ -11,7 +11,9 @@ function updateCartCount() {
                 if (data.count > 0) {
                     cartCount.textContent = data.count;
                     cartCount.classList.remove('hidden');
+                    cartCount.classList.add('flex');
                 } else {
+                    cartCount.classList.remove('flex');
                     cartCount.classList.add('hidden');
                 }
             }

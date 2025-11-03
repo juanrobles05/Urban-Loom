@@ -18,7 +18,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {% for item in wishlist_items %}
           <div class="group cursor-pointer border bg-card hover:bg-card/80 transition-all duration-500 rounded-lg shadow hover-lift">
-            <div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+            <div class="aspect-3/4 overflow-hidden rounded-t-lg relative">
               <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/Logo.png' %}{% endif %}" alt="{{ item.product.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               {% if item.product.badge %}
                 <span class="absolute top-4 left-4 bg-primary text-primary-foreground px-2 py-1 rounded">{{ item.product.badge }}</span>

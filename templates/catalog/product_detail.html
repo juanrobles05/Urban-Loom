@@ -18,10 +18,8 @@
                     <div class="relative overflow-hidden rounded-2xl shadow-2xl">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-96 lg:h-[600px] object-cover"/>
-                            <!-- Image overlay for better visual -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         {% else %}
-                            <div class="w-full h-96 lg:h-[600px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center rounded-2xl">
+                            <div class="w-full h-96 lg:h-[600px] bg-gray-900 flex items-center justify-center rounded-2xl">
                                 <div class="text-center">
                                     <img src="{% static 'img/Logo.png' %}" alt="Urban Loom" class="w-24 h-24 mx-auto mb-4 opacity-50"/>
                                     <span class="text-gray-500 text-lg">{{ product.name }}</span>

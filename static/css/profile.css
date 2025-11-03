@@ -1,5 +1,13 @@
 /* Profile Page Styles */
 
+/* Profile title gradient */
+.profile-title-gradient {
+    background: linear-gradient(to right, white, #E5E7EB, white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 /* Form inputs styling */
 input,
 select,
