@@ -1,0 +1,51 @@
+/* Profile Page Styles */
+
+/* Profile title gradient */
+.profile-title-gradient {
+    background: linear-gradient(to right, white, #E5E7EB, white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Form inputs styling */
+input,
+select,
+textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none !important;
+    border-color: white !important;
+}
+
+input[type="file"] {
+    background-color: #374151 !important;
+    padding: 8px !important;
+}
+
+/* Address edit form inputs */
+.address-edit-form input,
+.address-edit-form select,
+.address-edit-form textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+}
+
+/* Modal inputs */
+#address-modal input,
+#address-modal select,
+#address-modal textarea {
+    background-color: #374151 !important;
+    border: 1px solid #4B5563 !important;
+    color: white !important;
+}

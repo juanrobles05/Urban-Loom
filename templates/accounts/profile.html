@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Mi Perfil{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
@@ -9,7 +14,7 @@
         <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grid&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;><path d=&quot;M 8 0 L 0 0 0 8&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;0.3&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grid)&quot;/></svg>');"></div>
         <div class="relative container mx-auto px-6 py-20">
             <div class="max-w-4xl mx-auto text-center">
-                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight profile-title-gradient">
                     MI PERFIL
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
@@ -23,6 +28,17 @@
         <div class="max-w-4xl mx-auto">
             <!-- Profile Information Card -->
             <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8 mb-8">
+                <!-- Success/Error Messages -->
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for message in messages %}
+                            <div class="px-4 py-3 rounded-lg mb-3 {% if message.tags == 'success' %}bg-green-900 border border-green-600 text-green-200{% elif message.tags == 'error' %}bg-red-900 border border-red-600 text-red-200{% else %}bg-blue-900 border border-blue-600 text-blue-200{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex items-center space-x-6">
                         <div class="w-24 h-24 rounded-full overflow-hidden border border-gray-700 bg-gray-800">
@@ -45,42 +61,42 @@
                 <!-- Edit Profile Form -->
                 <form method="post" enctype="multipart/form-data" class="space-y-6">
                     {% csrf_token %}
-                    
+
                     <!-- Personal Information Section -->
                     <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
                         <h3 class="text-xl font-bold mb-6">Información Personal</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Nombre</label>
-                                {% if user_form.first_name %}
-                                    {{ user_form.first_name }}
-                                {% else %}
-                                    <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.first_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Apellido</label>
-                                {% if user_form.last_name %}
-                                    {{ user_form.last_name }}
-                                {% else %}
-                                    <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.last_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                                {% if user_form.email %}
-                                    {{ user_form.email }}
-                                {% else %}
-                                    <input type="email" name="email" value="{{ user.email }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.email }}
+                                {% if user_form.email.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.email.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Teléfono</label>
-                                {% if user_form.phone_number %}
-                                    {{ user_form.phone_number }}
-                                {% else %}
-                                    <input type="tel" name="phone_number" value="{{ user.phone_number|default:'' }}" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
+                                {{ user_form.phone_number }}
+                                {% if user_form.phone_number.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ user_form.phone_number.errors.0 }}</p>
                                 {% endif %}
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
+                                <input type="text" value="{% if user.date_of_birth %}{{ user.date_of_birth|date:'d/m/Y' }}{% else %}No especificada{% endif %}" readonly class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed">
                             </div>
                         </div>
                     </div>
@@ -89,28 +105,45 @@
                     {% if profile_form %}
                     <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
                         <h3 class="text-xl font-bold mb-6">Información Adicional</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
-                                {{ profile_form.date_of_birth }}
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Biografía</label>
+                                {{ profile_form.bio }}
+                                {% if profile_form.bio.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ profile_form.bio.errors.0 }}</p>
+                                {% endif %}
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Foto de Perfil</label>
                                 {{ profile_form.profile_picture }}
+                                {% if profile_form.profile_picture.errors %}
+                                    <p class="text-red-400 text-sm mt-1">{{ profile_form.profile_picture.errors.0 }}</p>
+                                {% endif %}
+                                {% if user.profile.profile_picture %}
+                                    <p class="text-gray-400 text-sm mt-2">Archivo actual: {{ user.profile.profile_picture.name }}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    <!-- Shipping Addresses Section -->
-                    <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
+                    <!-- Submit Button for Profile -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
+                            Guardar Cambios de Perfil
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Shipping Addresses Section (Outside Profile Form) -->
+                <div class="border border-gray-800 rounded-xl bg-gray-800 p-6 mt-6">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-xl font-bold">Direcciones de Envío</h3>
-                            <button type="button" onclick="openAddressModal()" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
+                            <button type="button" id="open-address-modal-btn" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
                                 Agregar Dirección
                             </button>
                         </div>
-                        
+
                         <div id="addresses-container">
                             {% for address in user.shipping_addresses.all %}
                                 <div class="address-item border border-gray-700 rounded-lg p-4 mb-4 last:mb-0" data-address-id="{{ address.id }}">
@@ -121,19 +154,20 @@
                                                 <div class="text-gray-300">{{ address.city }}, {{ address.state_or_province }} {{ address.postal_code }}</div>
                                             </div>
                                             <div class="flex space-x-2">
-                                                <button type="button" onclick="editAddress({{ address.id }})" class="px-3 py-1 bg-gray-600 hover:bg-gray-500 rounded text-sm transition-colors">
+                                                <button type="button" class="edit-address-btn px-3 py-1 bg-gray-600 hover:bg-gray-500 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
                                                     Editar
                                                 </button>
-                                                <button type="button" onclick="deleteAddress({{ address.id }})" class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors">
+                                                <button type="button" class="delete-address-btn px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
                                                     Eliminar
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Inline Edit Form (Hidden by default) -->
                                     <div class="address-edit-form hidden">
                                         <form class="edit-address-form" data-address-id="{{ address.id }}">
+                                            {% csrf_token %}
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                                 <div>
                                                     <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
@@ -156,7 +190,7 @@
                                                 <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm transition-colors">
                                                     Guardar
                                                 </button>
-                                                <button type="button" onclick="cancelEdit({{ address.id }})" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">
+                                                <button type="button" class="cancel-edit-btn px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
                                                     Cancelar
                                                 </button>
                                             </div>
@@ -170,24 +204,16 @@
                             {% endfor %}
                         </div>
                     </div>
-
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
-                            Guardar Cambios
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal para agregar nueva dirección -->
-<div id="address-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+<div id="address-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md">
-            <h3 class="text-xl font-bold mb-4">Agregar Nueva Dirección</h3>
+            <h3 id="modal-title" class="text-xl font-bold mb-4">Agregar Nueva Dirección</h3>
             <form id="add-address-form">
                 <div class="space-y-4">
                     <div>
@@ -211,7 +237,7 @@
                     <button type="submit" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
                         Agregar
                     </button>
-                    <button type="button" onclick="closeAddressModal()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
+                    <button type="button" id="close-modal-btn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
                         Cancelar
                     </button>
                 </div>
@@ -219,261 +245,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-<script>
-// Funciones para manejar direcciones
-function openAddressModal() {
-    const modal = document.getElementById('address-modal');
-    modal.classList.remove('hidden');
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
-}
-
-function closeAddressModal() {
-    const modal = document.getElementById('address-modal');
-    modal.classList.add('hidden');
-    document.getElementById('add-address-form').reset();
-    // Restore body scroll
-    document.body.style.overflow = 'auto';
-}
-
-function editAddress(addressId) {
-    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
-    const display = addressItem.querySelector('.address-display');
-    const editForm = addressItem.querySelector('.address-edit-form');
-    
-    display.classList.add('hidden');
-    editForm.classList.remove('hidden');
-}
-
-function cancelEdit(addressId) {
-    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
-    const display = addressItem.querySelector('.address-display');
-    const editForm = addressItem.querySelector('.address-edit-form');
-    
-    display.classList.remove('hidden');
-    editForm.classList.add('hidden');
-}
-
-async function addAddress(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    console.log('addAddress function called');
-    
-    const form = event.target;
-    const formData = new FormData(form);
-    
-    // Add CSRF token to form data
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    formData.append('csrfmiddlewaretoken', csrfToken);
-    
-    console.log('FormData contents:');
-    for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
-    
-    try {
-        console.log('Sending request to /addresses/add/');
-        const response = await fetch('/addresses/add/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Accept': 'application/json',
-            },
-            body: formData
-        });
-        
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Response result:', result);
-            
-            if (result.success) {
-                closeAddressModal();
-                // Reload the page to show the new address
-                location.reload();
-            } else {
-                alert('Error al agregar la dirección: ' + JSON.stringify(result.errors));
-            }
-        } else {
-            console.log('Response not ok:', response.status, response.statusText);
-            alert('Error al agregar la dirección');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al agregar la dirección');
-    }
-    
-    return false;
-}
-
-async function saveAddress(event, addressId) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    console.log('saveAddress function called for address:', addressId);
-    
-    const form = event.target;
-    const formData = new FormData(form);
-    
-    // Add CSRF token to form data
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    formData.append('csrfmiddlewaretoken', csrfToken);
-    
-    console.log('FormData contents:');
-    for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
-    
-    try {
-        console.log(`Sending request to /addresses/${addressId}/edit/`);
-        const response = await fetch(`/addresses/${addressId}/edit/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Accept': 'application/json',
-            },
-            body: formData
-        });
-        
-        console.log('Response status:', response.status);
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Response result:', result);
-            
-            if (result.success) {
-                // Reload the page to show the updated address
-                location.reload();
-            } else {
-                alert('Error al actualizar la dirección: ' + JSON.stringify(result.errors));
-            }
-        } else {
-            console.log('Response not ok:', response.status, response.statusText);
-            alert('Error al actualizar la dirección');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al actualizar la dirección');
-    }
-    
-    return false;
-}
-
-async function deleteAddress(addressId) {
-    if (confirm('¿Estás seguro de que quieres eliminar esta dirección?')) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        
-        try {
-            const response = await fetch(`/addresses/${addressId}/delete/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `csrfmiddlewaretoken=${csrfToken}`
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                if (result.success) {
-                    // Remove the address from DOM
-                    const addressItem = document.querySelector(`[data-address-id="${addressId}"]`);
-                    addressItem.remove();
-                    
-                    // Show "no addresses" message if no addresses left
-                    const container = document.getElementById('addresses-container');
-                    if (container.children.length === 0) {
-                        container.innerHTML = '<div id="no-addresses" class="text-gray-400 text-center py-8">No tienes direcciones de envío guardadas.</div>';
-                    }
-                } else {
-                    alert('Error al eliminar la dirección: ' + result.message);
-                }
-            } else {
-                alert('Error al eliminar la dirección');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al eliminar la dirección');
-        }
-    }
-}
-
-// Initialize modal event listeners when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('address-modal');
-    if (modal) {
-        // Close modal when clicking outside
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeAddressModal();
-            }
-        });
-        
-        // Prevent modal from closing when clicking inside
-        const modalContent = modal.querySelector('.bg-gray-900');
-        if (modalContent) {
-            modalContent.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
-    }
-    
-    // Add event listener to form to prevent default submission
-    const addForm = document.getElementById('add-address-form');
-    if (addForm) {
-        addForm.addEventListener('submit', addAddress);
-    }
-    
-    // Add event listeners to all edit forms
-    const editForms = document.querySelectorAll('.edit-address-form');
-    editForms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const addressId = form.getAttribute('data-address-id');
-            saveAddress(event, addressId);
-        });
-    });
-});
-</script>
-
-<style>
-/* Style for form inputs to match the design */
-input, select, textarea {
-    background-color: #374151 !important;
-    border: 1px solid #4B5563 !important;
-    color: white !important;
-    padding: 12px 16px !important;
-    border-radius: 8px !important;
-    width: 100% !important;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none !important;
-    border-color: white !important;
-}
-
-input[type="file"] {
-    background-color: #374151 !important;
-    padding: 8px !important;
-}
-
-/* Modal styles */
-.address-edit-form input, .address-edit-form select, .address-edit-form textarea {
-    background-color: #374151 !important;
-    border: 1px solid #4B5563 !important;
-    color: white !important;
-}
-
-#address-modal input, #address-modal select, #address-modal textarea {
-    background-color: #374151 !important;
-    border: 1px solid #4B5563 !important;
-    color: white !important;
-}
-</style>
-
+{% block extra_js %}
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

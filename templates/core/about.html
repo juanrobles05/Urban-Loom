@@ -3,6 +3,10 @@
 
 {% block title %}About Us - Urban Loom{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="min-h-screen bg-black text-white">
     <!-- Hero Section with Background Pattern -->
@@ -15,7 +19,7 @@
                         Nuestra Historia
                     </span>
                 </div>
-                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight shop-title-gradient">
                     ABOUT URBAN LOOM
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
@@ -53,7 +57,7 @@
 
                     <!-- Story Image -->
                     <div class="relative">
-                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 h-96 flex items-center justify-center">
+                        <div class="bg-gray-900 rounded-2xl p-8 h-96 flex items-center justify-center">
                             <img src="{% static 'img/Logo.svg' %}" alt="Urban Loom Logo" class="w-48 h-48 opacity-80">
                         </div>
                         <!-- Decorative elements -->

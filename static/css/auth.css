@@ -1,0 +1,97 @@
+/* Authentication Pages Styles (Login & Register) */
+
+/* Form container */
+.auth-container {
+    min-height: 100vh;
+}
+
+/* Input fields */
+.auth-input {
+    padding-left: 2.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    background-color: #000000;
+    border: 1px solid #374151;
+    color: white;
+    width: 100%;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: white;
+}
+
+/* Input icons */
+.auth-input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+}
+
+/* Form container card */
+.auth-card {
+    background-color: #111827;
+    border: 1px solid #1F2937;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 2rem;
+}
+
+/* Submit button */
+.auth-submit-btn {
+    width: 100%;
+    background-color: white;
+    color: black;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.auth-submit-btn:hover {
+    background-color: #F3F4F6;
+}
+
+/* Error messages */
+.auth-error {
+    color: #EF4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #7F1D1D;
+}
+
+/* Success messages */
+.auth-success {
+    color: #10B981;
+    font-size: 0.875rem;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #065F46;
+    margin-bottom: 1rem;
+}
+
+/* Links */
+.auth-link {
+    color: white;
+    text-decoration: underline;
+}
+
+.auth-link:hover {
+    color: #D1D5DB;
+}
+
+/* Gradient text */
+.auth-title-gradient {
+    background: linear-gradient(to right, white, #4B5563, black);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

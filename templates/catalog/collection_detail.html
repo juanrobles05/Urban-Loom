@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}{{ collection.name }} - {{ collection.season }} - Urban Loom{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/collections.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
@@ -15,7 +20,7 @@
                         {% if collection.image %}
                             <img src="{{ collection.image.url }}" alt="{{ collection.name }}" class="w-full h-80 object-cover rounded-lg shadow-2xl">
                         {% else %}
-                            <div class="w-full h-80 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center rounded-lg shadow-2xl">
+                            <div class="w-full h-80 bg-gray-800 flex items-center justify-center rounded-lg shadow-2xl">
                                 <img src="{% static 'img/Logo.png' %}"
                                      alt="Urban Loom Logo"
                                      class="w-24 h-24 object-contain opacity-60">
@@ -100,7 +105,7 @@
                         </div>
                         <h3 class="text-lg font-bold mb-2">{{ product.name }}</h3>
                         <p class="text-gray-300 text-sm mb-2">{{ product.description|truncatewords:10 }}</p>
-                        <p class="text-white font-bold">${{ product.price|floatformat:0 }} COP</p>
+                        <p class="text-white font-bold">{{ product.price|format_cop }}</p>
                     </a>
                     {% endfor %}
                 </div>

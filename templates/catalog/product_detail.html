@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}{{ product.name }} - Urban Loom{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product-detail.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
@@ -14,10 +19,8 @@
                     <div class="relative overflow-hidden rounded-2xl shadow-2xl">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-96 lg:h-[600px] object-cover"/>
-                            <!-- Image overlay for better visual -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         {% else %}
-                            <div class="w-full h-96 lg:h-[600px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center rounded-2xl">
+                            <div class="w-full h-96 lg:h-[600px] bg-gray-900 flex items-center justify-center rounded-2xl">
                                 <div class="text-center">
                                     <img src="{% static 'img/Logo.png' %}" alt="Urban Loom" class="w-24 h-24 mx-auto mb-4 opacity-50"/>
                                     <span class="text-gray-500 text-lg">{{ product.name }}</span>
@@ -47,7 +50,7 @@
                     <!-- Price and Stock -->
                     <div class="border-t border-gray-800 pt-8">
                         <div class="flex items-center justify-between mb-6">
-                            <span class="text-4xl lg:text-5xl font-bold">${{ product.price|floatformat:0 }} COP</span>
+                            <span class="text-4xl lg:text-5xl font-bold">{{ product.price|format_cop }}</span>
                             {% if product.stock > 0 %}
                                 <div class="flex items-center space-x-2">
                                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
