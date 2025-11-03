@@ -1,0 +1,160 @@
+/* Shop Page Styles */
+
+/* Hero Section */
+.shop-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+}
+
+.shop-hero-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.2;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="%23333" stroke-width="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+}
+
+/* Filter sidebar */
+.filter-sidebar {
+    background-color: rgba(17, 24, 39, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #1F2937;
+}
+
+/* Filter inputs */
+.filter-input {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: white;
+}
+
+.filter-input::placeholder {
+    color: #9CA3AF;
+}
+
+.filter-input:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Filter select */
+.filter-select {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: white;
+    appearance: none;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Product card */
+.product-card {
+    background-color: #111827;
+    border: 1px solid #1F2937;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.product-card-image {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.product-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.product-card:hover .product-card-image img {
+    transform: scale(1.1);
+}
+
+/* Badge styles */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-new {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.badge-sale {
+    background-color: #EF4444;
+    color: white;
+}
+
+.badge-out-of-stock {
+    background-color: #6B7280;
+    color: white;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: white;
+    color: black;
+    padding: 0.75rem;
+    font-weight: bold;
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #E5E7EB;
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: rgba(31, 41, 55, 0.8);
+    color: white;
+    padding: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.75rem;
+    border: 1px solid #374151;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #374151;
+    border-color: #4B5563;
+}
+
+/* Pulse animation for badges */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

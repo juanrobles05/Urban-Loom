@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Urban Loom{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-black text-white">
 
@@ -97,29 +98,12 @@
     </div>
 </footer>
 
-<!-- Script para actualizar contador del carrito -->
-<script>
-function updateCartCount() {
-    {% if user.is_authenticated %}
-    fetch('/orders/cart-count/')
-        .then(response => response.json())
-        .then(data => {
-            const cartCount = document.getElementById('cart-count');
-            if (data.count > 0) {
-                cartCount.textContent = data.count;
-                cartCount.classList.remove('hidden');
-            } else {
-                cartCount.classList.add('hidden');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    {% endif %}
-}
+<!-- Cart counter script -->
+{% if user.is_authenticated %}
+<script src="{% static 'js/cart-counter.js' %}"></script>
+{% endif %}
 
-document.addEventListener('DOMContentLoaded', function() {
-    updateCartCount();
-});
-</script>
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

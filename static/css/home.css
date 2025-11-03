@@ -1,0 +1,188 @@
+/* Home/Storefront Styles */
+
+/* Hero section */
+.hero-section {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: black;
+}
+
+.hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, black, #1F2937, black);
+    opacity: 0.6;
+}
+
+/* Hero title gradient */
+.hero-title {
+    font-size: 7rem;
+    font-weight: bold;
+    letter-spacing: -0.05em;
+    background: linear-gradient(to right, white, #4B5563, black);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 5rem;
+    }
+}
+
+/* Button styles */
+.hero-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem;
+    font-size: 1.125rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+}
+
+.hero-btn-primary {
+    background-color: white;
+    color: black;
+}
+
+.hero-btn-primary:hover {
+    background-color: #F3F4F6;
+}
+
+.hero-btn-secondary {
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+}
+
+.hero-btn-secondary:hover {
+    background-color: #111827;
+}
+
+/* Hero image */
+.hero-image-container {
+    position: relative;
+}
+
+.hero-image-blur {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(191, 219, 254, 0.2), rgba(147, 197, 253, 0.2));
+    border-radius: 1.5rem;
+    filter: blur(3rem);
+}
+
+.hero-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Features section */
+.features-section {
+    padding: 5rem 0;
+    background-color: #111827;
+}
+
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    background-color: black;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Collections section */
+.collections-section {
+    padding: 5rem 0;
+    background-color: black;
+}
+
+.collection-card {
+    cursor: pointer;
+    border: 1px solid #1F2937;
+    background-color: #111827;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s;
+}
+
+.collection-card:hover {
+    background-color: #1F2937;
+    transform: translateY(-0.5rem);
+}
+
+.collection-image-container {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 0.5rem 0.5rem 0 0;
+    position: relative;
+}
+
+.collection-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s;
+}
+
+.collection-card:hover .collection-image {
+    transform: scale(1.1);
+}
+
+.collection-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.collection-info {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    color: white;
+}
+
+.collection-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.collection-count {
+    color: #D1D5DB;
+}
+
+/* Badge */
+.badge-new {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+/* Hover lift effect */
+.hover-lift {
+    transition: all 0.3s;
+}
+
+.hover-lift:hover {
+    transform: translateY(-0.5rem);
+}
