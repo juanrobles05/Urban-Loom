@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import ShippingAddress
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 import json
 
 
@@ -47,28 +48,28 @@ def logout_user(request):
 @login_required
 def profile_view(request):
     user = request.user
-    
+
     # Obtener o crear el perfil del usuario
     try:
-        profile = user.userprofile
+        profile = user.profile
     except:
-        try:
-            profile = user.profile
-        except:
-            profile = None
+        from .models import UserProfile
+        profile = UserProfile.objects.create(user=user)
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=profile) if profile else None
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
 
-        if user_form.is_valid() and (profile_form is None or profile_form.is_valid()):
+        if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
-            if profile_form:
-                profile_form.save()
-            return redirect('profile')  # redirige al mismo perfil
+            profile_form.save()
+            messages.success(request, '¡Perfil actualizado exitosamente!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
     else:
         user_form = UserForm(instance=user)
-        profile_form = ProfileForm(instance=profile) if profile else None
+        profile_form = ProfileForm(instance=profile)
 
     context = {
         'user_form': user_form,
@@ -95,24 +96,24 @@ def add_shipping_address(request):
     print(f"add_shipping_address called with method: {request.method}")
     print(f"Headers: {dict(request.headers)}")
     print(f"POST data: {request.POST}")
-    
+
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST)
         print(f"Form is valid: {form.is_valid()}")
         if not form.is_valid():
             print(f"Form errors: {form.errors}")
-            
+
         if form.is_valid():
             address = form.save(commit=False)
             address.user = request.user
             address.save()
             print(f"Address saved successfully: {address}")
-            
+
             # Check if it's an AJAX request by looking at Accept header
             if 'application/json' in request.headers.get('Accept', ''):
                 print("Returning JSON response")
                 return JsonResponse({'success': True, 'message': 'Dirección agregada exitosamente'})
-            
+
             return redirect('profile')
         else:
             if 'application/json' in request.headers.get('Accept', ''):
@@ -135,16 +136,16 @@ def edit_shipping_address(request, address_id):
         if 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({'success': False, 'message': 'Dirección no encontrada'})
         return redirect('profile')
-    
+
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST, instance=address)
         if form.is_valid():
             form.save()
-            
+
             # Check if it's an AJAX request
             if 'application/json' in request.headers.get('Accept', ''):
                 return JsonResponse({'success': True, 'message': 'Dirección actualizada exitosamente'})
-            
+
             return redirect('profile')
         else:
             if 'application/json' in request.headers.get('Accept', ''):
@@ -161,14 +162,14 @@ def delete_shipping_address(request, address_id):
         if 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({'success': False, 'message': 'Dirección no encontrada'})
         return redirect('profile')
-    
+
     if request.method == 'POST':
         address.delete()
-        
+
         # Check if it's an AJAX request
         if 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({'success': True, 'message': 'Dirección eliminada exitosamente'})
-        
+
         return redirect('profile')
-    
+
     return render(request, 'accounts/delete_address.html', {'address': address})

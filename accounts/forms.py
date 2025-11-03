@@ -35,9 +35,24 @@ class LoginForm(AuthenticationForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "phone_number", "date_of_birth"]
+        fields = ["first_name", "last_name", "email", "phone_number"]
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={"type": "date"}),
+            'first_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
+                'placeholder': 'Nombre'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
+                'placeholder': 'Apellido'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
+                'placeholder': 'Email'
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
+                'placeholder': 'Teléfono'
+            }),
         }
 
 
@@ -46,7 +61,14 @@ class ProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ["bio", "profile_picture"]
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 4}),
+            'bio': forms.Textarea(attrs={
+                'rows': 4,
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
+                'placeholder': 'Cuéntanos sobre ti...'
+            }),
+            'profile_picture': forms.FileInput(attrs={
+                'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white'
+            }),
         }
 
 class ShippingAddressForm(forms.ModelForm):

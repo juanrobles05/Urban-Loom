@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
 
 {% block title %}Checkout - Urban Loom{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-black text-white">
@@ -30,14 +35,14 @@
                     <div class="lg:col-span-2">
                         <div class="bg-gray-900 rounded-lg p-6 mb-8">
                             <h2 class="text-2xl font-bold mb-6">DIRECCIÓN DE ENVÍO</h2>
-                            
+
                             {% if shipping_addresses %}
                                 <form method="post">
                                     {% csrf_token %}
                                     <div class="space-y-4">
                                         {% for address in shipping_addresses %}
                                         <label class="block cursor-pointer">
-                                            <input type="radio" name="shipping_address" value="{{ address.id }}" 
+                                            <input type="radio" name="shipping_address" value="{{ address.id }}"
                                                    class="sr-only peer" required>
                                             <div class="border border-gray-700 rounded-lg p-4 peer-checked:border-blue-500 peer-checked:bg-blue-900/20 hover:border-gray-600 transition-colors">
                                                 <div class="flex justify-between items-start">
@@ -52,13 +57,13 @@
                                         </label>
                                         {% endfor %}
                                     </div>
-                                    
+
                                     <div class="mt-8 flex justify-between">
-                                        <a href="{% url 'orders:cart' %}" 
+                                        <a href="{% url 'orders:cart' %}"
                                            class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded transition-colors">
                                             ← VOLVER AL CARRITO
                                         </a>
-                                        <button type="submit" 
+                                        <button type="submit"
                                                 class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded transition-colors">
                                             CONTINUAR AL PAGO →
                                         </button>
@@ -67,7 +72,7 @@
                             {% else %}
                                 <div class="text-center py-8">
                                     <p class="text-gray-400 mb-4">No tienes direcciones de envío registradas.</p>
-                                    <a href="{% url 'add_shipping_address' %}" 
+                                    <a href="{% url 'add_shipping_address' %}"
                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-colors">
                                         AGREGAR DIRECCIÓN
                                     </a>
@@ -80,35 +85,35 @@
                     <div class="lg:col-span-1">
                         <div class="bg-gray-900 rounded-lg p-6 sticky top-6">
                             <h2 class="text-xl font-bold mb-6">RESUMEN DEL PEDIDO</h2>
-                            
+
                             <!-- Items del Carrito -->
                             <div class="space-y-4 mb-6">
                                 {% for item in cart_items %}
                                 <div class="flex items-center gap-3">
                                     {% if item.product.image %}
-                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" 
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
                                              class="w-12 h-12 object-cover rounded">
                                     {% else %}
                                         <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center">
                                             <span class="text-gray-500 text-xs">Sin img</span>
                                         </div>
                                     {% endif %}
-                                    <div class="flex-grow">
+                                    <div class="flex-1">
                                         <p class="text-sm font-semibold">{{ item.product.name }}</p>
                                         <p class="text-xs text-gray-400">Cantidad: {{ item.quantity }}</p>
                                     </div>
-                                    <p class="text-sm font-bold">${{ item.get_total }}</p>
+                                    <p class="text-sm font-bold">{{ item.get_total|format_cop }}</p>
                                 </div>
                                 {% endfor %}
                             </div>
-                            
+
                             <hr class="border-gray-700 mb-4">
-                            
+
                             <!-- Totales -->
                             <div class="space-y-2 mb-6">
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-300">Subtotal ({{ total_items }} item{{ total_items|pluralize }})</span>
-                                    <span class="text-white">${{ total_price }}</span>
+                                    <span class="text-white">{{ total_price|format_cop }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-300">Envío</span>
@@ -117,7 +122,7 @@
                                 <hr class="border-gray-700">
                                 <div class="flex justify-between text-lg">
                                     <span class="font-bold">Total</span>
-                                    <span class="font-bold">${{ total_price }}</span>
+                                    <span class="font-bold">{{ total_price|format_cop }}</span>
                                 </div>
                             </div>
 

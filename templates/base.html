@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Urban Loom{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-black text-white">
 
@@ -31,10 +32,10 @@
                         <!-- Carrito de Compras -->
                         <a href="{% url 'orders:cart' %}" class="relative hover:text-gray-300 transition-colors" title="Carrito">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 13m0 0l2.5 5M9 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM20.5 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/>
                             </svg>
-                            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 items-center justify-center hidden">0</span>
                         </a>
                         <!-- Wishlist Button -->
                         <a href="{% url 'recommendations:wishlist' %}" class="relative">
@@ -97,29 +98,12 @@
     </div>
 </footer>
 
-<!-- Script para actualizar contador del carrito -->
-<script>
-function updateCartCount() {
-    {% if user.is_authenticated %}
-    fetch('/orders/cart-count/')
-        .then(response => response.json())
-        .then(data => {
-            const cartCount = document.getElementById('cart-count');
-            if (data.count > 0) {
-                cartCount.textContent = data.count;
-                cartCount.classList.remove('hidden');
-            } else {
-                cartCount.classList.add('hidden');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    {% endif %}
-}
+<!-- Cart counter script -->
+{% if user.is_authenticated %}
+<script src="{% static 'js/cart-counter.js' %}"></script>
+{% endif %}
 
-document.addEventListener('DOMContentLoaded', function() {
-    updateCartCount();
-});
-</script>
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

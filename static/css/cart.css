@@ -1,0 +1,136 @@
+/* Cart & Orders Styles */
+
+/* Cart item card */
+.cart-item-card {
+    background-color: #111827;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+/* Quantity input */
+.quantity-input {
+    width: 4rem;
+    background-color: #1F2937;
+    border: 1px solid #374151;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+    color: white;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: white;
+}
+
+/* Cart summary card */
+.cart-summary {
+    background-color: #111827;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+/* Empty cart icon */
+.empty-cart-icon {
+    margin: 0 auto;
+    height: 6rem;
+    width: 6rem;
+    color: #4B5563;
+}
+
+/* Update button */
+.update-cart-btn {
+    background-color: #2563EB;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+}
+
+.update-cart-btn:hover {
+    background-color: #1D4ED8;
+}
+
+/* Remove button */
+.remove-cart-btn {
+    color: #F87171;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.remove-cart-btn:hover {
+    color: #FCA5A5;
+}
+
+/* Checkout button */
+.checkout-btn {
+    display: block;
+    width: 100%;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+    background-color: #E5E7EB;
+}
+
+/* Order history */
+.order-card {
+    background-color: #111827;
+    border: 1px solid #1F2937;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.order-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.order-status-pending {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #FCD34D;
+}
+
+.order-status-processing {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #60A5FA;
+}
+
+.order-status-shipped {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #A78BFA;
+}
+
+.order-status-delivered {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #34D399;
+}
+
+.order-status-cancelled {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #F87171;
+}
+
+/* Sticky summary */
+.sticky-summary {
+    position: sticky;
+    top: 1.5rem;
+}
+
+/* Warning badge */
+.stock-warning {
+    color: #FBBF24;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

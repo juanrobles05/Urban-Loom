@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load price_filters %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="py-20">
@@ -16,7 +21,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {% for product in recommendations %}
         <div class="group cursor-pointer border bg-card hover:bg-card/80 transition-all duration-500 rounded-lg shadow hover-lift">
-          <div class="aspect-[3/4] overflow-hidden rounded-t-lg relative">
+          <div class="aspect-3/4 overflow-hidden rounded-t-lg relative">
             <img src="{% static 'img/Logo.png' %}" alt="{{ product.product.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
             {% if product.product.badge %}
               <span class="absolute top-4 left-4 bg-primary text-primary-foreground px-2 py-1 rounded">{{ product.product.badge }}</span>
@@ -35,9 +40,9 @@
                 <span class="text-xs text-muted-foreground">({{ product.product.reviews|default:"0" }})</span>
               </div>
               <div class="flex items-center space-x-2">
-                <span class="text-xl font-bold text-primary">${{ product.product.price }}</span>
+                <span class="text-xl font-bold text-primary">{{ product.product.price|format_cop }}</span>
                 {% if product.product.original_price %}
-                  <span class="text-sm text-muted-foreground line-through">${{ product.product.original_price }}</span>
+                  <span class="text-sm text-muted-foreground line-through">{{ product.product.original_price|format_cop }}</span>
                 {% endif %}
               </div>
             </div>
