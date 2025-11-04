@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -15,16 +15,16 @@
 	<div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center relative z-10">
 		<div class="space-y-8">
 			<div class="space-y-6">
-				<span class="inline-block bg-white text-black border border-white px-4 py-2 rounded-full font-semibold">New Collection Available</span>
-				<h1 class="text-7xl md:text-8xl font-bold tracking-tighter hero-title-gradient">URBAN<br>LOOM</h1>
-				<p class="text-xl text-gray-300 leading-relaxed max-w-lg">Descubre streetwear premium que define tu estilo. Prendas auténticas para el estilo de vida urbano moderno.</p>
+				<span class="inline-block bg-white text-black border border-white px-4 py-2 rounded-full font-semibold">{{ t.HOME_NEW_COLLECTION }}</span>
+				<h1 class="text-7xl md:text-8xl font-bold tracking-tighter hero-title-gradient">{{ t.SITE_NAME|upper }}</h1>
+				<p class="text-xl text-gray-300 leading-relaxed max-w-lg">{{ t.HOME_HERO_DESC }}</p>
 			</div>
 			<div class="flex flex-col sm:flex-row gap-4">
 				<a href="{% url 'catalog:shop' %}">
-					<button class="bg-white hover:bg-gray-100 text-black px-8 py-6 text-lg rounded-full font-semibold flex items-center gap-2 shadow-lg transition">Shop <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></button>
+					<button class="bg-white hover:bg-gray-100 text-black px-8 py-6 text-lg rounded-full font-semibold flex items-center gap-2 shadow-lg transition">{{ t.NAV_SHOP }} <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></button>
 				</a>
 				<a href="{% url 'catalog:collections' %}">
-					<button class="border border-white px-8 py-6 text-lg rounded-full font-semibold bg-transparent text-white hover:bg-gray-900 transition">Collections</button>
+					<button class="border border-white px-8 py-6 text-lg rounded-full font-semibold bg-transparent text-white hover:bg-gray-900 transition">{{ t.NAV_COLLECTIONS }}</button>
 				</a>
 			</div>
 		</div>
@@ -43,22 +43,22 @@
 				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9V7a4 4 0 014-4h10a4 4 0 014 4v2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="9" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>
 				</div>
-				<h3 class="text-xl font-semibold text-white">Free Shipping</h3>
-				<p class="text-gray-300">Envío gratis en compras superiores a $100</p>
+				<h3 class="text-xl font-semibold text-white">{{ t.FEATURES_FREE_SHIPPING }}</h3>
+				<p class="text-gray-300">{{ t.FEATURES_FREE_SHIPPING_DESC }}</p>
 			</div>
 			<div class="text-center space-y-4">
 				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2"/></svg>
 				</div>
-				<h3 class="text-xl font-semibold text-white">Authentic Guarantee</h3>
-				<p class="text-gray-300">100% prendas auténticas</p>
+				<h3 class="text-xl font-semibold text-white">{{ t.FEATURES_AUTHENTIC }}</h3>
+				<p class="text-gray-300">{{ t.FEATURES_AUTHENTIC_DESC }}</p>
 			</div>
 			<div class="text-center space-y-4">
 				<div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><bolt /><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
 				</div>
-				<h3 class="text-xl font-semibold text-white">Limited Drops</h3>
-				<p class="text-gray-300">Lanzamientos exclusivos cada semana</p>
+				<h3 class="text-xl font-semibold text-white">{{ t.FEATURES_LIMITED_DROPS }}</h3>
+				<p class="text-gray-300">{{ t.FEATURES_LIMITED_DROPS_DESC }}</p>
 			</div>
 		</div>
 	</div>
@@ -68,8 +68,8 @@
 <section class="py-20 bg-black">
 	<div class="container mx-auto px-4">
 		<div class="text-center mb-16">
-			<h2 class="text-5xl font-bold mb-6 text-white">Explora Colecciones</h2>
-			<p class="text-gray-300 text-xl max-w-2xl mx-auto">Colecciones seleccionadas que representan la esencia de la cultura urbana</p>
+			<h2 class="text-5xl font-bold mb-6 text-white">{{ t.HOME_EXPLORE_COLLECTIONS }}</h2>
+			<p class="text-gray-300 text-xl max-w-2xl mx-auto">{{ t.HOME_EXPLORE_DESC }}</p>
 		</div>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 			{% for collection in latest_collections %}
@@ -83,18 +83,18 @@
 					<div class="absolute inset-0 collection-overlay"></div>
 					<div class="absolute bottom-6 left-6 text-white">
 						<h3 class="text-2xl font-bold mb-2 text-white">{{ collection.name }}</h3>
-						<p class="text-gray-300">{{ collection.pieces }} piezas</p>
+						<p class="text-gray-300">{{ collection.pieces }} {{ t.HOME_PIECES }}</p>
 					</div>
 				</div>
 			</a>
 			{% empty %}
 			<div class="group cursor-pointer border border-gray-800 bg-gray-900 hover:bg-gray-800 transition-all duration-500 hover-lift rounded-lg shadow-lg">
 				<div class="aspect-4/5 overflow-hidden rounded-t-lg relative">
-					<img src="{% static 'img/Logo.png' %}" alt="Coming Soon" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+					<img src="{% static 'img/Logo.png' %}" alt="{{ t.HOME_COMING_SOON }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 					<div class="absolute inset-0 collection-overlay"></div>
 					<div class="absolute bottom-6 left-6 text-white">
-						<h3 class="text-2xl font-bold mb-2 text-white">Coming Soon</h3>
-						<p class="text-gray-300">Nueva colección</p>
+						<h3 class="text-2xl font-bold mb-2 text-white">{{ t.HOME_COMING_SOON }}</h3>
+						<p class="text-gray-300">{{ t.HOME_NEW_COLLECTION_TEXT }}</p>
 					</div>
 				</div>
 			</div>

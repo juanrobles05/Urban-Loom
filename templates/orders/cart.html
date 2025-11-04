@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}Carrito de Compras - Urban Loom{% endblock %}
+{% block title %}{{ t.CART_TITLE }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cart.css' %}">
@@ -14,9 +14,9 @@
     <section class="py-12 bg-gray-900">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">CARRITO DE COMPRAS</h1>
+                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">{{ t.CART_TITLE|upper }}</h1>
                 {% if total_items > 0 %}
-                    <p class="text-center text-gray-300">Tienes {{ total_items }} producto{{ total_items|pluralize }} en tu carrito</p>
+                    <p class="text-center text-gray-300">{{ total_items }} {{ t.CART_PRODUCT }}{{ total_items|pluralize }}</p>
                 {% endif %}
             </div>
         </div>
@@ -88,31 +88,31 @@
                         <!-- Resumen del Pedido -->
                         <div class="lg:col-span-1">
                             <div class="bg-gray-900 rounded-lg p-6 sticky top-6">
-                                <h2 class="text-2xl font-bold mb-6">RESUMEN DEL PEDIDO</h2>
+                                <h2 class="text-2xl font-bold mb-6">{{ t.CART_SUMMARY|upper }}</h2>
 
                                 <div class="space-y-3 mb-6">
                                     <div class="flex justify-between">
-                                        <span class="text-gray-300">Subtotal ({{ total_items }} item{{ total_items|pluralize }})</span>
+                                        <span class="text-gray-300">{{ t.CART_SUBTOTAL }} ({{ total_items }} {{ t.CHECKOUT_ITEMS }})</span>
                                         <span class="text-white font-bold">{{ total_price|format_cop }}</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-gray-300">Envío</span>
-                                        <span class="text-white">Gratis</span>
+                                        <span class="text-gray-300">{{ t.CART_SHIPPING }}</span>
+                                        <span class="text-white">{{ t.CART_FREE_SHIPPING }}</span>
                                     </div>
                                     <hr class="border-gray-700">
                                     <div class="flex justify-between text-lg">
-                                        <span class="font-bold">Total</span>
+                                        <span class="font-bold">{{ t.CART_TOTAL }}</span>
                                         <span class="font-bold">{{ total_price|format_cop }}</span>
                                     </div>
                                 </div>
 
                                 <a href="{% url 'orders:checkout' %}" class="block w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200 transition-colors mb-4 text-center">
-                                    PROCEDER AL CHECKOUT
+                                    {{ t.CART_CHECKOUT|upper }}
                                 </a>
 
                                 <div class="text-center">
                                     <a href="{% url 'catalog:collections' %}" class="text-blue-400 hover:text-blue-300 text-sm transition-colors">
-                                        ← Continuar Comprando
+                                        ← {{ t.CART_CONTINUE_SHOPPING }}
                                     </a>
                                 </div>
                             </div>
@@ -128,11 +128,11 @@
                                           d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0L17 13m0 0l2.5 5M9 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM20.5 19.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/>
                                 </svg>
                             </div>
-                            <h2 class="text-2xl font-bold mb-4">Tu carrito está vacío</h2>
-                            <p class="text-gray-400 mb-8">Descubre nuestra última colección y encuentra productos increíbles.</p>
+                            <h2 class="text-2xl font-bold mb-4">{{ t.CART_EMPTY }}</h2>
+                            <p class="text-gray-400 mb-8">{{ t.CART_EMPTY_DESCRIPTION }}</p>
                             <a href="{% url 'catalog:collections' %}" 
                                class="inline-block bg-white text-black font-bold px-8 py-3 rounded hover:bg-gray-200 transition-colors">
-                                EXPLORAR COLECCIONES
+                                {{ t.HOME_EXPLORE_COLLECTIONS|upper }}
                             </a>
                         </div>
                     </div>

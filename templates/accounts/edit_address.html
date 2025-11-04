@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Editar dirección de envío</h2>
+<h2>{{ t.ADDRESS_EDIT_TITLE }}</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Guardar cambios</button>
+    <button type="submit">{{ t.ADDRESS_SAVE_CHANGES }}</button>
 </form>
-<a href="{% url 'list_shipping_addresses' %}">Volver a direcciones</a>
+<a href="{% url 'list_shipping_addresses' %}">{{ t.ADDRESS_BACK_TO_LIST }}</a>
 {% endblock %}

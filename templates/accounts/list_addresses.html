@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Mis direcciones de envío</h2>
+<h2>{{ t.ADDRESS_LIST_TITLE }}</h2>
 <ul>
     {% for address in addresses %}
     <li>
         {{ address.street }}, {{ address.city }}, {{ address.state_or_province }}, {{ address.postal_code }}
-        <a href="{% url 'edit_shipping_address' address.id %}">Editar</a>
-        <a href="{% url 'delete_shipping_address' address.id %}">Eliminar</a>
+        <a href="{% url 'edit_shipping_address' address.id %}">{{ t.ADDRESS_EDIT }}</a>
+        <a href="{% url 'delete_shipping_address' address.id %}">{{ t.ADDRESS_DELETE }}</a>
     </li>
     {% empty %}
-    <li>No tienes direcciones guardadas.</li>
+    <li>{{ t.ADDRESS_NO_ADDRESSES }}</li>
     {% endfor %}
 </ul>
-<a href="{% url 'add_shipping_address' %}">Agregar nueva dirección</a>
+<a href="{% url 'add_shipping_address' %}">{{ t.ADDRESS_ADD_NEW }}</a>
 {% endblock %}

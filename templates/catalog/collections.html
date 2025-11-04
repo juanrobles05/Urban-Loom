@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Collections - Urban Loom{% endblock %}
+{% block title %}{{ t.NAV_COLLECTIONS }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/collections.css' %}">
@@ -14,9 +14,9 @@
         <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grid&quot; width=&quot;8&quot; height=&quot;8&quot; patternUnits=&quot;userSpaceOnUse&quot;><path d=&quot;M 8 0 L 0 0 0 8&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;0.3&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(#grid)&quot;/></svg>');"></div>
         <div class="relative container mx-auto px-6 py-20">
             <div class="max-w-4xl mx-auto text-center">
-                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight collections-title-gradient">COLLECTIONS</h1>
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight collections-title-gradient">{{ t.NAV_COLLECTIONS|upper }}</h1>
                 <p class="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-                    Curated seasonal collections that capture the essence of urban culture and street fashion evolution.
+                    {{ t.HOME_EXPLORE_DESC }}
                 </p>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         <!-- Collection Content -->
                         <div class="order-1 lg:order-2 space-y-8">
                             <div>
-                                <span class="text-gray-400 text-sm font-bold tracking-[0.2em] uppercase">Latest Collection</span>
+                                <span class="text-gray-400 text-sm font-bold tracking-[0.2em] uppercase">{{ t.HOME_NEW_COLLECTION }}</span>
                                 <h2 class="text-5xl lg:text-7xl font-bold text-white mt-4 leading-tight">
                                     {{ latest_collection.name }}
                                 </h2>
@@ -66,18 +66,18 @@
                             <div class="flex gap-12 py-6 border-t border-b border-gray-800">
                                 <div>
                                     <div class="text-3xl font-bold text-white">{{ latest_collection.pieces }}</div>
-                                    <div class="text-sm text-gray-400 mt-1">PIECES</div>
+                                    <div class="text-sm text-gray-400 mt-1">{{ t.COLLECTION_PIECES|upper }}</div>
                                 </div>
                                 <div>
                                     <div class="text-3xl font-bold text-white">{{ latest_collection.season }}</div>
-                                    <div class="text-sm text-gray-400 mt-1">SEASON</div>
+                                    <div class="text-sm text-gray-400 mt-1">{{ t.COLLECTION_SEASON|upper }}</div>
                                 </div>
                             </div>
                             
                             <div class="pt-4">
                                 <a href="{% url 'catalog:collection_detail' latest_collection.id %}" 
                                    class="inline-block bg-white text-black px-8 py-4 font-bold text-lg hover:bg-gray-200 transition-colors uppercase tracking-wide">
-                                    Shop Collection
+                                    {{ t.COLLECTION_SHOP|upper }}
                                 </a>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
     <!-- All Collections Grid -->
     <section class="py-20 bg-black">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-white">ALL COLLECTIONS</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-white">{{ t.COLLECTION_ALL_TITLE|upper }}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {% for collection in all_collections %}
                 <div class="group bg-gray-900 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 group">
@@ -109,7 +109,7 @@
                                 </div>
                             {% endif %}
                             <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <span class="text-white text-lg font-bold">VIEW COLLECTION</span>
+                                <span class="text-white text-lg font-bold">{{ t.COLLECTION_VIEW|upper }}</span>
                             </div>
 
                             <!-- Status Badge -->
@@ -143,10 +143,10 @@
                             
                             <div class="flex items-center justify-between pt-4 border-t border-gray-800">
                                 <span class="text-gray-500 text-sm font-medium">
-                                    {% if collection.pieces %}{{ collection.pieces }}{% else %}0{% endif %} pieces
+                                    {% if collection.pieces %}{{ collection.pieces }}{% else %}0{% endif %} {{ t.COLLECTION_PIECES_COUNT }}
                                 </span>
                                 <span class="text-white text-sm font-bold group-hover:underline flex items-center">
-                                    View Collection 
+                                    {{ t.COLLECTION_VIEW }} 
                                     <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
@@ -163,8 +163,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                             </svg>
                         </div>
-                        <h3 class="text-3xl font-bold text-gray-400 mb-4">No Collections Available</h3>
-                        <p class="text-gray-500 text-lg">Check back soon for new collections dropping.</p>
+                        <h3 class="text-3xl font-bold text-gray-400 mb-4">{{ t.COLLECTION_EMPTY_TITLE }}</h3>
+                        <p class="text-gray-500 text-lg">{{ t.COLLECTION_EMPTY_DESC }}</p>
                     </div>
                 </div>
                 {% endfor %}
@@ -175,7 +175,7 @@
     <!-- Collection Process - Horizontal Layout -->
     <section class="py-20 bg-gray-900">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">OUR PROCESS</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">{{ t.COLLECTION_PROCESS_TITLE|upper }}</h2>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
                 <div class="text-center">
                     <div class="mx-auto mb-4 lg:mb-6" style="position: relative; width: 48px; height: 48px;">
@@ -185,9 +185,9 @@
                             <span style="color: black; font-size: 18px; font-weight: bold;">1</span>
                         </div>
                     </div>
-                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">RESEARCH</h3>
+                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">{{ t.COLLECTION_PROCESS_RESEARCH|upper }}</h3>
                     <p class="text-gray-300 text-xs lg:text-sm leading-relaxed">
-                        We study street culture, emerging trends, and urban lifestyle to inspire our designs.
+                        {{ t.COLLECTION_PROCESS_RESEARCH_DESC }}
                     </p>
                 </div>
                 <div class="text-center">
@@ -198,9 +198,9 @@
                             <span style="color: black; font-size: 18px; font-weight: bold;">2</span>
                         </div>
                     </div>
-                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">DESIGN</h3>
+                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">{{ t.COLLECTION_PROCESS_DESIGN|upper }}</h3>
                     <p class="text-gray-300 text-xs lg:text-sm leading-relaxed">
-                        Our team creates innovative designs that balance aesthetics with functionality.
+                        {{ t.COLLECTION_PROCESS_DESIGN_DESC }}
                     </p>
                 </div>
                 <div class="text-center">
@@ -211,9 +211,9 @@
                             <span style="color: black; font-size: 18px; font-weight: bold;">3</span>
                         </div>
                     </div>
-                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">CRAFT</h3>
+                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">{{ t.COLLECTION_PROCESS_CRAFT|upper }}</h3>
                     <p class="text-gray-300 text-xs lg:text-sm leading-relaxed">
-                        Premium materials and expert craftsmanship bring each piece to life.
+                        {{ t.COLLECTION_PROCESS_CRAFT_DESC }}
                     </p>
                 </div>
                 <div class="text-center">
@@ -224,9 +224,9 @@
                             <span style="color: black; font-size: 18px; font-weight: bold;">4</span>
                         </div>
                     </div>
-                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">RELEASE</h3>
+                    <h3 class="text-lg lg:text-xl font-bold mb-3 lg:mb-4">{{ t.COLLECTION_PROCESS_RELEASE|upper }}</h3>
                     <p class="text-gray-300 text-xs lg:text-sm leading-relaxed">
-                        Collections launch with limited quantities to maintain exclusivity.
+                        {{ t.COLLECTION_PROCESS_RELEASE_DESC }}
                     </p>
                 </div>
             </div>

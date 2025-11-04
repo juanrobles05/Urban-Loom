@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Mi Perfil{% endblock %}
+{% block title %}{{ t.PROFILE_TITLE }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
@@ -15,10 +15,10 @@
         <div class="relative container mx-auto px-6 py-20">
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight profile-title-gradient">
-                    MI PERFIL
+                    {{ t.PROFILE_TITLE|upper }}
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-                    Gestiona tu información personal y configuración de cuenta.
+                    {{ t.PROFILE_SUBTITLE }}
                 </p>
             </div>
         </div>
@@ -51,11 +51,11 @@
                         <div>
                             <h2 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h2>
                             <p class="text-gray-400">{{ user.email }}</p>
-                            <p class="text-gray-500 text-sm">Member since {{ user.date_joined|date:"F Y" }}</p>
+                            <p class="text-gray-500 text-sm">{{ user.date_joined|date:"F Y" }}</p>
                         </div>
                     </div>
                     <a href="{% url 'logout' %}" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
-                        Cerrar Sesión
+                        {{ t.NAV_LOGOUT }}
                     </a>
                 </div>
                 <!-- Edit Profile Form -->
@@ -64,39 +64,39 @@
 
                     <!-- Personal Information Section -->
                     <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
-                        <h3 class="text-xl font-bold mb-6">Información Personal</h3>
+                        <h3 class="text-xl font-bold mb-6">{{ t.PROFILE_PERSONAL_INFO }}</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Nombre</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.AUTH_FIRST_NAME }}</label>
                                 {{ user_form.first_name }}
                                 {% if user_form.first_name.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ user_form.first_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Apellido</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.AUTH_LAST_NAME }}</label>
                                 {{ user_form.last_name }}
                                 {% if user_form.last_name.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ user_form.last_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.AUTH_EMAIL }}</label>
                                 {{ user_form.email }}
                                 {% if user_form.email.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ user_form.email.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Teléfono</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.AUTH_PHONE }}</label>
                                 {{ user_form.phone_number }}
                                 {% if user_form.phone_number.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ user_form.phone_number.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Fecha de Nacimiento</label>
-                                <input type="text" value="{% if user.date_of_birth %}{{ user.date_of_birth|date:'d/m/Y' }}{% else %}No especificada{% endif %}" readonly class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.AUTH_DATE_OF_BIRTH }}</label>
+                                <input type="text" value="{% if user.date_of_birth %}{{ user.date_of_birth|date:'d/m/Y' }}{% else %}{{ t.PROFILE_DATE_OF_BIRTH_INFO }}{% endif %}" readonly class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-400 cursor-not-allowed">
                             </div>
                         </div>
                     </div>
@@ -104,23 +104,23 @@
                     <!-- Additional Profile Information -->
                     {% if profile_form %}
                     <div class="border border-gray-800 rounded-xl bg-gray-800 p-6">
-                        <h3 class="text-xl font-bold mb-6">Información Adicional</h3>
+                        <h3 class="text-xl font-bold mb-6">{{ t.PROFILE_BIO }}</h3>
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Biografía</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.PROFILE_BIO }}</label>
                                 {{ profile_form.bio }}
                                 {% if profile_form.bio.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ profile_form.bio.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Foto de Perfil</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.PROFILE_PROFILE_PICTURE }}</label>
                                 {{ profile_form.profile_picture }}
                                 {% if profile_form.profile_picture.errors %}
                                     <p class="text-red-400 text-sm mt-1">{{ profile_form.profile_picture.errors.0 }}</p>
                                 {% endif %}
                                 {% if user.profile.profile_picture %}
-                                    <p class="text-gray-400 text-sm mt-2">Archivo actual: {{ user.profile.profile_picture.name }}</p>
+                                    <p class="text-gray-400 text-sm mt-2">{{ t.PROFILE_CURRENT_PICTURE }}: {{ user.profile.profile_picture.name }}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                     <!-- Submit Button for Profile -->
                     <div class="flex justify-end">
                         <button type="submit" class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors">
-                            Guardar Cambios de Perfil
+                            {{ t.PROFILE_SAVE_CHANGES }}
                         </button>
                     </div>
                 </form>
@@ -138,9 +138,9 @@
                 <!-- Shipping Addresses Section (Outside Profile Form) -->
                 <div class="border border-gray-800 rounded-xl bg-gray-800 p-6 mt-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold">Direcciones de Envío</h3>
+                            <h3 class="text-xl font-bold">{{ t.PROFILE_SHIPPING_ADDRESSES }}</h3>
                             <button type="button" id="open-address-modal-btn" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
-                                Agregar Dirección
+                                {{ t.PROFILE_ADD_ADDRESS }}
                             </button>
                         </div>
 
@@ -155,10 +155,10 @@
                                             </div>
                                             <div class="flex space-x-2">
                                                 <button type="button" class="edit-address-btn px-3 py-1 bg-gray-600 hover:bg-gray-500 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
-                                                    Editar
+                                                    {{ t.PROFILE_EDIT }}
                                                 </button>
                                                 <button type="button" class="delete-address-btn px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
-                                                    Eliminar
+                                                    {{ t.PROFILE_DELETE }}
                                                 </button>
                                             </div>
                                         </div>
@@ -170,28 +170,28 @@
                                             {% csrf_token %}
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_STREET }}</label>
                                                     <input type="text" name="street" value="{{ address.street }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Ciudad</label>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_CITY }}</label>
                                                     <input type="text" name="city" value="{{ address.city }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Estado/Provincia</label>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_STATE }}</label>
                                                     <input type="text" name="state_or_province" value="{{ address.state_or_province }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-300 mb-2">Código Postal</label>
+                                                    <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_POSTAL_CODE }}</label>
                                                     <input type="text" name="postal_code" value="{{ address.postal_code }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                                                 </div>
                                             </div>
                                             <div class="flex space-x-2">
                                                 <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm transition-colors">
-                                                    Guardar
+                                                    {{ t.COMMON_SAVE }}
                                                 </button>
                                                 <button type="button" class="cancel-edit-btn px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors" data-address-id="{{ address.id }}">
-                                                    Cancelar
+                                                    {{ t.COMMON_CANCEL }}
                                                 </button>
                                             </div>
                                         </form>
@@ -199,7 +199,7 @@
                                 </div>
                             {% empty %}
                                 <div id="no-addresses" class="text-gray-400 text-center py-8">
-                                    No tienes direcciones de envío guardadas.
+                                    {{ t.PROFILE_NO_ADDRESSES }}
                                 </div>
                             {% endfor %}
                         </div>
@@ -213,32 +213,32 @@
 <div id="address-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md">
-            <h3 id="modal-title" class="text-xl font-bold mb-4">Agregar Nueva Dirección</h3>
+            <h3 id="modal-title" class="text-xl font-bold mb-4">{{ t.PROFILE_ADD_ADDRESS }}</h3>
             <form id="add-address-form">
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Calle</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_STREET }}</label>
                         <input type="text" name="street" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Ciudad</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_CITY }}</label>
                         <input type="text" name="city" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Estado/Provincia</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_STATE }}</label>
                         <input type="text" name="state_or_province" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Código Postal</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">{{ t.ADDRESS_POSTAL_CODE }}</label>
                         <input type="text" name="postal_code" required class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white">
                     </div>
                 </div>
                 <div class="flex space-x-2 mt-6">
                     <button type="submit" class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors">
-                        Agregar
+                        {{ t.ADDRESS_SAVE }}
                     </button>
                     <button type="button" id="close-modal-btn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
-                        Cancelar
+                        {{ t.ADDRESS_CANCEL }}
                     </button>
                 </div>
             </form>

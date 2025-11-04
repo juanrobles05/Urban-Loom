@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Login - Urban Loom{% endblock %}
+{% block title %}{{ t.AUTH_SIGN_IN }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
@@ -11,12 +11,12 @@
 <div class="min-h-screen flex items-center justify-center py-12 px-4">
     <div class="w-full max-w-md space-y-8">
         <div class="text-center">
-            <h1 class="text-4xl font-bold auth-title-gradient mb-2">Welcome Back</h1>
-            <p class="text-gray-400">Sign in to your Urban Loom account</p>
+            <h1 class="text-4xl font-bold auth-title-gradient mb-2">{{ t.AUTH_WELCOME_BACK }}</h1>
+            <p class="text-gray-400">{{ t.AUTH_SIGN_IN_SUBTITLE }}</p>
         </div>
         <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-lg p-8">
-            <h2 class="text-2xl font-bold text-center mb-2">Sign In</h2>
-            <p class="text-center text-gray-400 mb-6">Enter your credentials to access your account</p>
+            <h2 class="text-2xl font-bold text-center mb-2">{{ t.AUTH_SIGN_IN }}</h2>
+            <p class="text-center text-gray-400 mb-6">{{ t.AUTH_SIGN_IN_DESCRIPTION }}</p>
             <form method="post" class="space-y-4">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
@@ -27,34 +27,34 @@
                     </div>
                 {% endif %}
                 <div class="space-y-2">
-                    <label for="id_username" class="block text-sm font-medium text-white">Email</label>
+                    <label for="id_username" class="block text-sm font-medium text-white">{{ t.AUTH_EMAIL }}</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4V4zm8 8l8-8H4l8 8z"/></svg>
                         </span>
-                        <input type="email" name="username" id="id_username" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your email" required>
+                        <input type="email" name="username" id="id_username" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_EMAIL_PLACEHOLDER }}" required>
                     </div>
                     {% if form.username.errors %}
                         <div class="text-red-500 text-xs mt-1">{% for error in form.username.errors %}{{ error }}{% endfor %}</div>
                     {% endif %}
                 </div>
                 <div class="space-y-2">
-                    <label for="id_password" class="block text-sm font-medium text-white">Password</label>
+                    <label for="id_password" class="block text-sm font-medium text-white">{{ t.AUTH_PASSWORD }}</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 10V8a6 6 0 1 1 12 0v2"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg>
                         </span>
-                        <input type="password" name="password" id="id_password" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="Enter your password" required>
+                        <input type="password" name="password" id="id_password" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_PASSWORD_PLACEHOLDER }}" required>
                     </div>
                     {% if form.password.errors %}
                         <div class="text-red-500 text-xs mt-1">{% for error in form.password.errors %}{{ error }}{% endfor %}</div>
                     {% endif %}
                 </div>
-                <button type="submit" class="w-full bg-white hover:bg-gray-100 text-black font-semibold py-3 rounded-lg transition">Sign In</button>
+                <button type="submit" class="w-full bg-white hover:bg-gray-100 text-black font-semibold py-3 rounded-lg transition">{{ t.AUTH_SIGN_IN }}</button>
             </form>
             <div class="mt-6 text-center space-y-2">
-                <a href="#" class="text-sm text-white underline">Forgot your password?</a>
-                <p class="text-sm text-gray-400">Don't have an account? <a href="{% url 'register' %}" class="text-white underline">Sign up</a></p>
+                <a href="#" class="text-sm text-white underline">{{ t.AUTH_FORGOT_PASSWORD }}</a>
+                <p class="text-sm text-gray-400">{{ t.AUTH_NO_ACCOUNT }} <a href="{% url 'register' %}" class="text-white underline">{{ t.AUTH_SIGN_UP }}</a></p>
             </div>
         </div>
     </div>

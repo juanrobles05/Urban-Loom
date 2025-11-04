@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}Pago - Urban Loom{% endblock %}
+{% block title %}{{ t.PAYMENT_TITLE }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
@@ -14,13 +14,13 @@
     <section class="py-12 bg-gray-900">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">PAGO</h1>
+                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">{{ t.PAYMENT_TITLE|upper }}</h1>
                 <div class="flex justify-center items-center space-x-4 text-sm">
-                    <span class="bg-white text-black px-3 py-1 rounded font-bold">1. Carrito</span>
+                    <span class="bg-white text-black px-3 py-1 rounded font-bold">1. {{ t.CHECKOUT_STEP_CART }}</span>
                     <span class="text-gray-400">→</span>
-                    <span class="bg-white text-black px-3 py-1 rounded font-bold">2. Dirección</span>
+                    <span class="bg-white text-black px-3 py-1 rounded font-bold">2. {{ t.CHECKOUT_STEP_ADDRESS }}</span>
                     <span class="text-gray-400">→</span>
-                    <span class="bg-blue-600 text-white px-3 py-1 rounded font-bold">3. Pago</span>
+                    <span class="bg-blue-600 text-white px-3 py-1 rounded font-bold">3. {{ t.CHECKOUT_STEP_PAYMENT }}</span>
                 </div>
             </div>
         </div>
@@ -35,20 +35,20 @@
                     <div class="lg:col-span-2">
                         <!-- Dirección de Envío Confirmada -->
                         <div class="bg-gray-900 rounded-lg p-6 mb-8">
-                            <h3 class="text-xl font-bold mb-4">DIRECCIÓN DE ENVÍO</h3>
+                            <h3 class="text-xl font-bold mb-4">{{ t.CHECKOUT_SHIPPING_ADDRESS|upper }}</h3>
                             <div class="text-gray-300">
                                 <p>{{ shipping_address.street }}</p>
                                 <p>{{ shipping_address.city }}, {{ shipping_address.state_or_province }}</p>
                                 <p>{{ shipping_address.postal_code }}</p>
                             </div>
                             <a href="{% url 'orders:checkout' %}" class="text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block">
-                                Cambiar dirección
+                                {{ t.PAYMENT_CHANGE_ADDRESS }}
                             </a>
                         </div>
 
                         <!-- Método de Pago -->
                         <div class="bg-gray-900 rounded-lg p-6">
-                            <h3 class="text-xl font-bold mb-6">MÉTODO DE PAGO</h3>
+                            <h3 class="text-xl font-bold mb-6">{{ t.PAYMENT_METHOD|upper }}</h3>
 
                             <form method="post">
                                 {% csrf_token %}
@@ -65,7 +65,7 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                               d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                                     </svg>
-                                                    <span class="font-semibold">Tarjeta de Crédito/Débito</span>
+                                                    <span class="font-semibold">{{ t.PAYMENT_CREDIT_DEBIT }}</span>
                                                 </div>
                                                 <div class="w-4 h-4 border-2 border-gray-500 rounded-full peer-checked:border-blue-500 peer-checked:bg-blue-500"></div>
                                             </div>
@@ -82,7 +82,7 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
                                                     </svg>
-                                                    <span class="font-semibold">Transferencia Bancaria</span>
+                                                    <span class="font-semibold">{{ t.PAYMENT_BANK_TRANSFER }}</span>
                                                 </div>
                                                 <div class="w-4 h-4 border-2 border-gray-500 rounded-full peer-checked:border-blue-500 peer-checked:bg-blue-500"></div>
                                             </div>
@@ -94,25 +94,25 @@
                                 <div class="space-y-4 mb-8">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium mb-2">Número de Tarjeta</label>
+                                            <label class="block text-sm font-medium mb-2">{{ t.PAYMENT_CARD_NUMBER }}</label>
                                             <input type="text" placeholder="1234 5678 9012 3456"
                                                    class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-400"
                                                    disabled>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium mb-2">Nombre en la Tarjeta</label>
-                                            <input type="text" placeholder="Tu Nombre Completo"
+                                            <label class="block text-sm font-medium mb-2">{{ t.PAYMENT_CARD_NAME }}</label>
+                                            <input type="text" :placeholder="t.PAYMENT_CARD_NAME_PLACEHOLDER"
                                                    class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-400"
                                                    disabled>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium mb-2">Fecha de Vencimiento</label>
+                                            <label class="block text-sm font-medium mb-2">{{ t.PAYMENT_EXPIRY }}</label>
                                             <input type="text" placeholder="MM/AA"
                                                    class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-400"
                                                    disabled>
                                         </div>
                                         <div>
-                                            <label class="block text-sm font-medium mb-2">CVV</label>
+                                            <label class="block text-sm font-medium mb-2">{{ t.PAYMENT_CVV }}</label>
                                             <input type="text" placeholder="123"
                                                    class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-400"
                                                    disabled>
@@ -122,18 +122,18 @@
                                         <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                         </svg>
-                                        Esta es una demostración. No se procesarán pagos reales.
+                                        {{ t.PAYMENT_DEMO_NOTE }}
                                     </p>
                                 </div>
 
                                 <div class="flex justify-between">
                                     <a href="{% url 'orders:checkout' %}"
                                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded transition-colors">
-                                        ← VOLVER
+                                        ← {{ t.PAYMENT_BACK|upper }}
                                     </a>
                                     <button type="submit"
                                             class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded transition-colors">
-                                        FINALIZAR COMPRA
+                                        {{ t.PAYMENT_COMPLETE_PURCHASE|upper }}
                                     </button>
                                 </div>
                             </form>
@@ -143,7 +143,7 @@
                     <!-- Resumen del Pedido -->
                     <div class="lg:col-span-1">
                         <div class="bg-gray-900 rounded-lg p-6 sticky top-6">
-                            <h2 class="text-xl font-bold mb-6">RESUMEN FINAL</h2>
+                            <h2 class="text-xl font-bold mb-6">{{ t.PAYMENT_FINAL_SUMMARY|upper }}</h2>
 
                             <!-- Items del Carrito -->
                             <div class="space-y-4 mb-6">
@@ -154,12 +154,12 @@
                                              class="w-12 h-12 object-cover rounded">
                                     {% else %}
                                         <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center">
-                                            <span class="text-gray-500 text-xs">Sin img</span>
+                                            <span class="text-gray-500 text-xs">{{ t.CHECKOUT_NO_IMAGE }}</span>
                                         </div>
                                     {% endif %}
                                     <div class="flex-1">
                                         <p class="text-sm font-semibold">{{ item.product.name }}</p>
-                                        <p class="text-xs text-gray-400">Cantidad: {{ item.quantity }}</p>
+                                        <p class="text-xs text-gray-400">{{ t.CHECKOUT_QUANTITY }}: {{ item.quantity }}</p>
                                     </div>
                                     <p class="text-sm font-bold">{{ item.get_total|format_cop }}</p>
                                 </div>
@@ -171,20 +171,20 @@
                             <!-- Totales -->
                             <div class="space-y-2 mb-6">
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-300">Subtotal</span>
+                                    <span class="text-gray-300">{{ t.CHECKOUT_SUBTOTAL }}</span>
                                     <span class="text-white">{{ total_price|format_cop }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-300">Envío</span>
-                                    <span class="text-white">Gratis</span>
+                                    <span class="text-gray-300">{{ t.CHECKOUT_SHIPPING }}</span>
+                                    <span class="text-white">{{ t.CHECKOUT_FREE }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-300">Impuestos</span>
-                                    <span class="text-white">Incluidos</span>
+                                    <span class="text-gray-300">{{ t.PAYMENT_TAXES }}</span>
+                                    <span class="text-white">{{ t.PAYMENT_TAXES_INCLUDED }}</span>
                                 </div>
                                 <hr class="border-gray-700">
                                 <div class="flex justify-between text-lg">
-                                    <span class="font-bold">Total a Pagar</span>
+                                    <span class="font-bold">{{ t.PAYMENT_TOTAL_TO_PAY }}</span>
                                     <span class="font-bold text-green-400">{{ total_price|format_cop }}</span>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@
                                     <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                     </svg>
-                                    Compra Segura
+                                    {{ t.PAYMENT_SECURE_PURCHASE }}
                                 </p>
                             </div>
                         </div>
