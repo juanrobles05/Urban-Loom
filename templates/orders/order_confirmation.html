@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}Confirmación de Orden - Urban Loom{% endblock %}
+{% block title %}{{ t.ORDER_CONFIRMATION_TITLE }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
@@ -21,9 +21,9 @@
                               d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">ORDEN CANCELADA</h1>
-                <p class="text-xl text-red-300">Tu orden ha sido cancelada exitosamente</p>
-                <p class="text-red-200 mt-2">Orden #{{ order.id }} - El stock de los productos ha sido restaurado</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t.ORDER_CONFIRMATION_CANCELLED|upper }}</h1>
+                <p class="text-xl text-red-300">{{ t.ORDER_CONFIRMATION_CANCELLED_MSG }}</p>
+                <p class="text-red-200 mt-2">{{ t.ORDER_CONFIRMATION_NUMBER }} #{{ order.id }} - {{ t.ORDER_CONFIRMATION_STOCK_RESTORED }}</p>
             </div>
         </div>
     </section>
@@ -37,9 +37,9 @@
                               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">¡COMPRA EXITOSA!</h1>
-                <p class="text-xl text-green-300">Gracias por tu compra en Urban Loom</p>
-                <p class="text-green-200 mt-2">Tu orden #{{ order.id }} ha sido procesada correctamente</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t.ORDER_CONFIRMATION_SUCCESS|upper }}</h1>
+                <p class="text-xl text-green-300">{{ t.ORDER_CONFIRMATION_THANK_YOU }}</p>
+                <p class="text-green-200 mt-2">{{ t.ORDER_CONFIRMATION_PROCESSED }} #{{ order.id }} {{ t.ORDER_CONFIRMATION_PROCESSED_SUCCESS }}</p>
             </div>
         </div>
     </section>
@@ -52,19 +52,19 @@
                 <div class="grid md:grid-cols-2 gap-12">
                     <!-- Información de la Orden -->
                     <div class="bg-gray-900 rounded-lg p-6">
-                        <h2 class="text-2xl font-bold mb-6">DETALLES DE LA ORDEN</h2>
+                        <h2 class="text-2xl font-bold mb-6">{{ t.ORDER_CONFIRMATION_ORDER_DETAILS|upper }}</h2>
 
                         <div class="space-y-4">
                             <div class="flex justify-between">
-                                <span class="text-gray-300">Número de Orden:</span>
+                                <span class="text-gray-300">{{ t.ORDER_CONFIRMATION_NUMBER }}:</span>
                                 <span class="font-bold">#{{ order.id }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-300">Fecha:</span>
+                                <span class="text-gray-300">{{ t.ORDER_CONFIRMATION_DATE }}:</span>
                                 <span>{{ order.created_at|date:"d/m/Y H:i" }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-300">Estado:</span>
+                                <span class="text-gray-300">{{ t.ORDER_CONFIRMATION_STATUS }}:</span>
                                 <span class="px-3 py-1 rounded text-sm font-bold
                                     {% if order.status == 'pending' %}bg-yellow-500 text-black
                                     {% elif order.status == 'paid' %}bg-green-500 text-white
@@ -76,14 +76,14 @@
                                 </span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-300">Total:</span>
+                                <span class="text-gray-300">{{ t.ORDER_CONFIRMATION_TOTAL }}:</span>
                                 <span class="text-2xl font-bold">{{ total_amount|format_cop }}</span>
                             </div>
                         </div>
 
                         <hr class="border-gray-700 my-6">
 
-                        <h3 class="text-lg font-bold mb-4">DIRECCIÓN DE ENVÍO</h3>
+                        <h3 class="text-lg font-bold mb-4">{{ t.CHECKOUT_SHIPPING_ADDRESS|upper }}</h3>
                         {% if order.shipping_address %}
                         <div class="text-gray-300">
                             <p>{{ order.shipping_address.street }}</p>
@@ -95,7 +95,7 @@
 
                     <!-- Productos Ordenados -->
                     <div class="bg-gray-900 rounded-lg p-6">
-                        <h2 class="text-2xl font-bold mb-6">PRODUCTOS ORDENADOS</h2>
+                        <h2 class="text-2xl font-bold mb-6">{{ t.ORDER_CONFIRMATION_PRODUCTS|upper }}</h2>
 
                         <div class="space-y-4">
                             {% for item in order_items %}
@@ -105,13 +105,13 @@
                                          class="w-16 h-16 object-cover rounded-lg">
                                 {% else %}
                                     <div class="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center">
-                                        <span class="text-gray-500 text-xs">Sin img</span>
+                                        <span class="text-gray-500 text-xs">{{ t.CHECKOUT_NO_IMAGE }}</span>
                                     </div>
                                 {% endif %}
                                 <div class="flex-1">
                                     <h4 class="font-bold">{{ item.product.name }}</h4>
-                                    <p class="text-gray-400 text-sm">Cantidad: {{ item.quantity }}</p>
-                                    <p class="text-gray-400 text-sm">Precio unitario: {{ item.price|format_cop }}</p>
+                                    <p class="text-gray-400 text-sm">{{ t.CHECKOUT_QUANTITY }}: {{ item.quantity }}</p>
+                                    <p class="text-gray-400 text-sm">{{ t.ORDER_CONFIRMATION_UNIT_PRICE }}: {{ item.price|format_cop }}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold">{{ item.get_total|format_cop }}</p>
@@ -125,29 +125,29 @@
                 <!-- Acciones -->
                 <div class="mt-12 text-center">
                     <div class="bg-gray-900 rounded-lg p-8">
-                        <h3 class="text-xl font-bold mb-4">¿QUÉ SIGUE?</h3>
+                        <h3 class="text-xl font-bold mb-4">{{ t.ORDER_CONFIRMATION_WHATS_NEXT|upper }}</h3>
                         <p class="text-gray-300 mb-6">
-                            Recibirás un email de confirmación con todos los detalles de tu pedido.
-                            Nuestro equipo procesará tu orden y te enviaremos un código de seguimiento una vez que sea enviada.
+                            {{ t.ORDER_CONFIRMATION_EMAIL_SENT }}
+                            {{ t.ORDER_CONFIRMATION_TRACKING_INFO }}
                         </p>
 
                         <div class="flex flex-col sm:flex-row justify-center gap-4">
                             <a href="{% url 'orders:order_history' %}"
                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-colors">
-                                VER MIS ÓRDENES
+                                {{ t.ORDER_CONFIRMATION_VIEW_ORDERS|upper }}
                             </a>
                             <a href="{% url 'catalog:collections' %}"
                                class="bg-white text-black hover:bg-gray-200 font-bold py-3 px-6 rounded transition-colors">
-                                SEGUIR COMPRANDO
+                                {{ t.ORDER_CONFIRMATION_CONTINUE|upper }}
                             </a>
                             {% if order.status == 'pending' or order.status == 'paid' %}
                             <form method="post" action="{% url 'orders:cancel_order' order.id %}" 
-                                  onsubmit="return confirm('¿Estás seguro de que quieres cancelar esta orden? El stock de los productos será restaurado pero esta acción no se puede deshacer.')" 
+                                  onsubmit="return confirm('{{ t.ORDER_CONFIRMATION_CANCEL_CONFIRM }}')" 
                                   class="inline">
                                 {% csrf_token %}
                                 <button type="submit"
                                         class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded transition-colors">
-                                    CANCELAR ORDEN
+                                    {{ t.ORDER_CONFIRMATION_CANCEL_ORDER|upper }}
                                 </button>
                             </form>
                             {% endif %}
@@ -162,24 +162,24 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        <h4 class="font-bold mb-2">EMAIL DE CONFIRMACIÓN</h4>
-                        <p class="text-sm text-gray-400">Te enviaremos todos los detalles de tu pedido por email</p>
+                        <h4 class="font-bold mb-2">{{ t.ORDER_CONFIRMATION_EMAIL_CONFIRMATION|upper }}</h4>
+                        <p class="text-sm text-gray-400">{{ t.ORDER_CONFIRMATION_EMAIL_DETAILS }}</p>
                     </div>
                     <div class="bg-gray-900 rounded-lg p-6">
                         <svg class="mx-auto w-8 h-8 text-green-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                         </svg>
-                        <h4 class="font-bold mb-2">PROCESAMIENTO</h4>
-                        <p class="text-sm text-gray-400">Procesaremos tu pedido en 1-2 días hábiles</p>
+                        <h4 class="font-bold mb-2">{{ t.ORDER_CONFIRMATION_PROCESSING|upper }}</h4>
+                        <p class="text-sm text-gray-400">{{ t.ORDER_CONFIRMATION_PROCESSING_TIME }}</p>
                     </div>
                     <div class="bg-gray-900 rounded-lg p-6">
                         <svg class="mx-auto w-8 h-8 text-yellow-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h4 class="font-bold mb-2">SEGUIMIENTO</h4>
-                        <p class="text-sm text-gray-400">Te enviaremos el código de seguimiento una vez enviado</p>
+                        <h4 class="font-bold mb-2">{{ t.ORDER_CONFIRMATION_TRACKING|upper }}</h4>
+                        <p class="text-sm text-gray-400">{{ t.ORDER_CONFIRMATION_TRACKING_SENT }}</p>
                     </div>
                 </div>
             </div>

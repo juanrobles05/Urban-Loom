@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}{{ collection.name }} - {{ collection.season }} - Urban Loom{% endblock %}
+{% block title %}{{ collection.name }} - {{ collection.season }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/collections.css' %}">
@@ -41,12 +41,12 @@
                         <div class="flex justify-center md:justify-start items-center gap-8 mb-8">
                             <div class="text-center md:text-left">
                                 <span class="text-3xl font-bold block">{{ collection.pieces }}</span>
-                                <p class="text-gray-400 text-sm font-medium tracking-wide">TOTAL PIECES</p>
+                                <p class="text-gray-400 text-sm font-medium tracking-wide">{{ t.COLLECTION_TOTAL_PIECES|upper }}</p>
                             </div>
                             <div class="w-px h-12 bg-gray-600"></div>
                             <div class="text-center md:text-left">
                                 <span class="text-3xl font-bold block">{{ collection.season }}</span>
-                                <p class="text-gray-400 text-sm font-medium tracking-wide">SEASON</p>
+                                <p class="text-gray-400 text-sm font-medium tracking-wide">{{ t.COLLECTION_SEASON|upper }}</p>
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@
                                 {{ collection.status }}
                             </span>
                             <a href="{% url 'catalog:collections' %}" class="bg-white text-black px-8 py-3 font-bold hover:bg-gray-200 transition-colors duration-300 rounded">
-                                ← BACK TO COLLECTIONS
+                                ← {{ t.COLLECTION_BACK|upper }}
                             </a>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
     <!-- Products Grid -->
     <section class="py-20 bg-black">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">COLLECTION PIECES</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">{{ t.COLLECTION_PIECES_TITLE|upper }}</h2>
             {% if products %}
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {% for product in products %}
@@ -91,15 +91,15 @@
                                 </button>
                             </form>
                             <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <span class="text-white text-lg font-bold">VIEW PRODUCT</span>
+                                <span class="text-white text-lg font-bold">{{ t.PRODUCT_VIEW|upper }}</span>
                             </div>
                             {% if product.stock < 5 and product.stock > 0 %}
                             <div class="absolute top-4 right-4">
-                                <span class="bg-yellow-500 text-black px-3 py-1 text-xs font-bold rounded">LOW STOCK</span>
+                                <span class="bg-yellow-500 text-black px-3 py-1 text-xs font-bold rounded">{{ t.PRODUCT_LOW_STOCK|upper }}</span>
                             </div>
                             {% elif product.stock == 0 %}
                             <div class="absolute top-4 right-4">
-                                <span class="bg-red-500 text-white px-3 py-1 text-xs font-bold rounded">SOLD OUT</span>
+                                <span class="bg-red-500 text-white px-3 py-1 text-xs font-bold rounded">{{ t.PRODUCT_SOLD_OUT|upper }}</span>
                             </div>
                             {% endif %}
                         </div>
@@ -111,8 +111,8 @@
                 </div>
             {% else %}
                 <div class="text-center py-16">
-                    <p class="text-gray-400 text-xl">No products available in this collection yet.</p>
-                    <p class="text-gray-500 text-sm mt-2">Check back soon for new additions.</p>
+                    <p class="text-gray-400 text-xl">{{ t.COLLECTION_NO_PRODUCTS }}</p>
+                    <p class="text-gray-500 text-sm mt-2">{{ t.COLLECTION_NO_PRODUCTS_DESC }}</p>
                 </div>
             {% endif %}
         </div>

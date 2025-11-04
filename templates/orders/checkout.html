@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}Checkout - Urban Loom{% endblock %}
+{% block title %}{{ t.CHECKOUT_TITLE }} - {{ t.SITE_NAME }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
@@ -14,13 +14,13 @@
     <section class="py-12 bg-gray-900">
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">CHECKOUT</h1>
+                <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">{{ t.CHECKOUT_TITLE|upper }}</h1>
                 <div class="flex justify-center items-center space-x-4 text-sm">
-                    <span class="bg-white text-black px-3 py-1 rounded font-bold">1. Carrito</span>
+                    <span class="bg-white text-black px-3 py-1 rounded font-bold">1. {{ t.CHECKOUT_STEP_CART }}</span>
                     <span class="text-gray-400">→</span>
-                    <span class="bg-blue-600 text-white px-3 py-1 rounded font-bold">2. Dirección</span>
+                    <span class="bg-blue-600 text-white px-3 py-1 rounded font-bold">2. {{ t.CHECKOUT_STEP_ADDRESS }}</span>
                     <span class="text-gray-400">→</span>
-                    <span class="text-gray-400 px-3 py-1">3. Pago</span>
+                    <span class="text-gray-400 px-3 py-1">3. {{ t.CHECKOUT_STEP_PAYMENT }}</span>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <!-- Información de Envío -->
                     <div class="lg:col-span-2">
                         <div class="bg-gray-900 rounded-lg p-6 mb-8">
-                            <h2 class="text-2xl font-bold mb-6">DIRECCIÓN DE ENVÍO</h2>
+                            <h2 class="text-2xl font-bold mb-6">{{ t.CHECKOUT_SHIPPING_ADDRESS|upper }}</h2>
 
                             {% if shipping_addresses %}
                                 <form method="post">
@@ -61,20 +61,20 @@
                                     <div class="mt-8 flex justify-between">
                                         <a href="{% url 'orders:cart' %}"
                                            class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded transition-colors">
-                                            ← VOLVER AL CARRITO
+                                            ← {{ t.CHECKOUT_BACK_TO_CART|upper }}
                                         </a>
                                         <button type="submit"
                                                 class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded transition-colors">
-                                            CONTINUAR AL PAGO →
+                                            {{ t.CHECKOUT_CONTINUE_PAYMENT|upper }} →
                                         </button>
                                     </div>
                                 </form>
                             {% else %}
                                 <div class="text-center py-8">
-                                    <p class="text-gray-400 mb-4">No tienes direcciones de envío registradas.</p>
+                                    <p class="text-gray-400 mb-4">{{ t.CHECKOUT_NO_ADDRESS }}</p>
                                     <a href="{% url 'add_shipping_address' %}"
                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-colors">
-                                        AGREGAR DIRECCIÓN
+                                        {{ t.CHECKOUT_ADD_ADDRESS|upper }}
                                     </a>
                                 </div>
                             {% endif %}
@@ -84,7 +84,7 @@
                     <!-- Resumen del Pedido -->
                     <div class="lg:col-span-1">
                         <div class="bg-gray-900 rounded-lg p-6 sticky top-6">
-                            <h2 class="text-xl font-bold mb-6">RESUMEN DEL PEDIDO</h2>
+                            <h2 class="text-xl font-bold mb-6">{{ t.CHECKOUT_ORDER_SUMMARY|upper }}</h2>
 
                             <!-- Items del Carrito -->
                             <div class="space-y-4 mb-6">
@@ -95,12 +95,12 @@
                                              class="w-12 h-12 object-cover rounded">
                                     {% else %}
                                         <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center">
-                                            <span class="text-gray-500 text-xs">Sin img</span>
+                                            <span class="text-gray-500 text-xs">{{ t.CHECKOUT_NO_IMAGE }}</span>
                                         </div>
                                     {% endif %}
                                     <div class="flex-1">
                                         <p class="text-sm font-semibold">{{ item.product.name }}</p>
-                                        <p class="text-xs text-gray-400">Cantidad: {{ item.quantity }}</p>
+                                        <p class="text-xs text-gray-400">{{ t.CHECKOUT_QUANTITY }}: {{ item.quantity }}</p>
                                     </div>
                                     <p class="text-sm font-bold">{{ item.get_total|format_cop }}</p>
                                 </div>
@@ -112,22 +112,22 @@
                             <!-- Totales -->
                             <div class="space-y-2 mb-6">
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-300">Subtotal ({{ total_items }} item{{ total_items|pluralize }})</span>
+                                    <span class="text-gray-300">{{ t.CHECKOUT_SUBTOTAL }} ({{ total_items }} item{{ total_items|pluralize }})</span>
                                     <span class="text-white">{{ total_price|format_cop }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-300">Envío</span>
-                                    <span class="text-white">Gratis</span>
+                                    <span class="text-gray-300">{{ t.CHECKOUT_SHIPPING }}</span>
+                                    <span class="text-white">{{ t.CHECKOUT_FREE }}</span>
                                 </div>
                                 <hr class="border-gray-700">
                                 <div class="flex justify-between text-lg">
-                                    <span class="font-bold">Total</span>
+                                    <span class="font-bold">{{ t.CHECKOUT_TOTAL }}</span>
                                     <span class="font-bold">{{ total_price|format_cop }}</span>
                                 </div>
                             </div>
 
                             <div class="text-center text-xs text-gray-400">
-                                <p>Al continuar, aceptas nuestros términos y condiciones.</p>
+                                <p>{{ t.CHECKOUT_TERMS }}</p>
                             </div>
                         </div>
                     </div>

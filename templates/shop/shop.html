@@ -2,7 +2,7 @@
 {% load static %}
 {% load price_filters %}
 
-{% block title %}Shop - Urban Loom{% endblock %}
+{% block title %}{{ t.SHOP_TITLE }} - Urban Loom{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/shop.css' %}">
@@ -17,23 +17,23 @@
             <div class="max-w-5xl mx-auto text-center">
                 <div class="mb-8">
                     <span class="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold tracking-wider uppercase text-gray-300 border border-white/20">
-                        Premium Collection
+                        {{ t.SHOP_PREMIUM_COLLECTION }}
                     </span>
                 </div>
                 <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight shop-title-gradient">
-                    SHOP ALL
+                    {{ t.SHOP_HEADER|upper }}
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-12">
-                    Explore our complete universe of urban fashion. From streetwear essentials to limited edition pieces.
+                    {{ t.SHOP_DESCRIPTION }}
                 </p>
                 <div class="flex justify-center items-center space-x-8 text-sm text-gray-400">
                     <div class="flex items-center">
                         <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                        <span>{{ products.count }} Products Available</span>
+                        <span>{{ products.count }} {{ t.SHOP_PRODUCTS_AVAILABLE }}</span>
                     </div>
                     <div class="flex items-center">
                         <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                        <span>Free Shipping Worldwide</span>
+                        <span>{{ t.SHOP_FREE_SHIPPING }}</span>
                     </div>
                 </div>
             </div>
@@ -51,18 +51,18 @@
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"></path>
                             </svg>
-                            Filters
+                            {{ t.SHOP_FILTERS }}
                         </h3>
 
                         <form method="GET" class="space-y-6">
                             <!-- Search -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Search</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_SEARCH }}</label>
                                 <div class="relative">
                                     <input type="text"
                                            name="search"
                                            value="{{ search_query }}"
-                                           placeholder="Search products..."
+                                           placeholder="{{ t.SHOP_SEARCH_PLACEHOLDER }}"
                                            class="w-full bg-black/80 border border-gray-700 rounded-xl px-4 py-3 pl-10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all">
                                     <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -72,10 +72,10 @@
 
                             <!-- Category Filter -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Category</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_CATEGORY }}</label>
                                 <div class="relative">
                                     <select name="category" class="w-full bg-black/80 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all appearance-none cursor-pointer">
-                                        <option value="">All Categories</option>
+                                        <option value="">{{ t.SHOP_ALL_CATEGORIES }}</option>
                                         {% for category in categories %}
                                             <option value="{{ category.id }}" {% if category.id|stringformat:"s" == category_filter %}selected{% endif %}>
                                                 {{ category.name }}
@@ -90,10 +90,10 @@
 
                             <!-- Collection Filter -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Collection</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_COLLECTION }}</label>
                                 <div class="relative">
                                     <select name="collection" class="w-full bg-black/80 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all appearance-none cursor-pointer">
-                                        <option value="">All Collections</option>
+                                        <option value="">{{ t.SHOP_ALL_COLLECTIONS }}</option>
                                         {% for collection in collections %}
                                             <option value="{{ collection.id }}" {% if collection.id|stringformat:"s" == collection_filter %}selected{% endif %}>
                                                 {{ collection.name }} - {{ collection.season }}
@@ -108,13 +108,13 @@
 
                             <!-- Price Range -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Price Range</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_PRICE_RANGE }}</label>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div class="relative">
                                         <input type="number"
                                                name="min_price"
                                                value="{{ min_price }}"
-                                               placeholder="Min"
+                                               placeholder="{{ t.SHOP_MIN }}"
                                                class="w-full bg-black/80 border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all">
                                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">$</span>
                                     </div>
@@ -124,7 +124,7 @@
                                         <input type="number"
                                                name="max_price"
                                                value="{{ max_price }}"
-                                               placeholder="Max"
+                                               placeholder="{{ t.SHOP_MAX }}"
                                                class="w-full bg-black/80 border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all">
                                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">$</span>
                                     </div>
@@ -133,12 +133,12 @@
 
                             <!-- Stock Filter -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Availability</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_AVAILABILITY }}</label>
                                 <div class="relative">
                                     <select name="stock" class="w-full bg-black/80 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all appearance-none cursor-pointer">
-                                        <option value="">All Items</option>
-                                        <option value="in_stock" {% if stock_filter == 'in_stock' %}selected{% endif %}>In Stock</option>
-                                        <option value="out_of_stock" {% if stock_filter == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
+                                        <option value="">{{ t.SHOP_ALL_ITEMS }}</option>
+                                        <option value="in_stock" {% if stock_filter == 'in_stock' %}selected{% endif %}>{{ t.SHOP_IN_STOCK }}</option>
+                                        <option value="out_of_stock" {% if stock_filter == 'out_of_stock' %}selected{% endif %}>{{ t.SHOP_OUT_OF_STOCK }}</option>
                                     </select>
                                     <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -148,14 +148,14 @@
 
                             <!-- Sort -->
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Sort by</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">{{ t.SHOP_SORT_BY }}</label>
                                 <div class="relative">
                                     <select name="sort" class="w-full bg-black/80 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/50 transition-all appearance-none cursor-pointer">
-                                        <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name (A-Z)</option>
-                                        <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price (Low to High)</option>
-                                        <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price (High to Low)</option>
-                                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
-                                        <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                                        <option value="name" {% if sort_by == 'name' %}selected{% endif %}>{{ t.SHOP_SORT_NAME }}</option>
+                                        <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>{{ t.SHOP_SORT_PRICE_LOW }}</option>
+                                        <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>{{ t.SHOP_SORT_PRICE_HIGH }}</option>
+                                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>{{ t.SHOP_SORT_NEWEST }}</option>
+                                        <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>{{ t.SHOP_SORT_OLDEST }}</option>
                                     </select>
                                     <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -166,10 +166,10 @@
                             <!-- Action Buttons -->
                             <div class="space-y-3 pt-4 border-t border-gray-700">
                                 <button type="submit" class="w-full bg-white text-black py-3 font-bold rounded-xl hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30">
-                                    APPLY FILTERS
+                                    {{ t.SHOP_APPLY_FILTERS|upper }}
                                 </button>
                                 <a href="{% url 'catalog:shop' %}" class="block w-full text-center bg-gray-800/80 text-white py-3 font-medium rounded-xl hover:bg-gray-700 transition-all duration-300 border border-gray-700 hover:border-gray-600">
-                                    CLEAR ALL
+                                    {{ t.SHOP_CLEAR_ALL|upper }}
                                 </a>
                             </div>
                         </form>
@@ -184,14 +184,14 @@
                             <div class="flex items-center space-x-6">
                                 <div class="text-white">
                                     {% if search_query %}
-                                        <span class="text-gray-400">Results for </span>
+                                        <span class="text-gray-400">{{ t.SHOP_RESULTS_FOR }} </span>
                                         <span class="bg-white/10 px-3 py-1 rounded-full text-white font-medium">"{{ search_query }}"</span>
                                     {% endif %}
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
                                     <span class="text-white font-bold text-lg">{{ products.count }}</span>
-                                    <span class="text-gray-400">product{{ products.count|pluralize }} found</span>
+                                    <span class="text-gray-400">{{ t.SHOP_PRODUCTS_FOUND }}</span>
                                 </div>
                             </div>
 
@@ -200,7 +200,7 @@
                                     <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="text-blue-400 text-sm font-medium">Filters Active</span>
+                                    <span class="text-blue-400 text-sm font-medium">{{ t.SHOP_FILTERS_ACTIVE }}</span>
                                 </div>
                             {% endif %}
                         </div>
@@ -227,7 +227,7 @@
                                             {% endif %}
 
                                             <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                                <span class="text-white text-lg font-bold">VIEW PRODUCT</span>
+                                                <span class="text-white text-lg font-bold">{{ t.SHOP_VIEW_PRODUCT|upper }}</span>
                                             </div>
 
                                             <!-- Status Badge placeholder handled below -->
@@ -235,7 +235,7 @@
                                             <!-- Wishlist Button -->
                                             <form method="post" action="{% url 'recommendations:add_to_wishlist' product.id %}" class="inline-block absolute top-4 left-4 z-10">
                                                 {% csrf_token %}
-                                                <button type="submit" class="hover:bg-primary/10 rounded-full p-2" aria-label="Add to Wishlist">
+                                                <button type="submit" class="hover:bg-primary/10 rounded-full p-2" aria-label="{{ t.WISHLIST_ADD_TO_WISHLIST }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                       <path d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </button>
@@ -274,12 +274,12 @@
                                                 {% if product.stock > 0 %}
                                                     <div class="flex items-center space-x-2">
                                                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                                        <span class="text-green-400 text-sm font-medium">{{ product.stock }} in stock</span>
+                                                        <span class="text-green-400 text-sm font-medium">{{ product.stock }} {{ t.SHOP_IN_STOCK }}</span>
                                                     </div>
                                                 {% else %}
                                                     <div class="flex items-center space-x-2">
                                                         <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                                                        <span class="text-red-400 text-sm font-medium">Out of stock</span>
+                                                        <span class="text-red-400 text-sm font-medium">{{ t.SHOP_OUT_OF_STOCK }}</span>
                                                     </div>
                                                 {% endif %}
 
@@ -301,23 +301,22 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 5l7 7-7 7"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-3xl font-bold text-gray-300 mb-4">No products found</h3>
+                                <h3 class="text-3xl font-bold text-gray-300 mb-4">{{ t.SHOP_NO_PRODUCTS }}</h3>
                                 <p class="text-gray-500 mb-8 leading-relaxed">
                                     {% if search_query %}
-                                        We couldn't find any products matching "<span class="text-white font-medium">{{ search_query }}</span>". <br>
-                                        Try adjusting your search terms or filters.
+                                        {{ t.SHOP_NO_PRODUCTS_SEARCH_DESC_1 }} "<span class="text-white font-medium">{{ search_query }}</span>". <br>
+                                        {{ t.SHOP_NO_PRODUCTS_SEARCH_DESC_2 }}
                                     {% else %}
-                                        No products match your current filters. <br>
-                                        Try expanding your search criteria.
+                                        {{ t.SHOP_NO_PRODUCTS_FILTER_DESC }}
                                     {% endif %}
                                 </p>
                                 <div class="space-y-4">
                                     <a href="{% url 'catalog:shop' %}" class="inline-block bg-white text-black px-8 py-4 font-bold rounded-xl hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-xl">
-                                        VIEW ALL PRODUCTS
+                                        {{ t.SHOP_VIEW_ALL_PRODUCTS|upper }}
                                     </a>
                                     <br>
                                     <a href="{% url 'catalog:collections' %}" class="inline-block text-gray-400 hover:text-white transition-colors text-sm font-medium">
-                                        or browse our collections
+                                        {{ t.SHOP_BROWSE_COLLECTIONS }}
                                     </a>
                                 </div>
                             </div>

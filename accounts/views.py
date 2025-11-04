@@ -6,22 +6,27 @@ from .models import ShippingAddress
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from core.utils.lang import load_translation
 import json
 
 
 def register_user(request):
+    # Cargar traducciones según el idioma activo
+    lang = getattr(request, 'LANGUAGE_CODE', 'es')
+    t = load_translation(lang)
+    
     success_message = None
     error_message = None
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            success_message = "Account created successfully! You can now sign in."
+            success_message = t.get('AUTH_REGISTER_SUCCESS', 'Account created successfully! You can now sign in.')
             print(success_message)
             form = UserRegistrationForm()  # Limpiar el formulario
         else:
             if not form.errors:
-                error_message = "There was a problem creating your account. Please try again."
+                error_message = t.get('AUTH_REGISTER_ERROR', 'There was a problem creating your account. Please try again.')
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {
@@ -47,6 +52,10 @@ def logout_user(request):
 
 @login_required
 def profile_view(request):
+    # Cargar traducciones según el idioma activo
+    lang = getattr(request, 'LANGUAGE_CODE', 'es')
+    t = load_translation(lang)
+    
     user = request.user
 
     # Obtener o crear el perfil del usuario
@@ -63,10 +72,10 @@ def profile_view(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, '¡Perfil actualizado exitosamente!')
+            messages.success(request, t.get('PROFILE_UPDATE_SUCCESS', '¡Perfil actualizado exitosamente!'))
             return redirect('profile')
         else:
-            messages.error(request, 'Por favor corrige los errores en el formulario.')
+            messages.error(request, t.get('PROFILE_UPDATE_ERROR', 'Por favor corrige los errores en el formulario.'))
     else:
         user_form = UserForm(instance=user)
         profile_form = ProfileForm(instance=profile)
