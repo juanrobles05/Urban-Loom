@@ -1,0 +1,73 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
+.tox/
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Environment variables
+.env
+.env.local
+
+# Documentation
+*.md
+ARCHITECTURE.md
+PRUEBAS_UNITARIAS.md
+README.md
+RESUMEN_ARQUITECTURA.md
+TEST_REPORT.md
+test_report.txt
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development files
+docker-compose.override.yml
+
+# Media files (optional - uncomment if you want to exclude)
+# media/
+
+# Static files (will be collected during build)
+# static/

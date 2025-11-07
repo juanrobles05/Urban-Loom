@@ -1,6 +1,43 @@
-# Urban Loom
+# Urban Loom 🛍️
+
+[![Django](https://img.shields.io/badge/Django-4.2.23-green.svg)](https://www.djangoproject.com/)
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 El proyecto consiste en el desarrollo e implementación de **Urban Loom**, una tienda de e-commerce enfocada en moda exclusiva y auténtica. La plataforma permitirá a los usuarios acceder a un catálogo de prendas originales diseñadas por la marca, con funcionalidades clave como navegación intuitiva, carritos de compra, listas de deseos y recomendaciones personalizadas. Además de vender ropa, la propuesta busca construir una **comunidad digital** en torno al estilo y la identidad personal.
+
+## 🚀 Quick Start con Docker
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/juanrobles05/Urban-Loom.git
+cd Urban-Loom
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus configuraciones
+
+# 3. Levantar con Docker Compose
+docker-compose up -d --build
+
+# 4. La aplicación estará disponible en:
+# http://localhost:8000
+```
+
+**Credenciales por defecto:**
+- Email: `admin@urbanloom.com`
+- Password: `admin123`
+
+⚠️ **Cambiar en producción!**
+
+## 📚 Documentación Completa
+
+- [📖 Guía de Despliegue](DEPLOYMENT.md) - Instrucciones detalladas de despliegue
+- [🐳 Docker Quick Start](DOCKER.md) - Comandos rápidos de Docker
+- [🏗️ Arquitectura del Sistema](ARCHITECTURE.md) - Diagramas y arquitectura detallada
+- [🔒 Guía de Seguridad](SECURITY.md) - Mejores prácticas de seguridad
+- [🧪 Pruebas Unitarias](PRUEBAS_UNITARIAS.md) - Documentación de tests
 
 ## Alcance del proyecto
 El proyecto abarca:

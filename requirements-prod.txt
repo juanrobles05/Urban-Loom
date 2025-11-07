@@ -1,0 +1,33 @@
+# Production requirements for Urban-Loom
+
+# Django and core dependencies
+Django==4.2.23
+asgiref==3.9.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# Image handling
+pillow==11.3.0
+
+# WSGI server for production
+gunicorn==23.0.0
+
+# PostgreSQL support (optional, can be removed if using SQLite only)
+psycopg2-binary==2.9.10
+
+# HTTP requests (for weather API)
+requests==2.32.3
+charset-normalizer==3.4.3
+
+# Security and utilities
+python-dotenv==1.0.1
+
+# Whitenoise for serving static files
+whitenoise==6.8.2
+
+# Templates
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+
+# Monitoring (optional)
+# sentry-sdk==2.18.0

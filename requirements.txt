@@ -1,22 +1,40 @@
-argcomplete==3.6.2
+# Core Django
+Django==4.2.23
 asgiref==3.9.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# Image handling
+pillow==11.3.0
+
+# HTTP requests
+requests==2.32.3
 charset-normalizer==3.4.3
+
+# Production dependencies
+gunicorn==23.0.0
+whitenoise==6.8.2
+python-dotenv==1.0.1
+psycopg2-binary==2.9.10
+
+# Development tools (optional)
+argcomplete==3.6.2
 colorama==0.4.6
 commitizen==4.8.3
 decli==0.6.3
-Django==4.2.23
 importlib_metadata==8.7.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
 packaging==25.0
-pillow==11.3.0
 prompt_toolkit==3.0.51
 PyYAML==6.0.2
 questionary==2.1.0
+<<<<<<< Updated upstream
 reportlab==4.0.7
 sqlparse==0.5.3
+=======
+>>>>>>> Stashed changes
 termcolor==3.1.0
 tomlkit==0.13.3
-tzdata==2025.2
 wcwidth==0.2.13
 zipp==3.23.0
