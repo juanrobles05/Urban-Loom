@@ -39,21 +39,46 @@ class UserForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
-                'placeholder': 'Nombre'
+                'placeholder': 'Nombre',
+                'required': True
             }),
             'last_name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
-                'placeholder': 'Apellido'
+                'placeholder': 'Apellido',
+                'required': True
             }),
             'email': forms.EmailInput(attrs={
                 'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
-                'placeholder': 'Email'
+                'placeholder': 'Email',
+                'required': True
             }),
             'phone_number': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-white transition-colors text-white',
-                'placeholder': 'Teléfono'
+                'placeholder': 'Teléfono',
+                'required': True
             }),
         }
+    
+    def clean_first_name(self):
+        """Validar que el nombre no esté vacío"""
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name or first_name.strip() == '':
+            raise ValidationError('El nombre es obligatorio')
+        return first_name
+    
+    def clean_last_name(self):
+        """Validar que el apellido no esté vacío"""
+        last_name = self.cleaned_data.get('last_name')
+        if not last_name or last_name.strip() == '':
+            raise ValidationError('El apellido es obligatorio')
+        return last_name
+    
+    def clean_phone_number(self):
+        """Validar que el teléfono no esté vacío"""
+        phone_number = self.cleaned_data.get('phone_number')
+        if not phone_number or phone_number.strip() == '':
+            raise ValidationError('El teléfono es obligatorio')
+        return phone_number
 
 
 class ProfileForm(forms.ModelForm):
