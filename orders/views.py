@@ -166,7 +166,10 @@ def checkout_view(request):
 
 @login_required
 def payment_view(request):
-    """Vista para procesar el pago"""
+    """Vista para procesar el pago usando Inversión de Dependencias"""
+    from .payment_processors import PaymentProcessorFactory
+    from decimal import Decimal
+    
     try:
         cart = Cart.objects.get(user=request.user)
         if not cart.items.exists():
@@ -192,18 +195,22 @@ def payment_view(request):
         messages.error(request, "Dirección de envío inválida.")
         return redirect('orders:checkout')
     
+    # Obtener métodos de pago disponibles
+    available_methods = PaymentProcessorFactory.get_available_methods()
+    
     if request.method == 'POST':
-        # Obtener datos del formulario de pago
+        # Obtener método de pago seleccionado
         payment_method = request.POST.get('payment_method', 'card')
-        card_number = request.POST.get('card_number', '').replace(' ', '')
-        card_name = request.POST.get('card_name', '').strip()
-        expiry_date = request.POST.get('expiry_date', '').strip()
-        cvv = request.POST.get('cvv', '').strip()
         
-        # Validaciones básicas (ilustrativas)
+        # Validaciones básicas según el método de pago
         errors = []
         
         if payment_method == 'card':
+            card_number = request.POST.get('card_number', '').replace(' ', '')
+            card_name = request.POST.get('card_name', '').strip()
+            expiry_date = request.POST.get('expiry_date', '').strip()
+            cvv = request.POST.get('cvv', '').strip()
+            
             if not card_number or len(card_number) < 13 or len(card_number) > 19:
                 errors.append("Número de tarjeta inválido. Debe tener entre 13 y 19 dígitos.")
             
@@ -226,22 +233,29 @@ def payment_view(request):
                 'shipping_address': shipping_address,
                 'total_items': cart.get_total_items(),
                 'total_price': cart.get_total_price(),
+                'available_methods': available_methods,
+                'user_balance': request.user.balance,
                 'form_data': {
                     'payment_method': payment_method,
-                    'card_name': card_name,
-                    'expiry_date': expiry_date,
+                    'card_name': card_name if payment_method == 'card' else '',
+                    'expiry_date': expiry_date if payment_method == 'card' else '',
                 }
             }
             return render(request, 'orders/payment.html', context)
         
-        # Crear la orden
+        # Calcular el total
+        total_amount = Decimal(str(cart.get_total_price()))
+        
+        # Crear la orden (inicialmente en estado pending)
         order = Order.objects.create(
             user=request.user,
-            status='paid',
-            shipping_address=shipping_address
+            status='pending',
+            shipping_address=shipping_address,
+            payment_method=payment_method,
+            total_amount=total_amount
         )
         
-        # Crear los items de la orden y actualizar stock
+        # Crear los items de la orden y verificar stock
         for cart_item in cart.items.all():
             # Verificar stock disponible
             if cart_item.product.stock < cart_item.quantity:
@@ -256,20 +270,64 @@ def payment_view(request):
                 quantity=cart_item.quantity,
                 price=cart_item.product.price
             )
+        
+        # INVERSIÓN DE DEPENDENCIAS: Usar el factory para obtener el procesador adecuado
+        try:
+            payment_processor = PaymentProcessorFactory.create(payment_method)
             
-            # Actualizar stock del producto
-            cart_item.product.stock -= cart_item.quantity
-            cart_item.product.save()
-        
-        # Limpiar el carrito
-        cart.items.all().delete()
-        
-        # Limpiar la sesión
-        if 'selected_shipping_address' in request.session:
-            del request.session['selected_shipping_address']
-        
-        messages.success(request, f"¡Pago procesado exitosamente! Orden #{order.id} creada.")
-        return redirect('orders:order_confirmation', order_id=order.id)
+            # Procesar el pago usando la interfaz abstracta
+            result = payment_processor.process_payment(
+                user=request.user,
+                order=order,
+                amount=total_amount
+            )
+            
+            if result.success:
+                # Guardar el ID de transacción
+                order.transaction_id = result.transaction_id
+                order.save()
+                
+                # Actualizar stock de productos
+                for cart_item in cart.items.all():
+                    cart_item.product.stock -= cart_item.quantity
+                    cart_item.product.save()
+                
+                # Limpiar el carrito
+                cart.items.all().delete()
+                
+                # Limpiar la sesión
+                if 'selected_shipping_address' in request.session:
+                    del request.session['selected_shipping_address']
+                
+                messages.success(request, result.message)
+                
+                # Si hay PDF (cheque), guardarlo en la sesión para descarga
+                if result.pdf_data:
+                    request.session['check_pdf'] = result.pdf_data.hex()
+                    request.session['check_order_id'] = order.id
+                
+                return redirect('orders:order_confirmation', order_id=order.id)
+            else:
+                # El pago falló, eliminar la orden
+                order.delete()
+                messages.error(request, result.message)
+                
+                cart_items = cart.items.all()
+                context = {
+                    'cart': cart,
+                    'cart_items': cart_items,
+                    'shipping_address': shipping_address,
+                    'total_items': cart.get_total_items(),
+                    'total_price': cart.get_total_price(),
+                    'available_methods': available_methods,
+                    'user_balance': request.user.balance,
+                }
+                return render(request, 'orders/payment.html', context)
+                
+        except ValueError as e:
+            order.delete()
+            messages.error(request, str(e))
+            return redirect('orders:checkout')
     
     cart_items = cart.items.all()
     
@@ -279,6 +337,8 @@ def payment_view(request):
         'shipping_address': shipping_address,
         'total_items': cart.get_total_items(),
         'total_price': cart.get_total_price(),
+        'available_methods': available_methods,
+        'user_balance': request.user.balance,
     }
     
     return render(request, 'orders/payment.html', context)
@@ -289,13 +349,43 @@ def order_confirmation_view(request, order_id):
     """Vista para mostrar la confirmación de la orden"""
     order = get_object_or_404(Order, id=order_id, user=request.user)
     
+    # Verificar si hay un PDF de cheque disponible
+    has_check_pdf = (
+        'check_pdf' in request.session and 
+        request.session.get('check_order_id') == order.id
+    )
+    
     context = {
         'order': order,
         'order_items': order.items.all(),
-        'total_amount': sum(item.get_total() for item in order.items.all()),
+        'total_amount': order.calculate_total(),
+        'has_check_pdf': has_check_pdf,
     }
     
     return render(request, 'orders/order_confirmation.html', context)
+
+
+@login_required
+def download_check_pdf(request, order_id):
+    """Vista para descargar el PDF del cheque"""
+    from django.http import HttpResponse
+    
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    # Verificar que el PDF esté disponible en la sesión
+    if 'check_pdf' not in request.session or request.session.get('check_order_id') != order.id:
+        messages.error(request, "El PDF del cheque no está disponible.")
+        return redirect('orders:order_confirmation', order_id=order.id)
+    
+    # Recuperar el PDF de la sesión
+    pdf_hex = request.session.get('check_pdf')
+    pdf_data = bytes.fromhex(pdf_hex)
+    
+    # Crear la respuesta HTTP con el PDF
+    response = HttpResponse(pdf_data, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="cheque_orden_{order.id}.pdf"'
+    
+    return response
 
 
 @login_required

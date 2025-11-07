@@ -27,6 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=10000.00)  # Saldo disponible del usuario
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
