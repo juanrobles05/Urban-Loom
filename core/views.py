@@ -137,3 +137,76 @@ def weather_api(request):
             'success': False,
             'error': 'Error interno del servidor'
         }, status=500)
+
+
+def ads_api(request):
+    """API endpoint to get advertising data from tech company"""
+    try:
+        # TODO: Replace with actual endpoint from tech company
+        tech_company_url = "https://api.techstore.example.com/products"
+        
+        try:
+            # Try to fetch from external API
+            response = requests.get(tech_company_url, timeout=5)
+            response.raise_for_status()
+            
+            # Parse the actual response from tech company
+            data = response.json()
+            
+            # Assuming the tech company returns an array of products
+            # Adjust this parsing based on their actual API response format
+            if isinstance(data, list) and len(data) > 0:
+                # Take up to 3 products
+                products = data[:3] if len(data) >= 3 else data
+                
+                return JsonResponse({
+                    'success': True,
+                    'ad_products': products,
+                    'company': 'TechStore Pro'
+                })
+            else:
+                # No products available
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No hay productos disponibles'
+                })
+            
+        except requests.exceptions.RequestException:
+            # External API is not available or failed
+            return JsonResponse({
+                'success': False,
+                'error': 'Servicio de publicidad no disponible'
+            })
+        
+    except Exception as e:
+        logger.error(f"Error in ads API: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Error al cargar publicidad'
+        }, status=500)
+
+
+def translations_api(request):
+    """API endpoint to get translations for JavaScript"""
+    from .utils.lang import load_translation
+    
+    # Get language from request
+    lang = getattr(request, "LANGUAGE_CODE", "es")
+    if not lang:
+        lang = "es"
+    
+    # Load translations
+    t = load_translation(lang)
+    
+    # Return only needed translations for ads widget
+    ads_translations = {
+        'ADS_TITLE': t.get('ADS_TITLE', 'Publicidad'),
+        'ADS_VIEW_DETAILS': t.get('ADS_VIEW_DETAILS', 'Ver detalles'),
+        'ADS_NO_DATA': t.get('ADS_NO_DATA', 'Publicidad no disponible')
+    }
+    
+    return JsonResponse({
+        'success': True,
+        'translations': ads_translations,
+        'lang': lang.split("-")[0] if "-" in lang else lang
+    })
