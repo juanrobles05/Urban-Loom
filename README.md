@@ -1,4 +1,4 @@
-# Urban Loom 🛍️
+# Urban Loom 
 
 [![Django](https://img.shields.io/badge/Django-4.2.23-green.svg)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
