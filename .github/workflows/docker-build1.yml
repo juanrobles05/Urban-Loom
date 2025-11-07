@@ -94,6 +94,3 @@ jobs:
         tags: ${{ env.DOCKERHUB_IMAGE }}:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    
-    - name: Image digest
-      run: echo "GHCR digest: ${{ steps.meta.outputs.digest }}"
