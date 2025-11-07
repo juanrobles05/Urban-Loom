@@ -62,7 +62,7 @@ A continuación se describe el propósito de cada app principal del proyecto:
 - Configuración global
 
 ## Diagrama de Arquitectura del Sistema
-
+'''
 mermaid
 graph TB
     subgraph "Frontend Layer"
@@ -198,3 +198,4 @@ graph TB
     class AccViews,AccModels,AccForms,CatViews,CatModels,CatAPI,OrdViews,OrdModels,RecViews,RecModels,StorViews,CoreViews,CoreUtils app
     class DB,Media,Static,Resources data
     class WeatherAPI external
+'''
