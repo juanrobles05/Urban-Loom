@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+from django.http import JsonResponse
 from .models import Collection, Product, Category
 
 def collections_view(request):
@@ -112,3 +113,51 @@ def shop_view(request):
     }
 
     return render(request, 'shop/shop.html', context)
+
+
+def products_api(request):
+    """API endpoint to return products data in JSON format"""
+    try:
+        # Get all active products
+        products = Product.objects.filter(is_active=True).select_related('category', 'collection')
+        
+        # Build the response data
+        products_data = []
+        for product in products:
+            product_data = {
+                'id': product.id,
+                'name': product.name,
+                'description': product.description,
+                'price': int(product.price),  # Convert to integer as shown in example
+                'stock': product.stock,
+                'is_active': product.is_active,
+                'created_at': product.created_at.isoformat(),
+                'image': request.build_absolute_uri(product.image.url) if product.image else None,
+                'category': {
+                    'id': product.category.id,
+                    'name': product.category.name,
+                    'status': product.category.status
+                } if product.category else None,
+                'collection': {
+                    'id': product.collection.id,
+                    'name': product.collection.name,
+                    'season': product.collection.season,
+                    'status': product.collection.status
+                } if product.collection else None
+            }
+            products_data.append(product_data)
+        
+        # Build the final response
+        response_data = {
+            'success': True,
+            'count': len(products_data),
+            'products': products_data
+        }
+        
+        return JsonResponse(response_data)
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
