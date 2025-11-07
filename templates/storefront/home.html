@@ -10,9 +10,9 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
+<section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black px-6 mb-8">
 	<div class="absolute inset-0 hero-bg-overlay opacity-60"></div>
-	<div class="container mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+	<div class="w-full mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center relative z-10">
 		<div class="space-y-8">
 			<div class="space-y-6">
 				<span class="inline-block bg-white text-black border border-white px-4 py-2 rounded-full font-semibold">{{ t.HOME_NEW_COLLECTION }}</span>
@@ -28,9 +28,9 @@
 				</a>
 			</div>
 		</div>
-		<div class="relative">
+		<div class="relative mt-6 mb-6">
 			<div class="absolute inset-0 blue-glow rounded-3xl blur-3xl"></div>
-			<img src="{% static 'img/hero-image.jpg' %}" alt="Urban streetwear model" class="relative w-full h-auto rounded-3xl shadow-2xl" />
+			<img src="{% static 'img/hero-image.jpg' %}" alt="Urban streetwear model" class="relative w-full max-w-md mx-auto h-auto rounded-3xl shadow-2xl" />
 		</div>
 	</div>
 </section>
@@ -66,7 +66,7 @@
 
 <!-- Collections Section -->
 <section class="py-20 bg-black">
-	<div class="container mx-auto px-4">
+	<div class="container mx-auto">
 		<div class="text-center mb-16">
 			<h2 class="text-5xl font-bold mb-6 text-white">{{ t.HOME_EXPLORE_COLLECTIONS }}</h2>
 			<p class="text-gray-300 text-xl max-w-2xl mx-auto">{{ t.HOME_EXPLORE_DESC }}</p>
