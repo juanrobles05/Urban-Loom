@@ -40,10 +40,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app user for security
+# Create app user for security and necessary directories
 RUN useradd -m -u 1000 appuser && \
-    mkdir -p /app/staticfiles /app/mediafiles /app/logs && \
-    chown -R appuser:appuser /app
+    mkdir -p /app/staticfiles /app/mediafiles /app/logs /app/data /app/resources/lang && \
+    chown -R appuser:appuser /app && \
+    chmod -R 777 /app/logs
 
 WORKDIR /app
 
@@ -51,26 +52,21 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Copy application code
+# Copy application code with correct permissions
 COPY --chown=appuser:appuser . .
-
-# Create necessary directories
-RUN mkdir -p staticfiles mediafiles logs data resources/lang
 
 # Collect static files
 RUN python manage.py collectstatic --noinput --settings=config.settings_prod || true
 
-# Change to non-root user
+# Switch to non-root user
 USER appuser
 
-# Expose port
 EXPOSE 8000
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000', timeout=5)" || exit 1
 
-# Run entrypoint script
+# Entrypoint
 COPY --chown=appuser:appuser docker-entrypoint.sh /app/
 RUN chmod +x /app/docker-entrypoint.sh
 
