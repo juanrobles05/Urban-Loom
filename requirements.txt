@@ -29,11 +29,7 @@ packaging==25.0
 prompt_toolkit==3.0.51
 PyYAML==6.0.2
 questionary==2.1.0
-<<<<<<< Updated upstream
 reportlab==4.0.7
-sqlparse==0.5.3
-=======
->>>>>>> Stashed changes
 termcolor==3.1.0
 tomlkit==0.13.3
 wcwidth==0.2.13
