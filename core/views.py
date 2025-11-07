@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.http import JsonResponse
+import requests
+import logging
 
 # Create your views here.
+
+logger = logging.getLogger(__name__)
 
 class AboutView(TemplateView):
     """Vista para mostrar la página About de Urban Loom"""
@@ -28,3 +33,107 @@ class AboutView(TemplateView):
         })
         
         return context
+
+
+def weather_api(request):
+    """API endpoint to get weather data based on location"""
+    try:
+        # Default coordinates for Medellín, Colombia
+        default_lat = 6.2442
+        default_lng = -75.5812
+        
+        # Get coordinates from request parameters
+        latitude = request.GET.get('lat', default_lat)
+        longitude = request.GET.get('lng', default_lng)
+        
+        # Validate coordinates
+        try:
+            latitude = float(latitude)
+            longitude = float(longitude)
+        except (ValueError, TypeError):
+            latitude = default_lat
+            longitude = default_lng
+        
+        # Open-Meteo API URL
+        weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true&timezone=America/Bogota"
+        
+        # Make request to weather API
+        response = requests.get(weather_url, timeout=10)
+        response.raise_for_status()
+        
+        weather_data = response.json()
+        
+        # Extract relevant weather information
+        current_weather = weather_data.get('current_weather', {})
+        
+        # Map weather codes to descriptions (WMO Weather interpretation codes)
+        weather_descriptions = {
+            0: "Despejado",
+            1: "Mayormente despejado", 
+            2: "Parcialmente nublado",
+            3: "Nublado",
+            45: "Niebla",
+            48: "Niebla con escarcha",
+            51: "Llovizna ligera",
+            53: "Llovizna moderada", 
+            55: "Llovizna densa",
+            56: "Llovizna helada ligera",
+            57: "Llovizna helada densa",
+            61: "Lluvia ligera",
+            63: "Lluvia moderada",
+            65: "Lluvia fuerte",
+            66: "Lluvia helada ligera",
+            67: "Lluvia helada fuerte",
+            71: "Nieve ligera",
+            73: "Nieve moderada",
+            75: "Nieve fuerte",
+            77: "Granizo",
+            80: "Aguaceros ligeros",
+            81: "Aguaceros moderados",
+            82: "Aguaceros fuertes",
+            85: "Nevadas ligeras",
+            86: "Nevadas fuertes",
+            95: "Tormenta",
+            96: "Tormenta con granizo ligero",
+            99: "Tormenta con granizo fuerte"
+        }
+        
+        weather_code = current_weather.get('weathercode', 0)
+        weather_description = weather_descriptions.get(weather_code, "Condición desconocida")
+        
+        # Format response
+        weather_response = {
+            'success': True,
+            'location': {
+                'latitude': latitude,
+                'longitude': longitude,
+                'city': 'Medellín' if latitude == default_lat and longitude == default_lng else 'Ubicación actual'
+            },
+            'weather': {
+                'temperature': current_weather.get('temperature'),
+                'temperature_unit': weather_data.get('current_weather_units', {}).get('temperature', '°C'),
+                'windspeed': current_weather.get('windspeed'),
+                'windspeed_unit': weather_data.get('current_weather_units', {}).get('windspeed', 'km/h'),
+                'winddirection': current_weather.get('winddirection'),
+                'weathercode': weather_code,
+                'description': weather_description,
+                'time': current_weather.get('time'),
+                'is_day': current_weather.get('is_day', 1) == 1
+            }
+        }
+        
+        return JsonResponse(weather_response)
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching weather data: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Error al obtener datos del clima'
+        }, status=500)
+        
+    except Exception as e:
+        logger.error(f"Unexpected error in weather API: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': 'Error interno del servidor'
+        }, status=500)

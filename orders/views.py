@@ -193,8 +193,46 @@ def payment_view(request):
         return redirect('orders:checkout')
     
     if request.method == 'POST':
-        # Aquí se procesaría el pago real (integración con pasarela de pagos)
-        # Por ahora simulamos un pago exitoso
+        # Obtener datos del formulario de pago
+        payment_method = request.POST.get('payment_method', 'card')
+        card_number = request.POST.get('card_number', '').replace(' ', '')
+        card_name = request.POST.get('card_name', '').strip()
+        expiry_date = request.POST.get('expiry_date', '').strip()
+        cvv = request.POST.get('cvv', '').strip()
+        
+        # Validaciones básicas (ilustrativas)
+        errors = []
+        
+        if payment_method == 'card':
+            if not card_number or len(card_number) < 13 or len(card_number) > 19:
+                errors.append("Número de tarjeta inválido. Debe tener entre 13 y 19 dígitos.")
+            
+            if not card_name or len(card_name) < 3:
+                errors.append("El nombre en la tarjeta es requerido.")
+            
+            if not expiry_date or len(expiry_date) != 5:
+                errors.append("Fecha de expiración inválida. Formato: MM/AA")
+            
+            if not cvv or len(cvv) < 3 or len(cvv) > 4:
+                errors.append("CVV inválido. Debe tener 3 o 4 dígitos.")
+        
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            cart_items = cart.items.all()
+            context = {
+                'cart': cart,
+                'cart_items': cart_items,
+                'shipping_address': shipping_address,
+                'total_items': cart.get_total_items(),
+                'total_price': cart.get_total_price(),
+                'form_data': {
+                    'payment_method': payment_method,
+                    'card_name': card_name,
+                    'expiry_date': expiry_date,
+                }
+            }
+            return render(request, 'orders/payment.html', context)
         
         # Crear la orden
         order = Order.objects.create(
