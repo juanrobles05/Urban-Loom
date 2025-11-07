@@ -63,49 +63,49 @@ A continuación se describe el propósito de cada app principal del proyecto:
 
 ## Diagrama de Arquitectura del Sistema
 
-mermaid
+```mermaid
 graph TB
     subgraph "Frontend Layer"
-        UI[/" Templates HTML/Tailwind CSS"\]
-        JS[/" JavaScript/AJAX"\]
+        UI["Templates HTML/Tailwind CSS"]
+        JS["JavaScript/AJAX"]
     end
 
     subgraph "Middleware Layer"
-        LangMW[" LanguageMiddleware<br/>(Gestión de Idiomas)"]
-        AuthMW[" AuthenticationMiddleware"]
-        SessionMW[" SessionMiddleware"]
-        CSRF[" CSRF Protection"]
+        LangMW["LanguageMiddleware<br/>(Gestión de Idiomas)"]
+        AuthMW["AuthenticationMiddleware"]
+        SessionMW["SessionMiddleware"]
+        CSRF["CSRF Protection"]
     end
 
     subgraph "Django Core"
-        URLS[" URL Router<br/>(config/urls.py)"]
+        URLS["URL Router<br/>(config/urls.py)"]
         
         subgraph "Context Processors"
-            TransCP[" Translations Processor"]
+            TransCP["Translations Processor"]
         end
     end
 
     subgraph "Applications Layer"
         subgraph "Accounts App"
-            AccViews[" Views<br/>(Login, Register, Profile)"]
-            AccModels[" Models<br/>(User, Customer, UserProfile, ShippingAddress)"]
-            AccForms[" Forms<br/>(Registration, Login)"]
+            AccViews["Views<br/>(Login, Register, Profile)"]
+            AccModels["Models<br/>(User, Customer, UserProfile, ShippingAddress)"]
+            AccForms["Forms<br/>(Registration, Login)"]
         end
 
         subgraph "Catalog App"
-            CatViews[" Views<br/>(Collections, Products, Shop)"]
-            CatModels[" Models<br/>(Collection, Category, Product)"]
-            CatAPI[" API<br/>(Products JSON)"]
+            CatViews["Views<br/>(Collections, Products, Shop)"]
+            CatModels["Models<br/>(Collection, Category, Product)"]
+            CatAPI["API<br/>(Products JSON)"]
         end
 
         subgraph "Orders App"
-            OrdViews[" Views<br/>(Cart, Checkout, Payment)"]
-            OrdModels[" Models<br/>(Cart, CartItem, Order, OrderItem)"]
+            OrdViews["Views<br/>(Cart, Checkout, Payment)"]
+            OrdModels["Models<br/>(Cart, CartItem, Order, OrderItem)"]
         end
 
         subgraph "Recommendations App"
-            RecViews[" Views<br/>(Wishlist, Recommendations)"]
-            RecModels[" Models<br/>(Wishlist, ProductRecommendation)"]
+            RecViews["Views<br/>(Wishlist, Recommendations)"]
+            RecModels["Models<br/>(Wishlist, ProductRecommendation)"]
         end
 
         subgraph "Storefront App"
@@ -113,20 +113,20 @@ graph TB
         end
 
         subgraph "Core App"
-            CoreViews["Views<br/>(About, Weather API,TechNova API)"]
+            CoreViews["Views<br/>(About, Weather API, TechNova API)"]
             CoreUtils["Utils<br/>(Translation Loader)"]
         end
     end
 
     subgraph "Data Layer"
-        DB[( SQLite Database<br/>db.sqlite3)]
-        Media[/" Media Storage<br/>(Images: products, collections, profiles)"\]
-        Static[/" Static Files<br/>(CSS, JS, Images)"\]
-        Resources[/" Resources<br/>(i18n JSON files)"\]
+        DB[(SQLite Database<br/>db.sqlite3)]
+        Media["Media Storage<br/>(Images: products, collections, profiles)"]
+        Static["Static Files<br/>(CSS, JS, Images)"]
+        Resources["Resources<br/>(i18n JSON files)"]
     end
 
     subgraph "External Services"
-        WeatherAPI[" Open-Meteo API<br/>(Weather Data)"]
+        WeatherAPI["Open-Meteo API<br/>(Weather Data)"]
         TechNova["TechNova API<br/>(Tech Data)"]
     end
 
@@ -197,4 +197,5 @@ graph TB
     class URLS,TransCP core
     class AccViews,AccModels,AccForms,CatViews,CatModels,CatAPI,OrdViews,OrdModels,RecViews,RecModels,StorViews,CoreViews,CoreUtils app
     class DB,Media,Static,Resources data
-    class WeatherAPI external
+    class WeatherAPI,TechNova external
+```
