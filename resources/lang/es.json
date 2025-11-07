@@ -388,5 +388,9 @@
   "AUTH_REGISTER_SUCCESS": "¡Cuenta creada exitosamente! Ya puedes iniciar sesión.",
   "AUTH_REGISTER_ERROR": "Hubo un problema al crear tu cuenta. Por favor intenta de nuevo.",
   "PROFILE_UPDATE_SUCCESS": "¡Perfil actualizado exitosamente!",
-  "PROFILE_UPDATE_ERROR": "Por favor corrige los errores en el formulario."
+  "PROFILE_UPDATE_ERROR": "Por favor corrige los errores en el formulario.",
+  
+  "ADS_TITLE": "Publicidad",
+  "ADS_VIEW_DETAILS": "Ver detalles",
+  "ADS_NO_DATA": "Publicidad no disponible"
 }
