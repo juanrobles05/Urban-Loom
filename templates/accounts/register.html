@@ -37,8 +37,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4V4zm8 8l8-8H4l8 8z"/></svg>
                                 </span>
-                                <input type="email" name="email" id="id_email" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_EMAIL_PLACEHOLDER }}" required>
+                                <input type="email" name="email" id="id_email" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_EMAIL_EXAMPLE }}</p>
                             {% if form.email.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -49,8 +50,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 1 0-8 0c0 2.21 1.79 4 4 4s4-1.79 4-4z"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
                                 </span>
-                                <input type="text" name="first_name" id="id_first_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_FIRST_NAME_PLACEHOLDER }}" required>
+                                <input type="text" name="first_name" id="id_first_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_FIRST_NAME_EXAMPLE }}</p>
                             {% if form.first_name.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.first_name.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -61,8 +63,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 1 0-8 0c0 2.21 1.79 4 4 4s4-1.79 4-4z"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
                                 </span>
-                                <input type="text" name="last_name" id="id_last_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_LAST_NAME_PLACEHOLDER }}" required>
+                                <input type="text" name="last_name" id="id_last_name" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_LAST_NAME_EXAMPLE }}</p>
                             {% if form.last_name.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.last_name.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -75,6 +78,7 @@
                                 </span>
                                 <input type="date" name="date_of_birth" id="id_date_of_birth" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_DATE_OF_BIRTH_EXAMPLE }}</p>
                             {% if form.date_of_birth.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.date_of_birth.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -85,8 +89,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1C7.61 21 3 16.39 3 11a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.35.27 2.67.76 3.88a1 1 0 0 1-.21 1.11l-2.2 2.2z"/></svg>
                                 </span>
-                                <input type="text" name="phone_number" id="id_phone_number" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_PHONE_PLACEHOLDER }}" required>
+                                <input type="text" name="phone_number" id="id_phone_number" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_PHONE_EXAMPLE }}</p>
                             {% if form.phone_number.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.phone_number.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -97,8 +102,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 10V8a6 6 0 1 1 12 0v2"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg>
                                 </span>
-                                <input type="password" name="password1" id="id_password1" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_PASSWORD_PLACEHOLDER }}" required>
+                                <input type="password" name="password1" id="id_password1" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_PASSWORD_EXAMPLE }}</p>
                             {% if form.password1.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.password1.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
@@ -109,8 +115,9 @@
                                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M6 10V8a6 6 0 1 1 12 0v2"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg>
                                 </span>
-                                <input type="password" name="password2" id="id_password2" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" placeholder="{{ t.AUTH_PASSWORD_CONFIRM_PLACEHOLDER }}" required>
+                                <input type="password" name="password2" id="id_password2" class="pl-10 py-3 rounded-lg bg-black border border-gray-700 text-white w-full focus:outline-none focus:border-white" required>
                             </div>
+                            <p class="text-xs text-gray-400 italic">{{ t.AUTH_PASSWORD_CONFIRM_EXAMPLE }}</p>
                             {% if form.password2.errors %}
                                 <div class="text-red-500 text-xs mt-1">{% for error in form.password2.errors %}{{ error }}{% endfor %}</div>
                             {% endif %}
