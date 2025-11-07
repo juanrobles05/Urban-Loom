@@ -4,3 +4,7 @@ __pycache__/
 /media/
 .env
 node_modules/
+*.md 
+/htmlcov/
+test_report.txt
+.coverage

@@ -42,9 +42,17 @@ class Order(models.Model):
         ("completed", "Completada"),
         ("cancelled", "Cancelada"),
     )
+    
+    PAYMENT_METHOD_CHOICES = (
+        ("card", "Tarjeta de Crédito/Débito"),
+        ("check", "Cheque Bancario"),
+    )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, null=True, blank=True)
+    transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     shipping_address = models.ForeignKey(
@@ -53,6 +61,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Orden {self.id} - {self.user.email}"
+    
+    def calculate_total(self):
+        """Calcula el total de la orden basado en los items"""
+        return sum(item.get_total() for item in self.items.all())
 
 
 class OrderItem(models.Model):

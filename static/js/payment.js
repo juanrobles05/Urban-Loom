@@ -9,6 +9,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const cardDetailsSection = document.getElementById('card-details');
     const paymentMethodInputs = document.querySelectorAll('input[name="payment_method"]');
 
+    // Manejar cambio de método de pago
+    paymentMethodInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (this.value === 'card') {
+                cardDetailsSection.style.display = 'block';
+                // Hacer campos requeridos
+                cardNumberInput.required = true;
+                cardNameInput.required = true;
+                expiryDateInput.required = true;
+                cvvInput.required = true;
+            } else {
+                cardDetailsSection.style.display = 'none';
+                // Quitar requerido
+                cardNumberInput.required = false;
+                cardNameInput.required = false;
+                expiryDateInput.required = false;
+                cvvInput.required = false;
+            }
+        });
+    });
+
     // Función para formatear el número de tarjeta (añadir espacios cada 4 dígitos)
     function formatCardNumber(value) {
         const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');

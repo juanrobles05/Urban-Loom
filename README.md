@@ -60,3 +60,142 @@ A continuación se describe el propósito de cada app principal del proyecto:
 **Funcionalidades compartidas, utilidades, configuración global.**
 - Utilidades: procesadores de contexto, funciones comunes (ej. internacionalización)
 - Configuración global
+
+## Diagrama de Arquitectura del Sistema
+
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        UI["Templates HTML/Tailwind CSS"]
+        JS["JavaScript/AJAX"]
+    end
+
+    subgraph "Middleware Layer"
+        LangMW["LanguageMiddleware<br/>(Gestión de Idiomas)"]
+        AuthMW["AuthenticationMiddleware"]
+        SessionMW["SessionMiddleware"]
+        CSRF["CSRF Protection"]
+    end
+
+    subgraph "Django Core"
+        URLS["URL Router<br/>(config/urls.py)"]
+        
+        subgraph "Context Processors"
+            TransCP["Translations Processor"]
+        end
+    end
+
+    subgraph "Applications Layer"
+        subgraph "Accounts App"
+            AccViews["Views<br/>(Login, Register, Profile)"]
+            AccModels["Models<br/>(User, Customer, UserProfile, ShippingAddress)"]
+            AccForms["Forms<br/>(Registration, Login)"]
+        end
+
+        subgraph "Catalog App"
+            CatViews["Views<br/>(Collections, Products, Shop)"]
+            CatModels["Models<br/>(Collection, Category, Product)"]
+            CatAPI["API<br/>(Products JSON)"]
+        end
+
+        subgraph "Orders App"
+            OrdViews["Views<br/>(Cart, Checkout, Payment)"]
+            OrdModels["Models<br/>(Cart, CartItem, Order, OrderItem)"]
+        end
+
+        subgraph "Recommendations App"
+            RecViews["Views<br/>(Wishlist, Recommendations)"]
+            RecModels["Models<br/>(Wishlist, ProductRecommendation)"]
+        end
+
+        subgraph "Storefront App"
+            StorViews["Views<br/>(Home)"]
+        end
+
+        subgraph "Core App"
+            CoreViews["Views<br/>(About, Weather API, TechNova API)"]
+            CoreUtils["Utils<br/>(Translation Loader)"]
+        end
+    end
+
+    subgraph "Data Layer"
+        DB[(SQLite Database<br/>db.sqlite3)]
+        Media["Media Storage<br/>(Images: products, collections, profiles)"]
+        Static["Static Files<br/>(CSS, JS, Images)"]
+        Resources["Resources<br/>(i18n JSON files)"]
+    end
+
+    subgraph "External Services"
+        WeatherAPI["Open-Meteo API<br/>(Weather Data)"]
+        TechNova["TechNova API<br/>(Tech Data)"]
+    end
+
+    %% Frontend to Middleware
+    UI --> LangMW
+    JS --> LangMW
+    LangMW --> SessionMW
+    SessionMW --> AuthMW
+    AuthMW --> CSRF
+
+    %% Middleware to Router
+    CSRF --> URLS
+
+    %% Router to Apps
+    URLS --> AccViews
+    URLS --> CatViews
+    URLS --> OrdViews
+    URLS --> RecViews
+    URLS --> StorViews
+    URLS --> CoreViews
+
+    %% Context Processors
+    TransCP -.->|"Inject translations"| UI
+    CoreUtils --> TransCP
+    CoreUtils --> Resources
+
+    %% Views to Models
+    AccViews --> AccModels
+    CatViews --> CatModels
+    CatViews --> CatAPI
+    OrdViews --> OrdModels
+    RecViews --> RecModels
+    StorViews --> CatModels
+
+    %% Views to Forms
+    AccViews --> AccForms
+
+    %% Models to Database
+    AccModels --> DB
+    CatModels --> DB
+    OrdModels --> DB
+    RecModels --> DB
+
+    %% Models Relationships
+    OrdModels -.->|"Foreign Keys"| AccModels
+    OrdModels -.->|"Foreign Keys"| CatModels
+    RecModels -.->|"Foreign Keys"| AccModels
+    RecModels -.->|"Foreign Keys"| CatModels
+
+    %% Media & Static
+    CatModels --> Media
+    AccModels --> Media
+    UI --> Static
+
+    %% External APIs
+    CoreViews --> WeatherAPI
+
+    %% Styling
+    classDef frontend fill:#60A5FA,stroke:#1E40AF,stroke-width:2px,color:#fff
+    classDef middleware fill:#A78BFA,stroke:#5B21B6,stroke-width:2px,color:#fff
+    classDef core fill:#34D399,stroke:#047857,stroke-width:2px,color:#fff
+    classDef app fill:#FBBF24,stroke:#B45309,stroke-width:2px,color:#000
+    classDef data fill:#F87171,stroke:#991B1B,stroke-width:2px,color:#fff
+    classDef external fill:#F472B6,stroke:#9F1239,stroke-width:2px,color:#fff
+
+    class UI,JS frontend
+    class LangMW,AuthMW,SessionMW,CSRF middleware
+    class URLS,TransCP core
+    class AccViews,AccModels,AccForms,CatViews,CatModels,CatAPI,OrdViews,OrdModels,RecViews,RecModels,StorViews,CoreViews,CoreUtils app
+    class DB,Media,Static,Resources data
+    class WeatherAPI,TechNova external
+```
